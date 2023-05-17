@@ -225,7 +225,7 @@ class _NewPasswordState extends State<NewPassword> {
     try {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
-      var url = Uri.parse('http://192.168.82.237:3333/auth');
+      var url = Uri.parse('http://asensvy-production.up.railway.app/auth');
       var objeto = {
         'password': _passwordController.text,
         'email': _emailController.text

@@ -268,7 +268,7 @@ class _SignUpState extends State<SignUp> {
 
   Future<bool> doSignUp() async {
     try {
-      var url = Uri.parse('http://127.0.0.1:3333/users/');
+      var url = Uri.parse('http://asensvy-production.up.railway.app/users/');
       var objeto = {
         'firstName': _firstNameController.text,
         'lastName': _lastNameController.text,

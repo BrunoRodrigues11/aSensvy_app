@@ -211,7 +211,7 @@ class _LoginState extends State<Login> {
     try {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
-      var url = Uri.parse('http://127.0.0.1:3333/auth');
+      var url = Uri.parse('http://asensvy-production.up.railway.app/auth');
       var objeto = {
         'password': _passwordController.text,
         'email': _emailController.text
