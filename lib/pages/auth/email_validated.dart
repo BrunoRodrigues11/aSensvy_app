@@ -1,5 +1,6 @@
-import 'package:apptesteapi/pages/auth/email_validated.dart';
+import 'package:apptesteapi/pages/auth/new_password.dart';
 import 'package:apptesteapi/pages/home/home.dart';
+import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -14,7 +15,13 @@ class EmailValidation extends StatefulWidget {
 
 class _EmailValidationState extends State<EmailValidation> {
   final _formkey = GlobalKey<FormState>();
-  final _codController = TextEditingController();
+  final _codController0 = TextEditingController();
+  final _codController1 = TextEditingController();
+  final _codController2 = TextEditingController();
+  final _codController3 = TextEditingController();
+  final _codController4 = TextEditingController();
+  final _codController5 = TextEditingController();
+  final _fullCode = [];
   final _snackBar = SnackBar(
     content: Text(
       "Código inválido",
@@ -87,23 +94,15 @@ class _EmailValidationState extends State<EmailValidation> {
                       padding: EdgeInsets.symmetric(horizontal: 40),
                       child: Form(
                         key: _formkey,
-                        child: Column(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            inputFile(
-                              label: "Código",
-                              controller: _codController,
-                              keyboardType: TextInputType.emailAddress,
-                              hint: 'Informe o código',
-                              validator: (email) {
-                                if (email == null || email.isEmpty) {
-                                  return "Por favor, informe código";
-                                } else if (!RegExp(r'@')
-                                    .hasMatch(_codController.text)) {
-                                  return 'Por favor, informe um e-código válido!';
-                                }
-                                return null;
-                              },
-                            ),
+                            InputCode(controller: _codController0),
+                            InputCode(controller: _codController1),
+                            InputCode(controller: _codController2),
+                            InputCode(controller: _codController3),
+                            InputCode(controller: _codController4),
+                            InputCode(controller: _codController5),
                           ],
                         ),
                       ),
@@ -113,18 +112,21 @@ class _EmailValidationState extends State<EmailValidation> {
                       child: Container(
                         padding: EdgeInsets.only(top: 3, left: 3),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            border: Border(
-                              bottom: BorderSide(color: Colors.black),
-                              top: BorderSide(color: Colors.black),
-                              left: BorderSide(color: Colors.black),
-                              right: BorderSide(color: Colors.black),
-                            )),
+                          borderRadius: BorderRadius.circular(50),
+                          border: Border(
+                            bottom: BorderSide(color: Colors.black),
+                            top: BorderSide(color: Colors.black),
+                            left: BorderSide(color: Colors.black),
+                            right: BorderSide(color: Colors.black),
+                          ),
+                        ),
                         child: MaterialButton(
                           minWidth: double.infinity,
                           height: 60,
                           onPressed: () {
-                            _resetPassword(context, EmailValidation());
+                            // _newPassword(context, NewPassword());
+                            _getCode();
+                            _newPassword(context, NewPassword());
                           },
                           color: Color(0xff0095FF),
                           elevation: 0,
@@ -132,7 +134,7 @@ class _EmailValidationState extends State<EmailValidation> {
                             borderRadius: BorderRadius.circular(50),
                           ),
                           child: Text(
-                            "Continuar",
+                            "Confirmar",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 18,
@@ -152,7 +154,18 @@ class _EmailValidationState extends State<EmailValidation> {
     );
   }
 
-  _resetPassword(ctx, page) {
+  _getCode() {
+    _fullCode.clear();
+    _fullCode.add(_codController0.text);
+    _fullCode.add(_codController1.text);
+    _fullCode.add(_codController2.text);
+    _fullCode.add(_codController3.text);
+    _fullCode.add(_codController4.text);
+    _fullCode.add(_codController5.text);
+    print(_fullCode);
+  }
+
+  _newPassword(ctx, page) {
     Navigator.push(ctx, MaterialPageRoute(builder: ((context) => page)));
   }
 
@@ -169,7 +182,7 @@ class _EmailValidationState extends State<EmailValidation> {
           MaterialPageRoute(builder: (context) => Home()),
         );
       } else {
-        _codController.clear();
+        _codController0.clear();
         ScaffoldMessenger.of(context).showSnackBar(_snackBar);
       }
     }
@@ -180,8 +193,8 @@ class _EmailValidationState extends State<EmailValidation> {
     try {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
-      var url = Uri.parse('http://asensvy-production.up.railway.app/auth');
-      var objeto = {'email': _codController.text};
+      var url = Uri.parse('https://asensvy-production.up.railway.app/auth');
+      var objeto = {'email': _codController0.text};
 
       var headers = {'Content-Type': 'application/json'};
       var jsonBody = jsonEncode(objeto);
@@ -201,38 +214,4 @@ class _EmailValidationState extends State<EmailValidation> {
     }
     throw Exception('BarException');
   }
-}
-
-// we will be creating a widget for text field
-Widget inputFile(
-    {label, obscureText = false, validator, controller, keyboardType, hint}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text(
-        label,
-        style: TextStyle(
-            fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87),
-      ),
-      SizedBox(
-        height: 5,
-      ),
-      TextField(
-        keyboardType: keyboardType,
-        controller: controller,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-            hintText: hint,
-            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
-            ),
-            border:
-                OutlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
-      ),
-      SizedBox(
-        height: 10,
-      )
-    ],
-  );
 }

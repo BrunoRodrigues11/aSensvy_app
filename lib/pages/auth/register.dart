@@ -1,4 +1,5 @@
 import 'package:apptesteapi/pages/auth/login.dart';
+import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:http/http.dart' as http;
@@ -78,10 +79,7 @@ class _SignUpState extends State<SignUp> {
                           ],
                         ),
                         SizedBox(
-                          height: 88,
-                          child: Container(
-                            color: Colors.redAccent,
-                          ),
+                          height: 10,
                         ),
                         Text(
                           "Cadastrar-se",
@@ -104,50 +102,56 @@ class _SignUpState extends State<SignUp> {
                         key: _formkey,
                         child: Column(
                           children: <Widget>[
-                            inputFile(
-                              label: "Nome",
-                              controller: _firstNameController,
-                              keyboardType: TextInputType.text,
-                              hint: 'Informe o seu nome',
+                            InputDefault(
+                              "Nome",
+                              false,
+                              TextInputType.text,
+                              "Informe o seu nome",
+                              const [],
                               validator: (firstName) {
                                 if (firstName == null || firstName.isEmpty) {
                                   return "Por favor, informe seu nome";
                                 }
                                 return null;
                               },
+                              controller: _firstNameController,
                             ),
-                            inputFile(
-                              label: "Sobrenome",
-                              controller: _lastNameController,
-                              keyboardType: TextInputType.text,
-                              hint: 'Informe o seu sobrenome',
+                            InputDefault(
+                              "Sobrenome",
+                              false,
+                              TextInputType.text,
+                              "Informe o seu sobrenome",
+                              const [],
                               validator: (lastName) {
                                 if (lastName == null || lastName.isEmpty) {
                                   return "Por favor, informe seu sobrenome";
                                 }
                                 return null;
                               },
+                              controller: _lastNameController,
                             ),
-                            inputFile(
-                              label: "Telefone",
-                              controller: _phoneController,
-                              keyboardType: TextInputType.phone,
-                              inputFormatters: [maskFormatter],
-                              hint: 'Informe o seu telefone',
+                            InputDefault(
+                              "Telefone",
+                              false,
+                              TextInputType.text,
+                              "Informe o seu telefone",
+                              [maskFormatter],
                               validator: (tel) {
                                 if (tel == null || tel.isEmpty) {
                                   return "Por favor, informe seu telefone";
-                                } else if (tel.length < 11) {
+                                } else if (tel.length < 16) {
                                   return "Por favor, informe um telefone válido.";
                                 }
                                 return null;
                               },
+                              controller: _phoneController,
                             ),
-                            inputFile(
-                              label: "Email",
-                              controller: _emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              hint: 'Informe o seu email',
+                            InputDefault(
+                              "Email",
+                              false,
+                              TextInputType.emailAddress,
+                              "Informe o seu email",
+                              const [],
                               validator: (email) {
                                 if (email == null || email.isEmpty) {
                                   return "Por favor, informe seu email";
@@ -157,21 +161,23 @@ class _SignUpState extends State<SignUp> {
                                 }
                                 return null;
                               },
+                              controller: _emailController,
                             ),
-                            inputFile(
-                              label: "Senha",
-                              obscureText: true,
-                              controller: _passwordController,
-                              keyboardType: TextInputType.text,
-                              hint: 'Informe a sua senha',
+                            InputDefault(
+                              "Senha",
+                              true,
+                              TextInputType.text,
+                              "Informe a sua senha",
+                              const [],
                               validator: (senha) {
                                 if (senha == null || senha.isEmpty) {
                                   return "Por favor, informe sua senha";
                                 } else if (senha.length < 6) {
-                                  return "Por favor, informe uma senha maior que 6 caracteres";
+                                  return "Por favor, informe uma senha maior que 6 caracteres.";
                                 }
                                 return null;
                               },
+                              controller: _passwordController,
                             ),
                           ],
                         ),
@@ -245,7 +251,6 @@ class _SignUpState extends State<SignUp> {
 
   cadastrar() async {
     FocusScopeNode currentFocus = FocusScope.of(context);
-    print("chamou função CADASTRAR");
     if (_formkey.currentState!.validate()) {
       bool deuCerto = await doSignUp();
       if (!currentFocus.hasPrimaryFocus) {
@@ -255,20 +260,20 @@ class _SignUpState extends State<SignUp> {
         ScaffoldMessenger.of(context).showSnackBar(_snackBarS);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => Login()),
+          MaterialPageRoute(
+            builder: (context) => Login(),
+          ),
         );
-        print("CADASTRO OK");
       } else {
         _passwordController.clear();
         ScaffoldMessenger.of(context).showSnackBar(_snackBar);
-        print("CADASTRO DEU RUIM");
       }
     }
   }
 
   Future<bool> doSignUp() async {
     try {
-      var url = Uri.parse('http://asensvy-production.up.railway.app/users/');
+      var url = Uri.parse('https://asensvy-production.up.railway.app/users');
       var objeto = {
         'firstName': _firstNameController.text,
         'lastName': _lastNameController.text,
@@ -292,46 +297,4 @@ class _SignUpState extends State<SignUp> {
     }
     throw Exception('BarException');
   }
-}
-
-// we will be creating a widget for text field
-Widget inputFile({
-  label,
-  obscureText = false,
-  validator,
-  controller,
-  keyboardType,
-  inputFormatters,
-  hint,
-}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text(
-        label,
-        style: TextStyle(
-            fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87),
-      ),
-      SizedBox(
-        height: 5,
-      ),
-      TextField(
-        keyboardType: keyboardType,
-        controller: controller,
-        obscureText: obscureText,
-        inputFormatters: inputFormatters,
-        decoration: InputDecoration(
-            hintText: hint,
-            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
-            ),
-            border:
-                OutlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
-      ),
-      SizedBox(
-        height: 10,
-      )
-    ],
-  );
 }
