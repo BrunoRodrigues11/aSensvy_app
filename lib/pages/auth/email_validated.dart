@@ -1,13 +1,12 @@
 import 'package:apptesteapi/pages/auth/new_password.dart';
-import 'package:apptesteapi/pages/home/home.dart';
 import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class EmailValidation extends StatefulWidget {
-  const EmailValidation({super.key});
+  String email;
+  EmailValidation({super.key, required this.email});
 
   @override
   State<EmailValidation> createState() => _EmailValidationState();
@@ -22,6 +21,7 @@ class _EmailValidationState extends State<EmailValidation> {
   final _codController4 = TextEditingController();
   final _codController5 = TextEditingController();
   final _fullCode = [];
+  String _code = "";
   final _snackBar = SnackBar(
     content: Text(
       "Código inválido",
@@ -124,9 +124,7 @@ class _EmailValidationState extends State<EmailValidation> {
                           minWidth: double.infinity,
                           height: 60,
                           onPressed: () {
-                            // _newPassword(context, NewPassword());
                             _getCode();
-                            _newPassword(context, NewPassword());
                           },
                           color: Color(0xff0095FF),
                           elevation: 0,
@@ -162,24 +160,25 @@ class _EmailValidationState extends State<EmailValidation> {
     _fullCode.add(_codController3.text);
     _fullCode.add(_codController4.text);
     _fullCode.add(_codController5.text);
-    print(_fullCode);
-  }
-
-  _newPassword(ctx, page) {
-    Navigator.push(ctx, MaterialPageRoute(builder: ((context) => page)));
+    _code = _fullCode.join();
+    if (_code.length <6){
+      ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+    }else{
+      enviar();      
+    }
   }
 
   enviar() async {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (_formkey.currentState!.validate()) {
-      bool deuCerto = await sendEmail();
+      bool deuCerto = await verifyCode();
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
       }
       if (deuCerto) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => Home()),
+          MaterialPageRoute(builder: (context) => NewPassword(email: widget.email,)),
         );
       } else {
         _codController0.clear();
@@ -189,21 +188,19 @@ class _EmailValidationState extends State<EmailValidation> {
   }
 
   // ARRUMAR A ROTA
-  Future<bool> sendEmail() async {
+  Future<bool> verifyCode() async {
     try {
-      SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-      var url = Uri.parse('https://asensvy-production.up.railway.app/auth');
-      var objeto = {'email': _codController0.text};
+      var url = Uri.parse('https://asensvy-production.up.railway.app/recoverPassword/verify');
+      var objeto = {
+        'email': widget.email,
+        'code': _code
+      };
 
       var headers = {'Content-Type': 'application/json'};
       var jsonBody = jsonEncode(objeto);
       var response = await http.post(url, headers: headers, body: jsonBody);
 
       if (response.statusCode == 200) {
-        //guarda o token dentro do shared preference
-        await sharedPreferences.setString(
-            'token', "Token ${jsonDecode(response.body)['token']}");
         return true;
       } else {
         print('Erro na requisição. Código de status: ${response.statusCode}');

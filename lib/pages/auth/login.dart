@@ -217,7 +217,6 @@ class _LoginState extends State<Login> {
   }
 
   Future<bool> doLogin() async {
-    print("Chamou função login");
     try {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();

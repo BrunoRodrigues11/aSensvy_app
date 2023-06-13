@@ -1,12 +1,13 @@
+import 'package:apptesteapi/pages/auth/success.dart';
 import 'package:apptesteapi/pages/home/home.dart';
 import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class NewPassword extends StatefulWidget {
-  const NewPassword({super.key});
+  String email;
+  NewPassword({super.key, required this.email});
 
   @override
   State<NewPassword> createState() => _NewPasswordState();
@@ -118,7 +119,9 @@ class _NewPasswordState extends State<NewPassword> {
                                   return "Por favor, confirme sua senha";
                                 } else if (senha.length < 6) {
                                   return "Por favor, confirme a senha";
-                                }
+                                } else if (_newPasswordController == _confirmNewPasswordController.text) {
+                                  return "As senhas devem ser iguais";
+                                }                                
                                 return null;
                               },
                               controller: _confirmNewPasswordController,
@@ -143,7 +146,7 @@ class _NewPasswordState extends State<NewPassword> {
                           minWidth: double.infinity,
                           height: 60,
                           onPressed: () {
-                            _newPassword(context, NewPassword());
+                            enviar();
                           },
                           color: Color(0xff0095FF),
                           elevation: 0,
@@ -171,45 +174,42 @@ class _NewPasswordState extends State<NewPassword> {
     );
   }
 
-  _newPassword(ctx, page) {
-    Navigator.push(ctx, MaterialPageRoute(builder: ((context) => page)));
-  }
 
   enviar() async {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (_formkey.currentState!.validate()) {
-      bool deuCerto = await sendEmail();
+      bool deuCerto = await setNewPassword();
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
       }
       if (deuCerto) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => Home()),
+          MaterialPageRoute(builder: (context) => SuccessNewPassword()),
         );
       } else {
         _newPasswordController.clear();
+        _confirmNewPasswordController.clear();        
         ScaffoldMessenger.of(context).showSnackBar(_snackBar);
       }
     }
   }
 
   // ARRUMAR A ROTA
-  Future<bool> sendEmail() async {
+  Future<bool> setNewPassword() async {
     try {
-      SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-      var url = Uri.parse('https://asensvy-production.up.railway.app/auth');
-      var objeto = {'email': _newPasswordController.text};
+      var url = Uri.parse('https://asensvy-production.up.railway.app/recoverPassword/newpassword');
+      var objeto = {
+        'email': widget.email,
+        'password': _confirmNewPasswordController.text
+      };
 
       var headers = {'Content-Type': 'application/json'};
       var jsonBody = jsonEncode(objeto);
       var response = await http.post(url, headers: headers, body: jsonBody);
 
       if (response.statusCode == 200) {
-        //guarda o token dentro do shared preference
-        await sharedPreferences.setString(
-            'token', "Token ${jsonDecode(response.body)['token']}");
+        print("SENHA RESETADA");
         return true;
       } else {
         print('Erro na requisição. Código de status: ${response.statusCode}');

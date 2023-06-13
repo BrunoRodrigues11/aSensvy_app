@@ -1,4 +1,5 @@
 import 'package:apptesteapi/pages/init_page.dart';
+import 'package:apptesteapi/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,6 +51,7 @@ class _HomeState extends State<Home> {
           "Home Page",
           textAlign: TextAlign.center,
         ),
+        NavbarHome()
       ],
     );
   }
@@ -57,7 +59,7 @@ class _HomeState extends State<Home> {
   sair() async {
     bool saiu = await doLogout();
     if (saiu) {
-      Navigator.pushReplacement(
+      Navigator.pushReplacement(  
         context,
         MaterialPageRoute(
           builder: (context) => FirstPage(),
@@ -78,9 +80,5 @@ class _HomeState extends State<Home> {
       print('Erro ao sair: $e');
     }
     throw Exception('BarException');
-  }
-
-  _listarUsers(ctx, page) {
-    Navigator.push(ctx, MaterialPageRoute(builder: ((context) => page)));
   }
 }

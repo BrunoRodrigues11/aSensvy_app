@@ -1,6 +1,6 @@
-# apptesteapi
+# aSensvy App
 
-A new Flutter project.
+Aplicativo que usa inteligência artificial para processar videos e averiguar se há riscos para pessoas que possuem fotossensibilidade
 
 ## Getting Started
 
