@@ -55,16 +55,17 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 IconButton(
+                  icon: Icon(Icons.settings),
+                  onPressed: (){
+                    // _settingsPage(context, page)
+                  }, 
+                  
+                IconButton(
                   icon: Icon(Icons.home),
                   onPressed: (){
                     _homePage(context, Home());
                   }, 
                 ),
-                IconButton(
-                  icon: Icon(Icons.settings),
-                  onPressed: (){
-                    // _settingsPage(context, page)
-                  }, 
 
                 ),
                 IconButton(
@@ -153,10 +154,10 @@ class _HomeState extends State<Home> {
 
       var request = http.MultipartRequest('POST', url);
       request.files.add(await http.MultipartFile.fromPath('files[]', file.path));
-      request.headers['Authorization'] = 'Bearer $token';
+      request.headers['Authorization'] = '$token';
 
       var response = await request.send();
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
