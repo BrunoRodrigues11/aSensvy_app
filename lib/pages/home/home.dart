@@ -59,7 +59,8 @@ class _HomeState extends State<Home> {
                   onPressed: (){
                     // _settingsPage(context, page)
                   }, 
-                  
+                ),
+
                 IconButton(
                   icon: Icon(Icons.home),
                   onPressed: (){
@@ -67,7 +68,6 @@ class _HomeState extends State<Home> {
                   }, 
                 ),
 
-                ),
                 IconButton(
                   icon: Icon(Icons.person),
                   onPressed: (){
