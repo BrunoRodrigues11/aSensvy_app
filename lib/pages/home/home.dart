@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:apptesteapi/model/history.dart';
 import 'package:apptesteapi/pages/init_page.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,15 @@ class _HomeState extends State<Home> {
   final _token = "";
   File _videoFile = File("");
   File? file;
+  
+  late Future<List<Historico>> historico;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    historico = pegarHistorico();
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -82,55 +93,151 @@ class _HomeState extends State<Home> {
     );
   }
 
-  _body() {
-    return SafeArea(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
-                      child: Form(
-                        key: _formkey,
-                        child: Column(
-                          children: <Widget>[                  
-                            // começa aqui
-                            ElevatedButton(
-                              onPressed: _selectVideo,
-                              child: Text('Selecionar Vídeo'),
-                            ),
-                            SizedBox(height: 20),
-                            // ElevatedButton(
-                            //   onPressed: _uploadVideo(context),
-                            //   child: Text('Enviar Vídeo'),
-                            // ),
-                            SizedBox(
-                              height: 200.0,
-                              width: 300.0,
-                              child: _videoFile == null
-                                  ? const Center(child: Text('Sorry nothing selected!!'))
-                                  : Center(child: Text(_videoFile.path)),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+_body() {
+  return SafeArea(
+    child: SizedBox(
+      height: MediaQuery.of(context).size.height,
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Column(
+            children: <Widget>[
+              SizedBox(
+                height: 35,
+              ),
+              Text(
+                "Bem-vindo ao aSensvy",
+                style: TextStyle(
+                    fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Para começar, selecione um vídeo",
+                style:
+                    TextStyle(fontSize: 15, color: Colors.grey[700]),
+              ),
+              SizedBox(
+                height: 20,
+              ),              
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 40),
+            child: Container(
+              padding: EdgeInsets.only(top: 3, left: 3),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                border: Border(
+                  bottom: BorderSide(color: Colors.black),
+                  top: BorderSide(color: Colors.black),
+                  left: BorderSide(color: Colors.black),
+                  right: BorderSide(color: Colors.black),
+                )
+              ),
+              child: MaterialButton(
+                minWidth: double.infinity,
+                height: 60,
+                onPressed: 
+                  _selectVideo,
+                
+                color: Color(0xff0095FF),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: Text(
+                  "Selecionar video",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+          Column(
+            children: <Widget>[
+              SizedBox(
+                height: 50,
+              ),
+              Text(
+                "Histórico",
+                style: TextStyle(
+                    fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+            ],
+          ),
+          Expanded(
+            child: FutureBuilder<List<Historico>>(
+              future: historico,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text(snapshot.error.toString());
+                } else if (snapshot.hasData) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      Historico historico = snapshot.data![index];                              
+                      return ListTile(
+                        title: Text(
+                          "Arquivo: ${historico.name.toString()}" ,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        subtitle: Text(
+                          "Score: ${historico.score.toString()}"
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return Text("Nenhum dado disponível.");
+                }
+              },
+            ),
+          ),
+        ],
       ),
-    );
+    ),
+  );
+}
+
+
+  Future<List<Historico>> pegarHistorico() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var token = sharedPreferences.getString('token');
+
+    var url = Uri.parse('https://asensvy-production.up.railway.app/ia/history');
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': '$token',
+    };
+
+    var response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      var jsonData = jsonDecode(response.body);
+      var historicoList = jsonData['history'] as List<dynamic>;
+
+      List<Historico> historicos = historicoList.map((json) => Historico.fromJson(json)).toList();
+      return historicos;
+    } else {
+      throw Exception("Não foi possível carregar o histórico ${response.statusCode}");
+    }
   }
+
 
   void _selectVideo() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -149,9 +256,8 @@ class _HomeState extends State<Home> {
     try {
       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       var token = sharedPreferences.getString('token');
-      print("TOKEN: $token");
-      var url = Uri.parse('https://asensvy-production.up.railway.app/ia/verify'); 
 
+      var url = Uri.parse('https://asensvy-production.up.railway.app/ia/verify'); 
       var request = http.MultipartRequest('POST', url);
       request.files.add(await http.MultipartFile.fromPath('files[]', file.path));
       request.headers['Authorization'] = '$token';
@@ -171,8 +277,8 @@ class _HomeState extends State<Home> {
             ],
           ),
         );
+        pegarHistorico();
       } else {
-        print("DEU TUDO ERRADO AAAAAAAAAAAAAAA${response}");
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
