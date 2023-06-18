@@ -1,5 +1,6 @@
 import 'package:apptesteapi/pages/history/history.dart';
 import 'package:apptesteapi/pages/home/home.dart';
+import 'package:apptesteapi/pages/ia_verify/ia_verify.dart';
 import 'package:flutter/material.dart';
 
 class NavbarHome extends StatefulWidget {
@@ -26,7 +27,7 @@ class _NavbarHomeState extends State<NavbarHome> {
                   icon: Icon(Icons.home),
                   onPressed: (){
                     _homePage(context, Home());
-                  }, 
+                  },          
                 ), 
                 IconButton(
                   icon: Icon(Icons.list),
@@ -59,6 +60,7 @@ class _NavbarHomeState extends State<NavbarHome> {
   _homePage(ctx, page) {
     Navigator.pushReplacement(ctx, MaterialPageRoute(builder: ((context) => page)));
   }
+
   _historyPage(ctx, page) {
     Navigator.pushReplacement(ctx, MaterialPageRoute(builder: ((context) => page)));
   }
@@ -68,6 +70,29 @@ class _NavbarHomeState extends State<NavbarHome> {
   }  
 
   _profilePage(ctx, page) {
+    Navigator.pushReplacement(ctx, MaterialPageRoute(builder: ((context) => page)));
+  }
+}
+
+class BtnIaVerify extends StatefulWidget {
+  const BtnIaVerify({super.key});
+
+  @override
+  State<BtnIaVerify> createState() => _BtnIaVerifyState();
+}
+
+class _BtnIaVerifyState extends State<BtnIaVerify> {
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        _iaVerifyPage(context, IaVerify());
+      },
+      child: const Icon(Icons.add),
+    );
+  }
+
+  _iaVerifyPage(ctx, page) {
     Navigator.pushReplacement(ctx, MaterialPageRoute(builder: ((context) => page)));
   }
 }

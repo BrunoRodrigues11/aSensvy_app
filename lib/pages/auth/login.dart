@@ -47,7 +47,7 @@ class _LoginState extends State<Login> {
               Expanded(
                 child: SingleChildScrollView(
                   child: Container(
-                            color: Color(0xffE4E9F7),
+                    color: Color(0xffE4E9F7),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
@@ -238,8 +238,9 @@ class _LoginState extends State<Login> {
 
       if (response.statusCode == 200) {
         //guarda o token dentro do shared preference
-        await sharedPreferences.setString(
-            'token', "Token ${jsonDecode(response.body)['token']}");
+        await sharedPreferences.setString('token', "Token ${jsonDecode(response.body)['token']}");
+        await sharedPreferences.setString('fullName', "FullName ${jsonDecode(response.body)['user']['fullName']}");
+        // print(jsonDecode(response.body)['user']['fullName']);
         return true;
       } else {
         print('Erro na requisição. Código de status: ${response.statusCode}');
