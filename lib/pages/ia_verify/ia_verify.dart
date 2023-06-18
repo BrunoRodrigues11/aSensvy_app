@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:apptesteapi/pages/ia_verify/ia_verify.dart';
 import 'package:apptesteapi/pages/init_page.dart';
 import 'package:apptesteapi/widgets/navbar.dart';
 import 'package:file_picker/file_picker.dart';
@@ -8,42 +7,28 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class IaVerify extends StatefulWidget {
+  const IaVerify({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<IaVerify> createState() => _IaVerifyState();
 }
 
-class _HomeState extends State<Home> {
+class _IaVerifyState extends State<IaVerify> {
   final _formkey = GlobalKey<FormState>();
   final _token = "";
   String _fullName = "";  
   String _fullNameLogged = "";
   File _videoFile = File("");
   File? file;
-  
-@override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _getFullName();
-  }
-
-  _getFullName() async{
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    _fullName = sharedPreferences.getString('fullName').toString();
-    _fullNameLogged = _fullName.replaceAll('FullName ', '');
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+            resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
-          "Olá, $_fullNameLogged",
+          "Verificar vídeo",
           style: TextStyle(
             color: Colors.black,
           ),
@@ -67,12 +52,15 @@ class _HomeState extends State<Home> {
       extendBody: true,
       extendBodyBehindAppBar: true,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: BtnIaVerify(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
+      ),
       bottomNavigationBar: NavbarHome(),
     );
   }
 
-  _body() { // color background #E4E9F7
+    _body() { // color background #E4E9F7
     return SafeArea(
       child: Container(
         color: Color(0xffE4E9F7),
@@ -157,7 +145,7 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-            ),
+          ),
           ),
         ),
       );

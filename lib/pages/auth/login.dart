@@ -36,154 +36,160 @@ class _LoginState extends State<Login> {
 
   _body() {
     return SafeArea(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Column(
+      child: Container(
+        color: Color(0xffE4E9F7),
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Container(
+                    color: Color(0xffE4E9F7),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        SizedBox(
-                          height: 100,
-                        ),
-                        Image.asset(
-                          "assets/eye.png",
-                          width: 100,
-                          height: 100,
-                        ),
-                        Text(
-                          "Bem-vindo de volta!",
-                          style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Entre com sua conta",
-                          style:
-                              TextStyle(fontSize: 15, color: Colors.grey[700]),
-                        )
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
-                      child: Form(
-                        key: _formkey,
-                        child: Column(
+                        Column(
                           children: <Widget>[
-                            InputDefault(
-                              "Email",
-                              false,
-                              TextInputType.emailAddress,
-                              "Informe o seu email",
-                              const [],
-                              validator: (email) {
-                                if (email == null || email.isEmpty) {
-                                  return "Por favor, informe seu email";
-                                } else if (!RegExp(r'@')
-                                    .hasMatch(_emailController.text)) {
-                                  return 'Por favor, informe um e-mail válido!';
-                                }
-                                return null;
-                              },
-                              controller: _emailController,
+                            SizedBox(
+                              height: 100,
                             ),
-                            InputDefault(
-                              "Senha",
-                              true,
-                              TextInputType.text,
-                              "Informe a sua senha",
-                              const [],
-                              validator: (senha) {
-                                if (senha == null || senha.isEmpty) {
-                                  return "Por favor, informe sua senha";
-                                } else if (senha.length < 6) {
-                                  return "Por favor, informe uma senha maior que 6 caracteres.";
-                                }
-                                return null;
-                              },
-                              controller: _passwordController,
+                            Image.asset(
+                              "assets/eye.png",
+                              width: 100,
+                              height: 100,
                             ),
-                            TextButton(
+                            Text(
+                              "Bem-vindo de volta!",
+                              style: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "Entre com sua conta",
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.grey[700]),
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          child: Form(
+                            key: _formkey,
+                            child: Column(
+                              children: <Widget>[
+                                InputDefault(
+                                  "Email",
+                                  false,
+                                  TextInputType.emailAddress,
+                                  "Informe o seu email",
+                                  const [],
+                                  validator: (email) {
+                                    if (email == null || email.isEmpty) {
+                                      return "Por favor, informe seu email";
+                                    } else if (!RegExp(r'@')
+                                        .hasMatch(_emailController.text)) {
+                                      return 'Por favor, informe um e-mail válido!';
+                                    }
+                                    return null;
+                                  },
+                                  controller: _emailController,
+                                ),
+                                InputDefault(
+                                  "Senha",
+                                  true,
+                                  TextInputType.text,
+                                  "Informe a sua senha",
+                                  const [],
+                                  validator: (senha) {
+                                    if (senha == null || senha.isEmpty) {
+                                      return "Por favor, informe sua senha";
+                                    } else if (senha.length < 6) {
+                                      return "Por favor, informe uma senha maior que 6 caracteres.";
+                                    }
+                                    return null;
+                                  },
+                                  controller: _passwordController,
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    _resetPassword(context, ResetPassword());
+                                  },
+                                  child: Text(
+                                    "Esqueci minha senha",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          child: Container(
+                            padding: EdgeInsets.only(top: 3, left: 3),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                border: Border(
+                                  bottom: BorderSide(color: Colors.black),
+                                  top: BorderSide(color: Colors.black),
+                                  left: BorderSide(color: Colors.black),
+                                  right: BorderSide(color: Colors.black),
+                                )),
+                            child: MaterialButton(
+                              minWidth: double.infinity,
+                              height: 60,
                               onPressed: () {
-                                _resetPassword(context, ResetPassword());
+                                entrar();
                               },
+                              color: Color(0xff0095FF),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
                               child: Text(
-                                "Esqueci minha senha",
+                                "Entrar",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 12,
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text("Não possui uma conta?"),
+                            TextButton(
+                              onPressed: () {
+                                _signUp(context, SignUp());
+                              },
+                              child: Text(
+                                " Cadastrar-se",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
                                 ),
                               ),
                             )
                           ],
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
-                      child: Container(
-                        padding: EdgeInsets.only(top: 3, left: 3),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            border: Border(
-                              bottom: BorderSide(color: Colors.black),
-                              top: BorderSide(color: Colors.black),
-                              left: BorderSide(color: Colors.black),
-                              right: BorderSide(color: Colors.black),
-                            )),
-                        child: MaterialButton(
-                          minWidth: double.infinity,
-                          height: 60,
-                          onPressed: () {
-                            entrar();
-                          },
-                          color: Color(0xff0095FF),
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: Text(
-                            "Entrar",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text("Não possui uma conta?"),
-                        TextButton(
-                          onPressed: () {
-                            _signUp(context, SignUp());
-                          },
-                          child: Text(
-                            " Cadastrar-se",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18,
-                            ),
-                          ),
-                        )
                       ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -232,8 +238,9 @@ class _LoginState extends State<Login> {
 
       if (response.statusCode == 200) {
         //guarda o token dentro do shared preference
-        await sharedPreferences.setString(
-            'token', "Token ${jsonDecode(response.body)['token']}");
+        await sharedPreferences.setString('token', "Token ${jsonDecode(response.body)['token']}");
+        await sharedPreferences.setString('fullName', "FullName ${jsonDecode(response.body)['user']['fullName']}");
+        // print(jsonDecode(response.body)['user']['fullName']);
         return true;
       } else {
         print('Erro na requisição. Código de status: ${response.statusCode}');
