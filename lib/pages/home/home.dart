@@ -1,4 +1,8 @@
+import 'package:apptesteapi/model/history.dart';
+import 'package:apptesteapi/pages/history/history.dart';
+import 'package:apptesteapi/pages/ia_verify/ia_verify.dart';
 import 'package:apptesteapi/pages/init_page.dart';
+import 'package:apptesteapi/widgets/information.dart';
 import 'package:apptesteapi/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -60,41 +64,30 @@ class _HomeState extends State<Home> {
                 child: Column(
                   children: [
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Sair",
-                              style: TextStyle(
-                                color: Colors.white
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () => sair(), 
-                              icon: Icon(
-                                Icons.logout,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 10, bottom: 10),
-                          child: Text(
-                            "Olá, $_fullNameLogged",
-                            style: TextStyle(
-                              fontSize: 18, 
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white
-                            ),
+                          padding: const EdgeInsets.all(15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Olá, $_fullNameLogged",
+                                style: TextStyle(
+                                  fontSize: 18, 
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () => sair(), 
+                                icon: Icon(
+                                  Icons.logout,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        SizedBox(
-                          height: 20,
                         ),
                       ],
                     ),
@@ -117,11 +110,101 @@ class _HomeState extends State<Home> {
                             ),
                           ],
                         ),
-                        child: Column(
+                        child: ListView(
                           children: [
-
+                            Padding(
+                              padding: EdgeInsets.only(left: 30, top: 30),
+                              child: Text(
+                                "Dicas",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500
+                                ),
+                              ),
+                            ),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 15, top: 15, bottom: 5),
+                                child: Row(
+                                  children: [
+                                    ListInformation(
+                                      color: Color(0xff034694), 
+                                      tiulo: "Use óculos de sol", 
+                                      subtitulo: "Proteção contra raios UV e luz intensa"
+                                    ),
+                                    ListInformation(
+                                      color: Color(0xff034694), 
+                                      tiulo: "Evite luzes brilhantes", 
+                                      subtitulo: "Luz solar, fluorescentes e de flashs"
+                                    ), 
+                                    ListInformation(
+                                      color: Color(0xff034694), 
+                                      tiulo: "Ajuste a iluminação interna", 
+                                      subtitulo: "Proteção contra raios UV e luz intensa"
+                                    ),         
+                                    ListInformation(
+                                      color: Color(0xff034694), 
+                                      tiulo: "Evite exposição prolongada", 
+                                      subtitulo: "Proteção contra raios UV e luz intensa"
+                                    ),                                                                                                      
+                                  ],
+                                )
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "O que vamos fazer hoje?",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 20),
+                                    child: Container(
+                                      height: 300,
+                                      child: GridView.count(
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 12,
+                                        mainAxisSpacing: 8,
+                                        childAspectRatio: 1.30,
+                                        children: [
+                                          OptionsGrid(
+                                            imagem: "assets/analise_ia.png", 
+                                            nome: "Analisar vídeo",
+                                            onTap: () => _historyPage(context, IaVerify()),
+                                          ),
+                                          OptionsGrid(
+                                            imagem: "assets/historico.png", 
+                                            nome: "Histórico",
+                                            onTap: () => _historyPage(context, HistoryPage()),
+                                          ),   
+                                          OptionsGrid(
+                                            imagem: "assets/estatisticas.png", 
+                                            nome: "Estatísticas",
+                                            onTap: () => _historyPage(context, HistoryPage()),
+                                          ),
+                                          OptionsGrid(
+                                            imagem: "assets/config.png", 
+                                            nome: "Configurações",
+                                            onTap: () => _historyPage(context, HistoryPage()),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
                           ],
-                        ),
+                        )
                       ),
                     ),
                   ],
@@ -133,6 +216,14 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+
+  _historyPage(ctx, page) {
+    Navigator.pushReplacement(ctx, MaterialPageRoute(builder: ((context) => page)));
+  }
+
+  _settingsPage(ctx, page) {
+    Navigator.pushReplacement(ctx, MaterialPageRoute(builder: ((context) => page)));
+  }  
     
   sair() async {
     bool saiu = await doLogout();

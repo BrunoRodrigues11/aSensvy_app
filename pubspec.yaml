@@ -72,7 +72,12 @@ flutter:
     - assets/reset_password.png   
     - assets/email_send.png  
     - assets/new-password.png  
-    - assets/success.png         
+    - assets/success.png     
+    - assets/analise_ia.png 
+    - assets/config.png  
+    - assets/estatisticas.png  
+    - assets/historico.png        
+        
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
