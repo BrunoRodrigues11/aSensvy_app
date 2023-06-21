@@ -78,22 +78,22 @@ class _SuccessNewPasswordState extends State<SuccessNewPassword> {
                     Expanded(
                       flex: 5,
                       child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30)
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30)
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: Offset(0, 3), // deslocamento horizontal e vertical da sombra
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 2,
-                                blurRadius: 5,
-                                offset: Offset(0, 3), // deslocamento horizontal e vertical da sombra
-                              ),
-                            ],
-                          ),                      
+                          ],
+                        ),                      
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [

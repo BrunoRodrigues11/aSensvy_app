@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:apptesteapi/pages/init_page.dart';
+import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:apptesteapi/widgets/navbar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,130 +25,124 @@ class _IaVerifyState extends State<IaVerify> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Verificar vídeo",
-          style: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-        elevation: 0,
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        backgroundColor: Colors.white,
-        actions: [
-          IconButton(
-            onPressed: (){
-              sair();
-            }, 
-            icon: Icon(
-              Icons.logout,
-              color: Colors.black,
-            ),
-          ),
-        ],
-      ),
+      backgroundColor: Color(0xff034694),
       body: _body(),
       extendBody: true,
       extendBodyBehindAppBar: true,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: BtnIaVerify(),
       bottomNavigationBar: NavbarHome(),
     );
   }
 
     _body() { // color background #E4E9F7
     return SafeArea(
-      child: Container(
-        color: Color(0xffE4E9F7),
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          width: double.infinity,
-          child: Padding(
-            padding: EdgeInsets.only(top: 20, left: 40, right: 40, bottom: 200),
-            child: Container(
-              height: 80,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: Offset(0, 3), // deslocamento horizontal e vertical da sombra
-                  ),
-                ],
-              ),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+      child: SingleChildScrollView(
+        child: Container(
+          color: Color(0xff034694), 
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height,
+            maxWidth: MediaQuery.of(context).size.width,
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Column(
                   children: <Widget>[
                     Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () => Navigator.pop(context),
+                              icon: Icon(
+                                Icons.arrow_back_ios,
+                                size: 20,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
                         SizedBox(
-                          height: 35,
+                          height: 5,
                         ),
                         Text(
-                          "Selecione um vídeo",
+                          "Analisar vídeo",
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                            fontSize: 30, 
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white
+                          ),
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         Text(
                           "Para começar, selecione um vídeo",
-                          style:
-                              TextStyle(fontSize: 15, color: Colors.grey[700]),
+                          style: TextStyle(
+                            fontSize: 15, 
+                            color: Colors.grey[50],
+                          ),
                         ),
                         SizedBox(
-                          height: 20,
-                        ),              
+                          height: 10,
+                        ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(10),
+              
+                    Expanded(
+                      flex: 5,
                       child: Container(
-                        padding: EdgeInsets.only(top: 3, left: 3),
+                        width: double.infinity,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          border: Border(
-                            bottom: BorderSide(color: Colors.black),
-                            top: BorderSide(color: Colors.black),
-                            left: BorderSide(color: Colors.black),
-                            right: BorderSide(color: Colors.black),
-                          )
-                        ),
-                        child: MaterialButton(
-                          minWidth: 200,
-                          height: 45,
-                          onPressed: _selectVideo,
-                          color: Color(0xff0095FF),
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30)
                           ),
-                          child: Text(
-                            "Selecionar video",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: Offset(0, 3), // deslocamento horizontal e vertical da sombra
                             ),
-                          ),
+                          ],
+                        ),   
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(15),
+                              child: Column(
+                                children: [
+                                  Image.asset(
+                                    "assets/select_video.png",
+                                    width: 300,
+                                    height: 300,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            BtnDefault(
+                              "Selecionar video",
+                              onPressed: _selectVideo,
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-          ),
+            ],
           ),
         ),
-      );
-
+      ),
+    );
   }
 
   void _selectVideo() async {

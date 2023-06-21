@@ -76,7 +76,8 @@ flutter:
     - assets/analise_ia.png 
     - assets/config.png  
     - assets/estatisticas.png  
-    - assets/historico.png        
+    - assets/historico.png   
+    - assets/select_video.png            
         
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
