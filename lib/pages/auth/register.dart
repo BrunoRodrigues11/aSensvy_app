@@ -1,4 +1,5 @@
 import 'package:apptesteapi/pages/auth/login.dart';
+import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -28,10 +29,10 @@ class _SignUpState extends State<SignUp> {
   );
   final _snackBarS = SnackBar(
     content: Text(
-      "Cadastro realizado",
+      "Cadastro realizado com sucesso!",
       textAlign: TextAlign.center,
     ),
-    backgroundColor: Colors.greenAccent,
+    backgroundColor: Color(0xff00a468),
   );
 
   var maskFormatter = new MaskTextInputFormatter(
@@ -44,202 +45,232 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xff034694),
       body: _body(),
     );
   }
 
   _body() {
     return SafeArea(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: SingleChildScrollView(
+      child: SingleChildScrollView(
+        child: Container(
+          color: Color(0xff034694), 
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height,
+            maxWidth: MediaQuery.of(context).size.width,
+          ),
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                flex: 2,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Column(
                       children: <Widget>[
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
+                              onPressed: () => Navigator.pop(context),
                               icon: Icon(
                                 Icons.arrow_back_ios,
                                 size: 20,
-                                color: Colors.black,
+                                color: Colors.white,
                               ),
                             ),
                           ],
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 5,
                         ),
                         Text(
                           "Cadastrar-se",
                           style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold),
+                            fontSize: 30, 
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Crie a sua conta",
+                          style: TextStyle(
+                            fontSize: 15, 
+                            color: Colors.grey[50],
+                          ),
                         ),
                         SizedBox(
                           height: 20,
                         ),
-                        Text(
-                          "Crie sua conta",
-                          style:
-                              TextStyle(fontSize: 15, color: Colors.grey[700]),
-                        )
                       ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
-                      child: Form(
-                        key: _formkey,
+                    Expanded(
+                      flex: 5,
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30)
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: Offset(0, 3), // deslocamento horizontal e vertical da sombra
+                            ),
+                          ],
+                        ),
                         child: Column(
-                          children: <Widget>[
-                            InputDefault(
-                              "Nome",
-                              false,
-                              TextInputType.text,
-                              "Informe o seu nome",
-                              const [],
-                              validator: (firstName) {
-                                if (firstName == null || firstName.isEmpty) {
-                                  return "Por favor, informe seu nome";
-                                }
-                                return null;
-                              },
-                              controller: _firstNameController,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(15),
+                              child: Form(
+                                key: _formkey,
+                                child: Column(
+                                  children: <Widget>[
+                                    InputDefault(
+                                      "",
+                                      false,
+                                      TextInputType.text,
+                                      Icon(
+                                        Icons.person,
+                                        color: Colors.grey[600],
+                                      ),
+                                      "Informe o seu nome",
+                                      const [],
+                                      validator: (firstName) {
+                                        if (firstName == null || firstName.isEmpty) {
+                                          return "Por favor, informe seu nome";
+                                        }
+                                        return null;
+                                      },
+                                      controller: _firstNameController,
+                                    ),
+                                    InputDefault(
+                                      "",
+                                      false,
+                                      TextInputType.text,
+                                      Icon(
+                                        Icons.person,
+                                        color: Colors.grey[600],
+                                      ),
+                                      "Informe o seu sobrenome",
+                                      const [],
+                                      validator: (lastName) {
+                                        if (lastName == null || lastName.isEmpty) {
+                                          return "Por favor, informe seu sobrenome";
+                                        }
+                                        return null;
+                                      },
+                                      controller: _lastNameController,
+                                    ),
+                                    InputDefault(
+                                      "",
+                                      false,
+                                      TextInputType.text,
+                                      Icon(
+                                        Icons.phone,
+                                        color: Colors.grey[600],
+                                      ),
+                                      "Informe o seu telefone",
+                                      [maskFormatter],
+                                      validator: (tel) {
+                                        if (tel == null || tel.isEmpty) {
+                                          return "Por favor, informe seu telefone";
+                                        } else if (tel.length < 16) {
+                                          return "Por favor, informe um telefone válido.";
+                                        }
+                                        return null;
+                                      },
+                                      controller: _phoneController,
+                                    ),
+                                    InputDefault(
+                                      "",
+                                      false,
+                                      TextInputType.emailAddress,
+                                      Icon(
+                                        Icons.email,
+                                        color: Colors.grey[600],
+                                      ),
+                                      "Informe o seu email",
+                                      const [],
+                                      validator: (email) {
+                                        if (email == null || email.isEmpty) {
+                                          return "Por favor, informe seu email";
+                                        } else if (!RegExp(r'@')
+                                            .hasMatch(_emailController.text)) {
+                                          return 'Por favor, informe um e-mail válido!';
+                                        }
+                                        return null;
+                                      },
+                                      controller: _emailController,
+                                    ),
+                                    InputDefault(
+                                      "",
+                                      true,
+                                      TextInputType.text,
+                                      Icon(
+                                        Icons.lock,
+                                        color: Colors.grey[600],
+                                      ),
+                                      "Informe a sua senha",
+                                      const [],
+                                      validator: (senha) {
+                                        if (senha == null || senha.isEmpty) {
+                                          return "Por favor, informe sua senha";
+                                        } else if (senha.length < 6) {
+                                          return "Por favor, informe uma senha maior que 6 caracteres.";
+                                        }
+                                        return null;
+                                      },
+                                      controller: _passwordController,
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                            InputDefault(
-                              "Sobrenome",
-                              false,
-                              TextInputType.text,
-                              "Informe o seu sobrenome",
-                              const [],
-                              validator: (lastName) {
-                                if (lastName == null || lastName.isEmpty) {
-                                  return "Por favor, informe seu sobrenome";
-                                }
-                                return null;
-                              },
-                              controller: _lastNameController,
+                            BtnDefault(
+                              "Cadastrar",
+                              onPressed: () => cadastrar(),
                             ),
-                            InputDefault(
-                              "Telefone",
-                              false,
-                              TextInputType.text,
-                              "Informe o seu telefone",
-                              [maskFormatter],
-                              validator: (tel) {
-                                if (tel == null || tel.isEmpty) {
-                                  return "Por favor, informe seu telefone";
-                                } else if (tel.length < 16) {
-                                  return "Por favor, informe um telefone válido.";
-                                }
-                                return null;
-                              },
-                              controller: _phoneController,
-                            ),
-                            InputDefault(
-                              "Email",
-                              false,
-                              TextInputType.emailAddress,
-                              "Informe o seu email",
-                              const [],
-                              validator: (email) {
-                                if (email == null || email.isEmpty) {
-                                  return "Por favor, informe seu email";
-                                } else if (!RegExp(r'@')
-                                    .hasMatch(_emailController.text)) {
-                                  return 'Por favor, informe um e-mail válido!';
-                                }
-                                return null;
-                              },
-                              controller: _emailController,
-                            ),
-                            InputDefault(
-                              "Senha",
-                              true,
-                              TextInputType.text,
-                              "Informe a sua senha",
-                              const [],
-                              validator: (senha) {
-                                if (senha == null || senha.isEmpty) {
-                                  return "Por favor, informe sua senha";
-                                } else if (senha.length < 6) {
-                                  return "Por favor, informe uma senha maior que 6 caracteres.";
-                                }
-                                return null;
-                              },
-                              controller: _passwordController,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  "Já possui uma conta?",
+                                  style: TextStyle(
+                                    fontSize: 16
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    _login(context, Login());
+                                  },
+                                  child: Text(
+                                    " Faça login",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xff034694),
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
                           ],
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
-                      child: Container(
-                        padding: EdgeInsets.only(top: 3, left: 3),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            border: Border(
-                              bottom: BorderSide(color: Colors.black),
-                              top: BorderSide(color: Colors.black),
-                              left: BorderSide(color: Colors.black),
-                              right: BorderSide(color: Colors.black),
-                            )),
-                        child: MaterialButton(
-                          minWidth: double.infinity,
-                          height: 60,
-                          onPressed: () {
-                            cadastrar();
-                          },
-                          color: Color(0xff0095FF),
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: Text(
-                            "Cadastrar-se",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text("Já possui uma conta?"),
-                        TextButton(
-                          onPressed: () {
-                            _login(context, Login());
-                          },
-                          child: Text(
-                            " Faça login",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

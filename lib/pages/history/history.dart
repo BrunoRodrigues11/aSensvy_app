@@ -37,7 +37,7 @@ class _HistoryPageState extends State<HistoryPage> {
           ),
         ),
         elevation: 0,
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
         backgroundColor: Colors.white,
         actions: [
           IconButton(
@@ -69,7 +69,7 @@ class _HistoryPageState extends State<HistoryPage> {
           height: MediaQuery.of(context).size.height,
           width: double.infinity,
           child: Padding(
-            padding: EdgeInsets.only(top: 15, left: 15, right: 15),
+            padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -85,130 +85,142 @@ class _HistoryPageState extends State<HistoryPage> {
                 ],
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,                
                 children: <Widget>[
                   SizedBox(
-                    height: 20,
+                    height: 5,
                   ),
                   FutureBuilder<List<Historico>>(
                     future: historico,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
+                        return Column(
+                          children: [
+                            CircularProgressIndicator(
+                              color: Color(0xff0095FF),
+                            ),
+                            Text(
+                              'Carregando'
+                            )
+                          ],
+                        );
                       } else if (snapshot.hasError) {
                         return Text(snapshot.error.toString());
                       } else if (snapshot.hasData) {
-                        return Container(
-                          constraints: BoxConstraints(
-                            maxHeight: 555,
-                          ),
-                          child: SingleChildScrollView(
-                            child: ListView.builder(
-                              physics: ClampingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (context, index) {
-                                Historico historico = snapshot.data![index];
-                                return Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                        color: _getBackgroundColor(
-                                            historico.score),
-                                        borderRadius: BorderRadius.circular(20),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            spreadRadius: 2,
-                                            blurRadius: 5,
-                                            offset: Offset(0,
-                                                3), // deslocamento horizontal e vertical da sombra
-                                          ),
-                                        ],
-                                      ),
-                                      child: ListTile(
-                                        title: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            historico.name.toString(),
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16,
-                                                color: Colors.white),
-                                          ),
+                        return Expanded(
+                          child: Container(
+                            constraints: BoxConstraints(
+                            ),
+                            child: SingleChildScrollView(
+                              child: ListView.builder(
+                                physics: ClampingScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (context, index) {
+                                  Historico historico = snapshot.data![index];
+                                  return Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                          color: _getBackgroundColor(
+                                              historico.score),
+                                          borderRadius: BorderRadius.circular(20),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey.withOpacity(0.5),
+                                              spreadRadius: 2,
+                                              blurRadius: 5,
+                                              offset: Offset(0,
+                                                  3), // deslocamento horizontal e vertical da sombra
+                                            ),
+                                          ],
                                         ),
-                                        subtitle: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Column(
-                                                children: [
-                                                  Container(
-                                                    width: 45,
-                                                    height: 45,
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50),
-                                                    ),
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
-                                                          historico.score
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 18,
-                                                              color:
-                                                                  Colors.black),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    "Score",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 14,
-                                                        color: Colors.white),
-                                                  ),
-                                                ],
-                                              ),
-                                              Column(
-                                                // mainAxisAlignment: MainAxisAlignment.center,
-                                                // crossAxisAlignment: CrossAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    DateFormat('dd/MM/yyyy')
-                                                        .format(DateTime.parse(
-                                                            historico.date!)),
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 16,
-                                                        color: Colors.white),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
+                                        child: ListTile(
+                                          title: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              historico.name.toString(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                  color: Colors.white),
+                                            ),
                                           ),
-                                        ),
-                                      )),
-                                );
-                              },
+                                          subtitle: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    Container(
+                                                      width: 45,
+                                                      height: 45,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                50),
+                                                      ),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                            historico.score
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 18,
+                                                                color:
+                                                                    Colors.black),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      "Score",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 14,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Column(
+                                                  // mainAxisAlignment: MainAxisAlignment.center,
+                                                  // crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      DateFormat('dd/MM/yyyy')
+                                                          .format(DateTime.parse(
+                                                              historico.date!)),
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 16,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         );

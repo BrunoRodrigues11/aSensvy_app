@@ -1,4 +1,5 @@
 import 'package:apptesteapi/pages/auth/login.dart';
+import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 
 class SuccessNewPassword extends StatefulWidget {
@@ -12,106 +13,121 @@ class _SuccessNewPasswordState extends State<SuccessNewPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xff034694),
       body: _body(),
     );
   }
 
     _body() {
     return SafeArea(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: SingleChildScrollView(
+      child: SingleChildScrollView(
+        child: Container(
+          color: Color(0xff034694), 
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height,
+            maxWidth: MediaQuery.of(context).size.width,
+          ),
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                flex: 2,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
+                              onPressed: () => Navigator.pop(context),
                               icon: Icon(
                                 Icons.arrow_back_ios,
                                 size: 20,
-                                color: Colors.black,
+                                color: Colors.white,
                               ),
                             ),
                           ],
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 5,
                         ),
                         Text(
                           "Sucesso!",
                           style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold),
+                            fontSize: 30, 
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white
+                          ),
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         Text(
                           "Redefinição de senha realizada com sucesso.",
-                          style:
-                              TextStyle(fontSize: 15, color: Colors.grey[700]),
+                          style: TextStyle(
+                            fontSize: 15, 
+                            color: Colors.grey[50],
+                          ),
                         ),
-                        Image.asset(
-                          "assets/success.png",
-                          width: 325,
-                          height: 325,
+                        SizedBox(
+                          height: 10,
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
+                    Expanded(
+                      flex: 5,
                       child: Container(
-                        padding: EdgeInsets.only(top: 3, left: 3),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            border: Border(
-                              bottom: BorderSide(color: Colors.black),
-                              top: BorderSide(color: Colors.black),
-                              left: BorderSide(color: Colors.black),
-                              right: BorderSide(color: Colors.black),
-                            )),
-                        child: MaterialButton(
-                          minWidth: double.infinity,
-                          height: 60,
-                          onPressed: () {
-                            Navigator.push(
-                              context, 
-                              MaterialPageRoute(builder: ((context) => Login())));
-                          },
-                          color: Color(0xff0095FF),
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: Text(
-                            "Ir para o login",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18,
-                              color: Colors.white,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30)
                             ),
-                          ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: Offset(0, 3), // deslocamento horizontal e vertical da sombra
+                              ),
+                            ],
+                          ),                      
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(15),
+                              child: Column(
+                                children: [
+                                  Image.asset(
+                                    "assets/success.png",
+                                    width: 300,
+                                    height: 300,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            BtnDefault(
+                              "Ir para o login",
+                              onPressed: () => _login(),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
+  }
+  
+  _login() {
+    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => Login()),);
   }
 }

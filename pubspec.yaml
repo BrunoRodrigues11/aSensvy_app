@@ -67,6 +67,7 @@ flutter:
   assets:
     - assets/background.png
     - assets/eye.png
+    - assets/eye2.png    
     - assets/eye_logo.png   
     - assets/reset_password.png   
     - assets/email_send.png  

@@ -1,5 +1,5 @@
 import 'package:apptesteapi/pages/auth/success.dart';
-import 'package:apptesteapi/pages/home/home.dart';
+import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -29,151 +29,168 @@ class _NewPasswordState extends State<NewPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xff034694),
       body: _body(),
     );
   }
 
   _body() {
     return SafeArea(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: SingleChildScrollView(
+      child: SingleChildScrollView(
+        child: Container(
+          color: Color(0xff034694), 
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height,
+            maxWidth: MediaQuery.of(context).size.width,
+          ),
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                flex: 2,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
+                              onPressed: () => Navigator.pop(context),
                               icon: Icon(
                                 Icons.arrow_back_ios,
                                 size: 20,
-                                color: Colors.black,
+                                color: Colors.white,
                               ),
                             ),
                           ],
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 5,
                         ),
                         Text(
                           "Nova senha",
                           style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold),
+                            fontSize: 30, 
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white
+                          ),
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         Text(
                           "Informe uma nova senha de acesso",
-                          style:
-                              TextStyle(fontSize: 15, color: Colors.grey[700]),
+                          style: TextStyle(
+                            fontSize: 15, 
+                            color: Colors.grey[50],
+                          ),
                         ),
-                        Image.asset(
-                          "assets/new-password.png",
-                          width: 325,
-                          height: 325,
+                        SizedBox(
+                          height: 10,
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
-                      child: Form(
-                        key: _formkey,
-                        child: Column(
-                          children: <Widget>[
-                            InputDefault(
-                              "Nova senha",
-                              true,
-                              TextInputType.text,
-                              "Informe a nova senha",
-                              const [],
-                              validator: (senha) {
-                                if (senha == null || senha.isEmpty) {
-                                  return "Por favor, informe sua senha";
-                                } else if (senha.length < 6) {
-                                  return "Por favor, informe uma senha maior que 6 caracteres";
-                                }
-                                return null;
-                              },
-                              controller: _newPasswordController,
-                            ),
-                            InputDefault(
-                              "Confirmar nova senha",
-                              true,
-                              TextInputType.text,
-                              "Confirme a nova senha",
-                              const [],
-                              validator: (senha) {
-                                if (senha == null || senha.isEmpty) {
-                                  return "Por favor, confirme sua senha";
-                                } else if (senha.length < 6) {
-                                  return "Por favor, confirme a senha";
-                                } else if (_newPasswordController == _confirmNewPasswordController.text) {
-                                  return "As senhas devem ser iguais";
-                                }                                
-                                return null;
-                              },
-                              controller: _confirmNewPasswordController,
+                    Expanded(
+                      flex: 5,
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30)
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: Offset(0, 3), // deslocamento horizontal e vertical da sombra
                             ),
                           ],
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
-                      child: Container(
-                        padding: EdgeInsets.only(top: 3, left: 3),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            border: Border(
-                              bottom: BorderSide(color: Colors.black),
-                              top: BorderSide(color: Colors.black),
-                              left: BorderSide(color: Colors.black),
-                              right: BorderSide(color: Colors.black),
-                            )),
-                        child: MaterialButton(
-                          minWidth: double.infinity,
-                          height: 60,
-                          onPressed: () {
-                            enviar();
-                          },
-                          color: Color(0xff0095FF),
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: Text(
-                            "Salvar nova senha",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18,
-                              color: Colors.white,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(15),
+                              child: Column(
+                                children: [
+                                  Image.asset(
+                                    "assets/new-password.png",
+                                    width: 300,
+                                    height: 300,
+                                  ),
+                                  Form(
+                                    key: _formkey,
+                                    child: Column(
+                                      children: <Widget>[
+                                        InputDefault(
+                                          "",
+                                          true,
+                                          TextInputType.text,
+                                          Icon(
+                                            Icons.lock,
+                                            color: Colors.grey[600],
+                                          ),
+                                          "Informe a nova senha",
+                                          const [],
+                                          validator: (senha) {
+                                            if (senha == null || senha.isEmpty) {
+                                              return "Por favor, informe sua senha";
+                                            } else if (senha.length < 6) {
+                                              return "Por favor, informe uma senha maior que 6 caracteres";
+                                            }
+                                            return null;
+                                          },
+                                          controller: _newPasswordController,
+                                        ),
+                                        InputDefault(
+                                          "",
+                                          true,
+                                          TextInputType.text,
+                                          Icon(
+                                            Icons.lock,
+                                            color: Colors.grey[600],
+                                          ),
+                                          "Confirme a nova senha",
+                                          const [],
+                                          validator: (senha) {
+                                            if (senha == null || senha.isEmpty) {
+                                              return "Por favor, confirme sua senha";
+                                            } else if (senha.length < 6) {
+                                              return "Por favor, confirme a senha";
+                                            } else if (_newPasswordController == _confirmNewPasswordController.text) {
+                                              return "As senhas devem ser iguais";
+                                            }                                
+                                            return null;
+                                          },
+                                          controller: _confirmNewPasswordController,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
+                            BtnDefault(
+                              "Salvar nova senha",
+                              onPressed: () => enviar(),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
-
 
   enviar() async {
     FocusScopeNode currentFocus = FocusScope.of(context);

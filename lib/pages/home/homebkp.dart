@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:apptesteapi/pages/ia_verify/ia_verify.dart';
 import 'package:apptesteapi/pages/init_page.dart';
 import 'package:apptesteapi/widgets/navbar.dart';
 import 'package:file_picker/file_picker.dart';
@@ -7,27 +8,41 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class IaVerify extends StatefulWidget {
-  const IaVerify({super.key});
+class Home extends StatefulWidget {
+  const Home({super.key});
 
   @override
-  State<IaVerify> createState() => _IaVerifyState();
+  State<Home> createState() => _HomeState();
 }
 
-class _IaVerifyState extends State<IaVerify> {
+class _HomeState extends State<Home> {
   final _formkey = GlobalKey<FormState>();
   final _token = "";
   String _fullName = "";  
   String _fullNameLogged = "";
   File _videoFile = File("");
   File? file;
+  
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getFullName();
+  }
+
+  _getFullName() async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    _fullName = sharedPreferences.getString('fullName').toString();
+    _fullNameLogged = _fullName.replaceAll('FullName ', '');
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Verificar vídeo",
+          "Olá, $_fullNameLogged",
           style: TextStyle(
             color: Colors.black,
           ),
@@ -51,15 +66,12 @@ class _IaVerifyState extends State<IaVerify> {
       extendBody: true,
       extendBodyBehindAppBar: true,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: BtnIaVerify(),
       bottomNavigationBar: NavbarHome(),
     );
   }
 
-    _body() { // color background #E4E9F7
+  _body() { // color background #E4E9F7
     return SafeArea(
       child: Container(
         color: Color(0xffE4E9F7),
@@ -144,11 +156,10 @@ class _IaVerifyState extends State<IaVerify> {
                   ],
                 ),
               ),
-          ),
+            ),
           ),
         ),
       );
-
   }
 
   void _selectVideo() async {
@@ -175,6 +186,21 @@ class _IaVerifyState extends State<IaVerify> {
       request.headers['Authorization'] = '$token';
 
       var response = await request.send(); 
+      while(response.statusCode == null){
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Aguarde, video sendo enviado'),
+            content: CircularProgressIndicator(),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        );        
+      }
 
       if (response.statusCode == 201) {
         showDialog(

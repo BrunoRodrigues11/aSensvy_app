@@ -1,6 +1,7 @@
 import 'package:apptesteapi/pages/history/history.dart';
 import 'package:apptesteapi/pages/home/home.dart';
 import 'package:apptesteapi/pages/ia_verify/ia_verify.dart';
+import 'package:apptesteapi/pages/users/profile.dart';
 import 'package:flutter/material.dart';
 
 class NavbarHome extends StatefulWidget {
@@ -13,47 +14,50 @@ class NavbarHome extends StatefulWidget {
 class _NavbarHomeState extends State<NavbarHome> {
   @override
   Widget build(BuildContext context) {
-    return BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        color: Color(0xff0095FF),
-        child: IconTheme(
-          data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary), 
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.home),
-                  onPressed: (){
-                    _homePage(context, Home());
-                  },          
-                ), 
-                IconButton(
-                  icon: Icon(Icons.list),
-                  onPressed: (){
-                    _homePage(context, HistoryPage());
-                  }, 
-                ),
-                SizedBox(
-                  width: 24,
-                ),
-                IconButton(
-                  icon: Icon(Icons.settings),
-                  onPressed: (){
-                    // _settingsPage(context, page)
-                  }, 
-                ),
-                IconButton(
-                  icon: Icon(Icons.person),
-                  onPressed: (){
-                    // _profilePage(context, page);
-                  }, 
-                ),
-              ],
+    return Container(
+      color: Colors.white,
+      child: BottomAppBar(
+          shape: const CircularNotchedRectangle(),
+          color: Color(0xff034694),
+          child: IconTheme(
+            data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary), 
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.home),
+                    onPressed: (){
+                      _homePage(context, Home());
+                    },          
+                  ), 
+                  IconButton(
+                    icon: Icon(Icons.list),
+                    onPressed: (){
+                      _homePage(context, HistoryPage());
+                    }, 
+                  ),
+                  SizedBox(
+                    width: 24,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.settings),
+                    onPressed: (){
+                      // _settingsPage(context, page)
+                    }, 
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.person),
+                    onPressed: (){
+                      _profilePage(context, ProfilePage());
+                    }, 
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
+      ),
     );
   }
 
@@ -85,6 +89,7 @@ class _BtnIaVerifyState extends State<BtnIaVerify> {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
+      backgroundColor: Color(0xff034694),
       onPressed: () {
         _iaVerifyPage(context, IaVerify());
       },

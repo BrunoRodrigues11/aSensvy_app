@@ -8,12 +8,13 @@ class InputDefault extends StatelessWidget {
   String? Function(String?) validator;
   TextInputType keyboardType;
   String hint;
+  Icon icon;
   List<TextInputFormatter>? inputFormatters;
   TextEditingController controller;
 
-  InputDefault(this.label, this.obscureText, this.keyboardType, this.hint,
+  InputDefault(this.label, this.obscureText, this.keyboardType, this.icon, this.hint,
       this.inputFormatters,
-      {required this.validator, required this.controller});
+      {super.key, required this.validator, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +37,21 @@ class InputDefault extends StatelessWidget {
           inputFormatters: inputFormatters,
           decoration: InputDecoration(
             hintText: hint,
+            prefixIcon: icon,
             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
             enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
               borderSide: BorderSide(color: Colors.grey),
             ),
             border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
+              borderRadius: BorderRadius.circular(8.0),
+              borderSide: BorderSide(color: Color(0xff034694)),
             ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
+              borderSide: BorderSide(color: Color(0xff034694)),
+            ),
+            focusColor: Color(0xff034694)
           ),
         ),
         SizedBox(
@@ -79,11 +88,18 @@ class InputCode extends StatelessWidget {
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
           enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
             borderSide: BorderSide(color: Colors.grey),
           ),
           border: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey),
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide(color: Color(0xff034694)),
           ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide(color: Color(0xff034694)),
+          ),
+          focusColor: Color(0xff034694)
         ),
       ),
     );
