@@ -113,7 +113,7 @@ class _HomeState extends State<Home> {
                         child: ListView(
                           children: [
                             Padding(
-                              padding: EdgeInsets.only(left: 30, top: 30),
+                              padding: EdgeInsets.only(left: 15, top: 30),
                               child: Text(
                                 "Dicas",
                                 style: TextStyle(

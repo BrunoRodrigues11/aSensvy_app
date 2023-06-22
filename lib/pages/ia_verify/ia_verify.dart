@@ -35,7 +35,7 @@ class _IaVerifyState extends State<IaVerify> {
     );
   }
 
-    _body() { // color background #E4E9F7
+  _body() { // color background #E4E9F7
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
@@ -92,7 +92,6 @@ class _IaVerifyState extends State<IaVerify> {
                         ),
                       ],
                     ),
-              
                     Expanded(
                       flex: 5,
                       child: Container(
