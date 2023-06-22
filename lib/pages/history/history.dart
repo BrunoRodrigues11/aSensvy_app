@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:apptesteapi/model/history.dart';
+import 'package:apptesteapi/pages/home/home.dart';
 import 'package:apptesteapi/pages/init_page.dart';
 import 'package:apptesteapi/widgets/navbar.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +60,11 @@ class _HistoryPageState extends State<HistoryPage> {
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () => Navigator.pop(context),
+                              onPressed: () => Navigator.pushReplacement(
+                                context, 
+                                  MaterialPageRoute(builder: (context) => Home()
+                                ),
+                              ),
                               icon: Icon(
                                 Icons.arrow_back_ios,
                                 size: 20,
@@ -80,7 +85,7 @@ class _HistoryPageState extends State<HistoryPage> {
                           ),
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                       ],
                     ),
@@ -105,7 +110,7 @@ class _HistoryPageState extends State<HistoryPage> {
                         ), 
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,                
+                          mainAxisAlignment: MainAxisAlignment.start,                
                           children: <Widget>[
                             SizedBox(
                               height: 5,
@@ -115,6 +120,8 @@ class _HistoryPageState extends State<HistoryPage> {
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState == ConnectionState.waiting) {
                                   return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,   
                                     children: [
                                       CircularProgressIndicator(
                                         color: Color(0xff0095FF),
@@ -224,7 +231,16 @@ class _HistoryPageState extends State<HistoryPage> {
                                     ),
                                   );
                                 } else {
-                                  return Text("Nenhum dado disponível.");
+                                  return Column(
+                                    children: [
+                                      Text(
+                                        "Nenhum dado disponível.",
+                                        style: TextStyle(
+                                          color: Colors.black
+                                        ),
+                                      ),
+                                    ],
+                                  );
                                 }
                               },
                             ),
@@ -241,6 +257,8 @@ class _HistoryPageState extends State<HistoryPage> {
       ),
     );
   }
+
+
 
   Color _getBackgroundColor(int? score) {
     if (score! >= 75) {

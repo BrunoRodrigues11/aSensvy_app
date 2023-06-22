@@ -1,4 +1,5 @@
 import 'package:apptesteapi/pages/auth/email_validated.dart';
+import 'package:apptesteapi/pages/auth/login.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
@@ -136,8 +137,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                                           validator: (email) {
                                             if (email == null || email.isEmpty) {
                                               return "Por favor, informe seu email";
-                                            } else if (!RegExp(r'@')
-                                                .hasMatch(_emailController.text)) {
+                                            } else if (!RegExp(r'@').hasMatch(_emailController.text)) {
                                               return 'Por favor, informe um e-mail válido!';
                                             }
                                             return null;

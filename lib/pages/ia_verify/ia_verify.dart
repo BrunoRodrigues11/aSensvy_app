@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:apptesteapi/pages/home/home.dart';
 import 'package:apptesteapi/pages/init_page.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:apptesteapi/widgets/navbar.dart';
@@ -57,7 +58,11 @@ class _IaVerifyState extends State<IaVerify> {
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () => Navigator.pop(context),
+                              onPressed: () => Navigator.pushReplacement(
+                                context, 
+                                  MaterialPageRoute(builder: (context) => Home()
+                                ),
+                              ),
                               icon: Icon(
                                 Icons.arrow_back_ios,
                                 size: 20,

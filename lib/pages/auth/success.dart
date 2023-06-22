@@ -37,20 +37,8 @@ class _SuccessNewPasswordState extends State<SuccessNewPassword> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () => Navigator.pop(context),
-                              icon: Icon(
-                                Icons.arrow_back_ios,
-                                size: 20,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
                         SizedBox(
-                          height: 5,
+                          height: 15,
                         ),
                         Text(
                           "Sucesso!",

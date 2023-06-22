@@ -1,4 +1,5 @@
 import 'package:apptesteapi/pages/auth/new_password.dart';
+import 'package:apptesteapi/pages/auth/reset_password.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
@@ -146,10 +147,8 @@ class _EmailValidationState extends State<EmailValidation> {
                               ),
                             ),
                             BtnDefault(
-                              "Receber código",
-                              onPressed: () => Navigator.pushReplacement(
-                                context, 
-                                MaterialPageRoute(builder: (context)=> NewPassword(email: widget.email,)))  //_getCode(),
+                              "Validar código",
+                              onPressed: () => _getCode(),
                             ),
                           ],
                         ),
