@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:apptesteapi/pages/history/history.dart';
 import 'package:apptesteapi/pages/home/home.dart';
 import 'package:apptesteapi/pages/init_page.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
@@ -22,6 +23,7 @@ class _IaVerifyState extends State<IaVerify> {
   String _fullNameLogged = "";
   File _videoFile = File("");
   File? file;
+  bool _uploading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -164,6 +166,22 @@ class _IaVerifyState extends State<IaVerify> {
 
   Future<void> _uploadVideo(File file) async {
     try {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          title: Text('Aguarde'),
+          content: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              CircularProgressIndicator(),
+              Text('Enviando vídeo...'),
+            ],
+          ),
+        ),
+      );
+
       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       var token = sharedPreferences.getString('token');
 
@@ -174,6 +192,8 @@ class _IaVerifyState extends State<IaVerify> {
 
       var response = await request.send(); 
 
+      Navigator.of(context).pop(); // Fecha o diálogo de progresso
+
       if (response.statusCode == 201) {
         showDialog(
           context: context,
@@ -182,12 +202,14 @@ class _IaVerifyState extends State<IaVerify> {
             content: Text('Vídeo enviado com sucesso.'),
             actions: [
               TextButton(
-                child: Text('OK'),
-                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+                // onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HistoryPage())),
               ),
             ],
           ),
         );
+        // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HistoryPage()));       
       } else {
         showDialog(
           context: context,
