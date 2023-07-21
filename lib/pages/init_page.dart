@@ -1,5 +1,4 @@
-import 'package:apptesteapi/pages/auth/login.dart';
-import 'package:apptesteapi/pages/home/home.dart';
+import 'package:apptesteapi/config/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,21 +10,18 @@ class FirstPage extends StatefulWidget {
 }
 
 class _FirstPageState extends State<FirstPage> {
+  // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
+  GoToScreen goToScreen = GoToScreen();
+
   @override
   void initState() {
     super.initState();
     print("Chamou função inicial");
     verificarToken().then((value) {
       if (value) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => Home()),
-        );
+        goToScreen.goToHomePage(context);
       } else {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => Login()),
-        );
+        goToScreen.goToLoginPage(context);
       }
     });
   }
@@ -38,7 +34,7 @@ class _FirstPageState extends State<FirstPage> {
   }
 
   _body() {
-    return Center(
+    return const Center(
       child: CircularProgressIndicator(),
     );
   }

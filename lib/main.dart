@@ -1,3 +1,4 @@
+import 'package:apptesteapi/config/theme.dart';
 import 'package:apptesteapi/pages/init_page.dart';
 import 'package:flutter/material.dart';
 
@@ -21,9 +22,10 @@ class _MyAppState extends State<MyApp> {
       title: 'aSensvy',
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        primaryColor: AppColors.primaryColor,
         primarySwatch: Colors.blue,
       ),
-      home: FirstPage()
+      home: const FirstPage()
     );
   }
 }

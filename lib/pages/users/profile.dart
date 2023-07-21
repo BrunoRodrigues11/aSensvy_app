@@ -1,8 +1,9 @@
-import 'package:apptesteapi/pages/home/home.dart';
-import 'package:apptesteapi/pages/init_page.dart';
-import 'package:apptesteapi/widgets/navbar.dart';
+import 'package:apptesteapi/config/helper_functions.dart';
+import 'package:apptesteapi/config/theme.dart';
+import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -14,28 +15,19 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final _token = "";
-  String _fullName = "";  
-  String _fullNameLogged = "";
+  // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
+  GoToScreen goToScreen = GoToScreen();
+  final _formkey = GlobalKey<FormState>();
   
 @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _getFullName();
-  }
-
-  _getFullName() async{
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    _fullName = sharedPreferences.getString('fullName').toString();
-    _fullNameLogged = _fullName.replaceAll('FullName ', '');
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff034694),
+      backgroundColor: AppColors.primaryColor,
       body: _body(),
     );
   }
@@ -44,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
-          color: const Color(0xff034694), 
+          color: AppColors.primaryColor, 
           constraints: BoxConstraints(
             maxHeight: MediaQuery.of(context).size.height,
             maxWidth: MediaQuery.of(context).size.width,
@@ -62,7 +54,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () => _back(),
+                              onPressed: () => goToScreen.goToHomePage(context),
                               icon: const Icon(
                                 Icons.arrow_back_ios,
                                 size: 20,
@@ -105,7 +97,27 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         child: Column(
                           children: [
-
+                            Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: Form(
+                                key: _formkey,
+                                child: Column(
+                                  children: const <Widget>[
+                                    Text(
+                                      "Nome"
+                                    ),
+                                    Text(
+                                      "NOME"
+                                    ),
+                                    
+                                  ],
+                                ),
+                              ),
+                            ),
+                            BtnDefault(
+                              "Editar Dados",
+                              onPressed: () => {},
+                            ),
                           ],
                         ),
                       ),
@@ -118,22 +130,5 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
-  }
-  
-    
-  _back() async {
-    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const Home()));
-  }
-
-  Future<bool> doLogout() async {
-    try {
-      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      var _token = sharedPreferences.getString('token');
-      await sharedPreferences.clear();
-      return true;
-    } catch (e) {
-      print('Erro ao sair: $e');
-    }
-    throw Exception('BarException');
   }
 }

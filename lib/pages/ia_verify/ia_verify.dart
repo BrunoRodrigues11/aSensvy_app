@@ -1,9 +1,7 @@
 import 'dart:io';
-import 'package:apptesteapi/pages/history/history.dart';
-import 'package:apptesteapi/pages/home/home.dart';
-import 'package:apptesteapi/pages/init_page.dart';
+import 'package:apptesteapi/config/helper_functions.dart';
+import 'package:apptesteapi/config/theme.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
-import 'package:apptesteapi/widgets/navbar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,24 +15,17 @@ class IaVerify extends StatefulWidget {
 }
 
 class _IaVerifyState extends State<IaVerify> {
-  final _formkey = GlobalKey<FormState>();
-  final _token = "";
-  String _fullName = "";  
-  String _fullNameLogged = "";
-  File _videoFile = File("");
+  // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
+  GoToScreen goToScreen = GoToScreen();  
   File? file;
-  bool _uploading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff034694),
+      backgroundColor: AppColors.primaryColor,
       body: _body(),
       extendBody: true,
       extendBodyBehindAppBar: true,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: BtnIaVerify(),
-      bottomNavigationBar: NavbarHome(),
     );
   }
 
@@ -42,7 +33,7 @@ class _IaVerifyState extends State<IaVerify> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
-          color: Color(0xff034694), 
+          color: AppColors.primaryColor, 
           constraints: BoxConstraints(
             maxHeight: MediaQuery.of(context).size.height,
             maxWidth: MediaQuery.of(context).size.width,
@@ -60,12 +51,8 @@ class _IaVerifyState extends State<IaVerify> {
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () => Navigator.pushReplacement(
-                                context, 
-                                  MaterialPageRoute(builder: (context) => Home()
-                                ),
-                              ),
-                              icon: Icon(
+                              onPressed: () => goToScreen.goToHomePage(context),
+                              icon: const Icon(
                                 Icons.arrow_back_ios,
                                 size: 20,
                                 color: Colors.white,
@@ -73,10 +60,10 @@ class _IaVerifyState extends State<IaVerify> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
-                        Text(
+                        const Text(
                           "Analisar vídeo",
                           style: TextStyle(
                             fontSize: 30, 
@@ -84,7 +71,7 @@ class _IaVerifyState extends State<IaVerify> {
                             color: Colors.white
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Text(
@@ -94,7 +81,7 @@ class _IaVerifyState extends State<IaVerify> {
                             color: Colors.grey[50],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                       ],
@@ -105,7 +92,7 @@ class _IaVerifyState extends State<IaVerify> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(30),
                             topRight: Radius.circular(30)
                           ),
@@ -114,7 +101,7 @@ class _IaVerifyState extends State<IaVerify> {
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 2,
                               blurRadius: 5,
-                              offset: Offset(0, 3), // deslocamento horizontal e vertical da sombra
+                              offset: const Offset(0, 3), 
                             ),
                           ],
                         ),   
@@ -122,7 +109,7 @@ class _IaVerifyState extends State<IaVerify> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsets.all(15),
+                              padding: const EdgeInsets.all(15),
                               child: Column(
                                 children: [
                                   Image.asset(
@@ -151,30 +138,30 @@ class _IaVerifyState extends State<IaVerify> {
     );
   }
 
+  // SELECIONAR O VÍDEO 
   void _selectVideo() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
       File arquivoSelecionado = File(result.files.single.path!);
-
-      // Agora você pode enviar o arquivo para o servidor ou fazer o que for necessário com ele
       _uploadVideo(arquivoSelecionado);
     } else {
       // Usuário cancelou a seleção do arquivo
     }
   }
 
+  // UPLOAD DO VÍDEO
   Future<void> _uploadVideo(File file) async {
     try {
       showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) => AlertDialog(
-          title: Text('Aguarde'),
+          title: const Text('Aguarde'),
           content: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
+            children: const [
               CircularProgressIndicator(),
               Text('Enviando vídeo...'),
             ],
@@ -198,27 +185,25 @@ class _IaVerifyState extends State<IaVerify> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Sucesso'),
-            content: Text('Vídeo enviado com sucesso.'),
+            title: const Text('Sucesso'),
+            content: const Text('Vídeo enviado com sucesso.'),
             actions: [
               TextButton(
                 child: const Text('OK'),
-                // onPressed: () => Navigator.of(context).pop(),
-                onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HistoryPage())),
+                onPressed: () => goToScreen.goToHistoryPage(context),
               ),
             ],
           ),
-        );
-        // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HistoryPage()));       
+        );    
       } else {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Erro'),
+            title: const Text('Erro'),
             content: Text('Falha ao enviar o vídeo. Código de status: ${response.statusCode}'),
             actions: [
               TextButton(
-                child: Text('OK'),
+                child: const Text('OK'),
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ],
@@ -228,29 +213,5 @@ class _IaVerifyState extends State<IaVerify> {
     } catch (e) {
       
     }
-  }
-    
-  sair() async {
-    bool saiu = await doLogout();
-    if (saiu) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const FirstPage(),
-        ),
-      );
-    }
-  }
-
-  Future<bool> doLogout() async {
-    try {
-      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      var _token = sharedPreferences.getString('token');
-      await sharedPreferences.clear();
-      return true;
-    } catch (e) {
-      print('Erro ao sair: $e');
-    }
-    throw Exception('BarException');
   }
 }

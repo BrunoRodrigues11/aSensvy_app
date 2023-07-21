@@ -35,7 +35,7 @@ class _NavbarHomeState extends State<NavbarHome> {
                   IconButton(
                     icon: Icon(Icons.list),
                     onPressed: (){
-                      _homePage(context, HistoryPage());
+                      _historyPage(context, HistoryPage());
                     }, 
                   ),
                   SizedBox(

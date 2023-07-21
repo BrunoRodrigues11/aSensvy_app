@@ -1,6 +1,5 @@
-import 'package:apptesteapi/pages/auth/register.dart';
-import 'package:apptesteapi/pages/auth/reset_password.dart';
-import 'package:apptesteapi/pages/home/home.dart';
+import 'package:apptesteapi/config/helper_functions.dart';
+import 'package:apptesteapi/config/theme.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +15,12 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
+  GoToScreen goToScreen = GoToScreen();
   final _formkey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _snackBar = SnackBar(
+  final _snackBar = const SnackBar(
     content: Text(
       "Email ou senha inválidos",
       textAlign: TextAlign.center,
@@ -30,7 +31,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff034694),
+      backgroundColor: AppColors.primaryColor,
       body: _body(),
     );
   }
@@ -39,7 +40,7 @@ class _LoginState extends State<Login> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
-          color: Color(0xff034694), 
+          color: AppColors.primaryColor,
           constraints: BoxConstraints(
             maxHeight: MediaQuery.of(context).size.height,
             maxWidth: MediaQuery.of(context).size.width,
@@ -50,7 +51,7 @@ class _LoginState extends State<Login> {
                 flex: 2,
                 child: Column(
                   children: <Widget>[
-                    SizedBox(
+                    const SizedBox(
                       height: 45,
                     ),
                     Image.asset(
@@ -58,14 +59,14 @@ class _LoginState extends State<Login> {
                       width: 100,
                       height: 100,
                     ),
-                    Text(
+                    const Text(
                       "Bem-vindo de volta!",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 30, 
                           fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Text(
@@ -84,7 +85,7 @@ class _LoginState extends State<Login> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30)
                     ),
@@ -93,7 +94,7 @@ class _LoginState extends State<Login> {
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 2,
                         blurRadius: 5,
-                        offset: Offset(0, 3), // deslocamento horizontal e vertical da sombra
+                        offset: const Offset(0, 3), // deslocamento horizontal e vertical da sombra
                       ),
                     ],
                   ),
@@ -152,13 +153,13 @@ class _LoginState extends State<Login> {
                                 children: [
                                   TextButton(
                                     onPressed: () {
-                                      _resetPassword(context, ResetPassword());
+                                      goToScreen.goToResetPswdPage(context);
                                     },
-                                    child: Text(
+                                    child: const Text(
                                       "Esqueci minha senha",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
-                                        color: Color(0xff034694),
+                                        color: AppColors.primaryColor,
                                         fontSize: 12,
                                       ),
                                     ),
@@ -176,7 +177,7 @@ class _LoginState extends State<Login> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text(
+                          const Text(
                             "Não possui uma conta?",
                             style: TextStyle(
                                 fontSize: 16,
@@ -184,14 +185,14 @@ class _LoginState extends State<Login> {
                           ),
                           TextButton(
                             onPressed: () {
-                              _signUp(context, SignUp());
+                              goToScreen.goToSignUpPage(context);
                             },
-                            child: Text(
+                            child: const Text(
                               " Cadastrar-se",
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 16,
-                                color: Color(0xff034694),
+                                color: AppColors.primaryColor,
                               ),
                             ),
                           )
@@ -208,14 +209,6 @@ class _LoginState extends State<Login> {
     );
   }
 
-  _signUp(ctx, page) {
-    Navigator.push(ctx, MaterialPageRoute(builder: ((context) => page)));
-  }
-
-  _resetPassword(ctx, page) {
-    Navigator.push(ctx, MaterialPageRoute(builder: ((context) => page)));
-  }
-
   entrar() async {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (_formkey.currentState!.validate()) {
@@ -224,10 +217,7 @@ class _LoginState extends State<Login> {
         currentFocus.unfocus();
       }
       if (deuCerto) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => Home()),
-        );
+        goToScreen.goToHomePage(context);
       } else {
         _passwordController.clear();
         ScaffoldMessenger.of(context).showSnackBar(_snackBar);
@@ -237,8 +227,7 @@ class _LoginState extends State<Login> {
 
   Future<bool> doLogin() async {
     try {
-      SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
+      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       var url = Uri.parse('https://asensvy-production.up.railway.app/auth');
       var objeto = {
         'password': _passwordController.text,
@@ -250,7 +239,6 @@ class _LoginState extends State<Login> {
       var response = await http.post(url, headers: headers, body: jsonBody);
 
       if (response.statusCode == 200) {
-        //guarda o token dentro do shared preference
         await sharedPreferences.setString('token', "Token ${jsonDecode(response.body)['token']}");
         await sharedPreferences.setString('fullName', "FullName ${jsonDecode(response.body)['user']['fullName']}");
         // print(jsonDecode(response.body)['user']['fullName']);

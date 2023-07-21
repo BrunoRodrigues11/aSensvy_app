@@ -1,4 +1,5 @@
-import 'package:apptesteapi/pages/auth/login.dart';
+import 'package:apptesteapi/config/helper_functions.dart';
+import 'package:apptesteapi/config/theme.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 
@@ -10,19 +11,22 @@ class SuccessNewPassword extends StatefulWidget {
 }
 
 class _SuccessNewPasswordState extends State<SuccessNewPassword> {
+    // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
+  GoToScreen goToScreen = GoToScreen();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff034694),
+      backgroundColor: AppColors.primaryColor,
       body: _body(),
     );
   }
 
-    _body() {
+  _body() {
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
-          color: Color(0xff034694), 
+          color: AppColors.primaryColor, 
           constraints: BoxConstraints(
             maxHeight: MediaQuery.of(context).size.height,
             maxWidth: MediaQuery.of(context).size.width,
@@ -37,10 +41,10 @@ class _SuccessNewPasswordState extends State<SuccessNewPassword> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
-                        Text(
+                        const Text(
                           "Sucesso!",
                           style: TextStyle(
                             fontSize: 30, 
@@ -48,7 +52,7 @@ class _SuccessNewPasswordState extends State<SuccessNewPassword> {
                             color: Colors.white
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Text(
@@ -58,7 +62,7 @@ class _SuccessNewPasswordState extends State<SuccessNewPassword> {
                             color: Colors.grey[50],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                       ],
@@ -69,7 +73,7 @@ class _SuccessNewPasswordState extends State<SuccessNewPassword> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(30),
                             topRight: Radius.circular(30)
                           ),
@@ -78,7 +82,7 @@ class _SuccessNewPasswordState extends State<SuccessNewPassword> {
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 2,
                               blurRadius: 5,
-                              offset: Offset(0, 3), // deslocamento horizontal e vertical da sombra
+                              offset: const Offset(0, 3), // deslocamento horizontal e vertical da sombra
                             ),
                           ],
                         ),                      
@@ -86,7 +90,7 @@ class _SuccessNewPasswordState extends State<SuccessNewPassword> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsets.all(15),
+                              padding: const EdgeInsets.all(15),
                               child: Column(
                                 children: [
                                   Image.asset(
@@ -99,7 +103,7 @@ class _SuccessNewPasswordState extends State<SuccessNewPassword> {
                             ),
                             BtnDefault(
                               "Ir para o login",
-                              onPressed: () => _login(),
+                              onPressed: () => goToScreen.goToLoginPage(context)
                             ),
                           ],
                         ),
@@ -113,9 +117,5 @@ class _SuccessNewPasswordState extends State<SuccessNewPassword> {
         ),
       ),
     );
-  }
-  
-  _login() {
-    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => Login()),);
   }
 }

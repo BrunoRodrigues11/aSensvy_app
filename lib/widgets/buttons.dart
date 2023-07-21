@@ -1,3 +1,4 @@
+import 'package:apptesteapi/config/theme.dart';
 import 'package:flutter/material.dart';
 
 class BtnDefault extends StatelessWidget {
@@ -9,10 +10,10 @@ class BtnDefault extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 3, left: 3),
+      padding: const EdgeInsets.only(top: 3, left: 3),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
-        border: Border(
+        border: const Border(
           bottom: BorderSide(color: Colors.black),
           top: BorderSide(color: Colors.black),
           left: BorderSide(color: Colors.black),
@@ -25,14 +26,14 @@ class BtnDefault extends StatelessWidget {
         onPressed: () {
           onPressed();
         },
-        color: Color(0xff034694),
+        color: AppColors.primaryColor,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),
         ),
         child: Text(
           texto,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 16,
             color: Colors.white,

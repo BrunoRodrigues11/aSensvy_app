@@ -1,3 +1,4 @@
+import 'package:apptesteapi/config/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -23,10 +24,13 @@ class InputDefault extends StatelessWidget {
       children: <Widget>[
         Text(
           label,
-          style: TextStyle(
-              fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black),
+          style: const TextStyle(
+            fontSize: 15, 
+            fontWeight: FontWeight.w400, 
+            color: Colors.black
+          ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         TextFormField(
@@ -38,23 +42,23 @@ class InputDefault extends StatelessWidget {
           decoration: InputDecoration(
             hintText: hint,
             prefixIcon: icon,
-            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+            contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide(color: Colors.grey),
+              borderSide: const BorderSide(color: Colors.grey),
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide(color: Color(0xff034694)),
+              borderSide: const BorderSide(color: AppColors.primaryColor),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide(color: Color(0xff034694)),
+              borderSide: const BorderSide(color: AppColors.primaryColor),
             ),
-            focusColor: Color(0xff034694)
+            focusColor: AppColors.primaryColor,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
       ],
@@ -65,7 +69,7 @@ class InputDefault extends StatelessWidget {
 class InputCode extends StatelessWidget {
   TextEditingController controller;
 
-  InputCode({required this.controller});
+  InputCode({super.key, required this.controller});
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -86,20 +90,20 @@ class InputCode extends StatelessWidget {
           FilteringTextInputFormatter.digitsOnly,
         ],
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+          contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide(color: Colors.grey),
+            borderSide: const BorderSide(color: Colors.grey),
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide(color: Color(0xff034694)),
+            borderSide: const BorderSide(color: AppColors.primaryColor),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide(color: Color(0xff034694)),
+            borderSide: const BorderSide(color: AppColors.primaryColor),
           ),
-          focusColor: Color(0xff034694)
+          focusColor: AppColors.primaryColor
         ),
       ),
     );

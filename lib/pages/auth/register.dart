@@ -1,4 +1,5 @@
-import 'package:apptesteapi/pages/auth/login.dart';
+import 'package:apptesteapi/config/helper_functions.dart';
+import 'package:apptesteapi/config/theme.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
@@ -14,20 +15,23 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
+  GoToScreen goToScreen = GoToScreen();
+
   final _formkey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _snackBar = SnackBar(
+  final _snackBar = const SnackBar(
     content: Text(
       "Preencha todos os campos",
       textAlign: TextAlign.center,
     ),
     backgroundColor: Colors.redAccent,
   );
-  final _snackBarS = SnackBar(
+  final _snackBarS = const SnackBar(
     content: Text(
       "Cadastro realizado com sucesso!",
       textAlign: TextAlign.center,
@@ -35,7 +39,7 @@ class _SignUpState extends State<SignUp> {
     backgroundColor: Color(0xff00a468),
   );
 
-  var maskFormatter = new MaskTextInputFormatter(
+  var maskFormatter = MaskTextInputFormatter(
     //+55 (15) 9 9708-6888
     mask: '(##) # ####-####',
     filter: {"#": RegExp(r'[0-9]')},
@@ -45,7 +49,7 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff034694),
+      backgroundColor: AppColors.primaryColor,
       body: _body(),
     );
   }
@@ -54,7 +58,7 @@ class _SignUpState extends State<SignUp> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
-          color: Color(0xff034694), 
+          color: AppColors.primaryColor, 
           constraints: BoxConstraints(
             maxHeight: MediaQuery.of(context).size.height,
             maxWidth: MediaQuery.of(context).size.width,
@@ -70,8 +74,8 @@ class _SignUpState extends State<SignUp> {
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () => Navigator.pop(context),
-                              icon: Icon(
+                              onPressed: () => goToScreen.goToLoginPage(context),
+                              icon: const Icon(
                                 Icons.arrow_back_ios,
                                 size: 20,
                                 color: Colors.white,
@@ -79,10 +83,10 @@ class _SignUpState extends State<SignUp> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
-                        Text(
+                        const Text(
                           "Cadastrar-se",
                           style: TextStyle(
                             fontSize: 30, 
@@ -90,7 +94,7 @@ class _SignUpState extends State<SignUp> {
                             color: Colors.white
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Text(
@@ -100,7 +104,7 @@ class _SignUpState extends State<SignUp> {
                             color: Colors.grey[50],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                       ],
@@ -111,7 +115,7 @@ class _SignUpState extends State<SignUp> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(30),
                             topRight: Radius.circular(30)
                           ),
@@ -120,7 +124,7 @@ class _SignUpState extends State<SignUp> {
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 2,
                               blurRadius: 5,
-                              offset: Offset(0, 3), // deslocamento horizontal e vertical da sombra
+                              offset: const Offset(0, 3), // deslocamento horizontal e vertical da sombra
                             ),
                           ],
                         ),
@@ -128,7 +132,7 @@ class _SignUpState extends State<SignUp> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsets.all(15),
+                              padding: const EdgeInsets.all(15),
                               child: Form(
                                 key: _formkey,
                                 child: Column(
@@ -241,7 +245,7 @@ class _SignUpState extends State<SignUp> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Text(
+                                const Text(
                                   "Já possui uma conta?",
                                   style: TextStyle(
                                     fontSize: 16
@@ -249,13 +253,13 @@ class _SignUpState extends State<SignUp> {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    _login(context, Login());
+                                    goToScreen.goToLoginPage(context);
                                   },
-                                  child: Text(
+                                  child: const Text(
                                     " Faça login",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
-                                      color: Color(0xff034694),
+                                      color: AppColors.primaryColor,
                                       fontSize: 16,
                                     ),
                                   ),
@@ -276,10 +280,6 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  _login(ctx, page) {
-    Navigator.push(ctx, MaterialPageRoute(builder: ((context) => page)));
-  }
-
   cadastrar() async {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (_formkey.currentState!.validate()) {
@@ -289,12 +289,7 @@ class _SignUpState extends State<SignUp> {
       }
       if (deuCerto) {
         ScaffoldMessenger.of(context).showSnackBar(_snackBarS);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Login(),
-          ),
-        );
+        goToScreen.goToLoginPage(context);        
       } else {
         _passwordController.clear();
         ScaffoldMessenger.of(context).showSnackBar(_snackBar);

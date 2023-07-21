@@ -10,8 +10,8 @@ class ListInformation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10),
-      padding: EdgeInsets.only(left: 15, right: 15),
+      margin: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.only(left: 15, right: 15),
       height: 120,
       width: 240,
       decoration: BoxDecoration(
@@ -22,7 +22,7 @@ class ListInformation extends StatelessWidget {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 2,
             blurRadius: 5,
-            offset: Offset(0, 3), // deslocamento horizontal e vertical da sombra
+            offset: const Offset(0, 3), // deslocamento horizontal e vertical da sombra
           ),
         ],
       ),
@@ -32,17 +32,17 @@ class ListInformation extends StatelessWidget {
         children: [
           Text(
             tiulo,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
               color: Colors.white,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Text(
             subtitulo,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
               color: Colors.white70,
             ),
@@ -66,7 +66,7 @@ class OptionsGrid extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: Color(0xfff8f8ff),
+          color: const Color(0xfff8f8ff),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
@@ -90,7 +90,7 @@ class OptionsGrid extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(

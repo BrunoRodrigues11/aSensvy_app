@@ -1,4 +1,5 @@
-import 'package:apptesteapi/pages/auth/success.dart';
+import 'package:apptesteapi/config/helper_functions.dart';
+import 'package:apptesteapi/config/theme.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +15,13 @@ class NewPassword extends StatefulWidget {
 }
 
 class _NewPasswordState extends State<NewPassword> {
+  // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
+  GoToScreen goToScreen = GoToScreen();
   final _formkey = GlobalKey<FormState>();
   final _newPasswordController = TextEditingController();
   final _confirmNewPasswordController = TextEditingController();
 
-  final _snackBar = SnackBar(
+  final _snackBar = const SnackBar(
     content: Text(
       "As senhas não são iguais",
       textAlign: TextAlign.center,
@@ -29,7 +32,7 @@ class _NewPasswordState extends State<NewPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff034694),
+      backgroundColor: AppColors.primaryColor,
       body: _body(),
     );
   }
@@ -38,7 +41,7 @@ class _NewPasswordState extends State<NewPassword> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
-          color: Color(0xff034694), 
+          color: AppColors.primaryColor, 
           constraints: BoxConstraints(
             maxHeight: MediaQuery.of(context).size.height,
             maxWidth: MediaQuery.of(context).size.width,
@@ -56,8 +59,8 @@ class _NewPasswordState extends State<NewPassword> {
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () => Navigator.pop(context),
-                              icon: Icon(
+                              onPressed: () => goToScreen.goToLoginPage(context),
+                              icon: const Icon(
                                 Icons.arrow_back_ios,
                                 size: 20,
                                 color: Colors.white,
@@ -65,10 +68,10 @@ class _NewPasswordState extends State<NewPassword> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
-                        Text(
+                        const Text(
                           "Nova senha",
                           style: TextStyle(
                             fontSize: 30, 
@@ -76,7 +79,7 @@ class _NewPasswordState extends State<NewPassword> {
                             color: Colors.white
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Text(
@@ -86,7 +89,7 @@ class _NewPasswordState extends State<NewPassword> {
                             color: Colors.grey[50],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                       ],
@@ -97,7 +100,7 @@ class _NewPasswordState extends State<NewPassword> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(30),
                             topRight: Radius.circular(30)
                           ),
@@ -106,7 +109,7 @@ class _NewPasswordState extends State<NewPassword> {
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 2,
                               blurRadius: 5,
-                              offset: Offset(0, 3), // deslocamento horizontal e vertical da sombra
+                              offset: const Offset(0, 3), // deslocamento horizontal e vertical da sombra
                             ),
                           ],
                         ),
@@ -114,7 +117,7 @@ class _NewPasswordState extends State<NewPassword> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsets.all(15),
+                              padding: const EdgeInsets.all(15),
                               child: Column(
                                 children: [
                                   Image.asset(
@@ -200,10 +203,7 @@ class _NewPasswordState extends State<NewPassword> {
         currentFocus.unfocus();
       }
       if (deuCerto) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => SuccessNewPassword()),
-        );
+        goToScreen.goToSuccessNewPswdPage(context);
       } else {
         _newPasswordController.clear();
         _confirmNewPasswordController.clear();        
