@@ -1,6 +1,8 @@
+import 'package:apptesteapi/config/theme.dart';
 import 'package:apptesteapi/pages/history/history.dart';
 import 'package:apptesteapi/pages/home/home.dart';
 import 'package:apptesteapi/pages/ia_verify/ia_verify.dart';
+import 'package:apptesteapi/pages/settings/settings.dart';
 import 'package:apptesteapi/pages/users/profile.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +21,7 @@ class _InitHomePageState extends State<InitHomePage> {
     Home(),
     HistoryPage(),
     IaVerify(),
-    // SettingsPage(),
+    SettingsPage(),
     ProfilePage(),
   ];
 
@@ -34,14 +36,14 @@ class _InitHomePageState extends State<InitHomePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        backgroundColor: const Color(0xff034694),
+        backgroundColor: AppColors.primaryColor,
         onPressed: () {
           setState(() {
             widget.currentScreen = const IaVerify();
             widget.currentTab = 4;
           });
         },
+        child: const Icon(Icons.add),        
       ),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
@@ -66,12 +68,12 @@ class _InitHomePageState extends State<InitHomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon( widget.currentTab == 0 ? Icons.home :Icons.home_outlined,
-                          color: widget.currentTab == 0 ? const Color(0xff034694) : Colors.grey,
+                          color: widget.currentTab == 0 ? AppColors.primaryColor : Colors.grey,
                         ),
                         Text(
                           'Home',
                           style: TextStyle(
-                            color: widget.currentTab == 0 ? const Color(0xff034694) : Colors.grey,
+                            color: widget.currentTab == 0 ? AppColors.primaryColor : Colors.grey,
                           ),
                         )
                       ],
@@ -89,12 +91,12 @@ class _InitHomePageState extends State<InitHomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon( widget.currentTab == 1 ? Icons.access_time_filled_outlined :Icons.access_time,
-                          color: widget.currentTab == 1 ? const Color(0xff034694) : Colors.grey,
+                          color: widget.currentTab == 1 ? AppColors.primaryColor : Colors.grey,
                         ),
                         Text(
                           'Histórico',
                           style: TextStyle(
-                            color: widget.currentTab == 1 ? const Color(0xff034694) : Colors.grey,
+                            color: widget.currentTab == 1 ? AppColors.primaryColor : Colors.grey,
                           ),
                         )
                       ],
@@ -109,7 +111,7 @@ class _InitHomePageState extends State<InitHomePage> {
                     minWidth: 40,
                     onPressed: (){
                       setState(() {
-                        widget.currentScreen = const Home();
+                        widget.currentScreen = const SettingsPage();
                         widget.currentTab = 2;
                       });
                     },
@@ -117,12 +119,12 @@ class _InitHomePageState extends State<InitHomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon( widget.currentTab == 2 ? Icons.settings :Icons.settings_outlined,
-                          color: widget.currentTab == 2 ? const Color(0xff034694) : Colors.grey,
+                          color: widget.currentTab == 2 ? AppColors.primaryColor : Colors.grey,
                         ),
                         Text(
                           'Ajustes',
                           style: TextStyle(
-                            color: widget.currentTab == 2 ? const Color(0xff034694) : Colors.grey,
+                            color: widget.currentTab == 2 ? AppColors.primaryColor : Colors.grey,
                           ),
                         )
                       ],
@@ -140,12 +142,12 @@ class _InitHomePageState extends State<InitHomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon( widget.currentTab == 3 ? Icons.person :Icons.person_outlined,
-                          color: widget.currentTab == 3 ? const Color(0xff034694) : Colors.grey,
+                          color: widget.currentTab == 3 ? AppColors.primaryColor : Colors.grey,
                         ),
                         Text(
                           'Perfil',
                           style: TextStyle(
-                            color: widget.currentTab == 3 ? const Color(0xff034694) : Colors.grey,
+                            color: widget.currentTab == 3 ? AppColors.primaryColor : Colors.grey,
                           ),
                         )
                       ],

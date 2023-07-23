@@ -191,7 +191,7 @@ class _HomeState extends State<Home> {
                                           OptionsGrid(
                                             imagem: "assets/config.png", 
                                             nome: "Ajustes",
-                                            onTap: () => goToScreen.goToIAVerifyPage(context),
+                                            onTap: () => goToScreen.goToSettingsPage(context),
                                           ),
                                         ],
                                       ),

@@ -241,6 +241,8 @@ class _LoginState extends State<Login> {
       if (response.statusCode == 200) {
         await sharedPreferences.setString('token', "Token ${jsonDecode(response.body)['token']}");
         await sharedPreferences.setString('fullName', "FullName ${jsonDecode(response.body)['user']['fullName']}");
+        var token = sharedPreferences.getString('token');
+        print("TOKEN $token");
         // print(jsonDecode(response.body)['user']['fullName']);
         return true;
       } else {

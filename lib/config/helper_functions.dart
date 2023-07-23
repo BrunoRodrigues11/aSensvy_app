@@ -9,6 +9,7 @@ import 'package:apptesteapi/pages/home/home.dart';
 import 'package:apptesteapi/pages/ia_verify/ia_verify.dart';
 import 'package:apptesteapi/pages/init_homePage.dart';
 import 'package:apptesteapi/pages/init_page.dart';
+import 'package:apptesteapi/pages/settings/settings.dart';
 import 'package:apptesteapi/pages/users/profile.dart';
 import 'package:flutter/material.dart';
 
@@ -89,7 +90,7 @@ class GoToScreen {
   void goToSettingsPage(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => InitHomePage(2, const ProfilePage())),
+      MaterialPageRoute(builder: (context) => InitHomePage(2, const SettingsPage())),
     );
   }  
 

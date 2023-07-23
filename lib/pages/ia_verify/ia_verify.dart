@@ -171,7 +171,6 @@ class _IaVerifyState extends State<IaVerify> {
 
       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       var token = sharedPreferences.getString('token');
-
       var url = Uri.parse('https://asensvy-production.up.railway.app/ia/verify'); 
       var request = http.MultipartRequest('POST', url);
       request.files.add(await http.MultipartFile.fromPath('files[]', file.path));
