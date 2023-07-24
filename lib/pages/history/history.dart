@@ -105,7 +105,7 @@ class _HistoryPageState extends State<HistoryPage> {
                               mainAxisAlignment: MainAxisAlignment.center,   
                               children: const [
                                 CircularProgressIndicator(
-                                  color: Color(0xff0095FF),
+                                  color: AppColors.primaryColor,
                                 ),
                                 Text(
                                   'Carregando'

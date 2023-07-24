@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:apptesteapi/config/helper_functions.dart';
 import 'package:apptesteapi/config/theme.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
+import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -17,11 +19,23 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
   GoToScreen goToScreen = GoToScreen();
+  String firstName = "";
+  String lastName = "";
+  String email = "";
+  String phone = "";
+
   final _formkey = GlobalKey<FormState>();
-  
+
+  var maskFormatter = MaskTextInputFormatter(
+    //+55 (15) 9 9708-6888
+    mask: '(##) # ####-####',
+    filter: {"#": RegExp(r'[0-9]')},
+    type: MaskAutoCompletionType.lazy,
+  );
 @override
   void initState() {
     super.initState();
+    getUser();
   }
 
   @override
@@ -48,8 +62,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   children: [
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Row(
                           children: [
@@ -80,43 +92,140 @@ class _ProfilePageState extends State<ProfilePage> {
                       flex: 5,
                       child: Container(
                         width: double.infinity,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.white,
-                          borderRadius: const BorderRadius.only(
+                          borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(30),
                             topRight: Radius.circular(30)
                           ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(0, 3), // deslocamento horizontal e vertical da sombra
-                            ),
-                          ],
                         ),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(15),
-                              child: Form(
-                                key: _formkey,
-                                child: Column(
-                                  children: const <Widget>[
-                                    Text(
-                                      "Nome"
+                              child: Column(
+                                children:<Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 10),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: const [
+                                        Text(
+                                          "Nome",
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      "NOME"
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        firstName,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          color: AppColors.primaryColor,
+                                          fontWeight: FontWeight.w500
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 10),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: const [
+                                        Text(
+                                          "Sobrenome",
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    
-                                  ],
-                                ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        lastName,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          color: AppColors.primaryColor,
+                                          fontWeight: FontWeight.w500
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 10),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: const [
+                                        Text(
+                                          "Emil",
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        email,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          color: AppColors.primaryColor,
+                                          fontWeight: FontWeight.w500
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 10),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: const [
+                                        Text(
+                                          "Telefone",
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        phone,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          color: AppColors.primaryColor,
+                                          fontWeight: FontWeight.w500
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
                             BtnDefault(
-                              "Editar Dados",
-                              onPressed: () => {},
+                              "Editar",
+                              onPressed: () => {
+
+                              },
                             ),
                           ],
                         ),
@@ -131,4 +240,30 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+
+  Future getUser() async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var token = sharedPreferences.getString('token');
+    var url = Uri.parse('https://asensvy-production.up.railway.app/myuser');
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': '$token',
+    };
+
+    var response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200){
+      var jsonData = jsonDecode(response.body);
+      setState(() {
+        firstName = jsonData['user']['firstName'];
+        lastName = jsonData['user']['lastName'];      
+        email = jsonData['user']['email'];
+        phone = jsonData['user']['phone'];
+      });
+    }else{
+      print('Falha ao carregar os dados da API');
+    }
+  }
+
+
 }

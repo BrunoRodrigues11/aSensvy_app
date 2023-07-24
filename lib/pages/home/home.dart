@@ -13,8 +13,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
-  GoToScreen goToScreen = GoToScreen();  
-  String _fullName = "";  
+  GoToScreen goToScreen = GoToScreen();
+  String _fullName = "";
   String _fullNameLogged = "";
   
 @override
