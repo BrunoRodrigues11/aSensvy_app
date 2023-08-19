@@ -23,6 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String lastName = "";
   String email = "";
   String phone = "";
+  bool _isLoading = true;
 
   final _formkey = GlobalKey<FormState>();
 
@@ -99,7 +100,20 @@ class _ProfilePageState extends State<ProfilePage> {
                             topRight: Radius.circular(30)
                           ),
                         ),
-                        child: Column(
+                        child: _isLoading 
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,   
+                            children: const [
+                              CircularProgressIndicator(
+                                color: AppColors.primaryColor,
+                              ),
+                              Text(
+                                'Carregando'
+                              )
+                            ],
+                          )
+                        :Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Padding(
@@ -259,9 +273,11 @@ class _ProfilePageState extends State<ProfilePage> {
         lastName = jsonData['user']['lastName'];      
         email = jsonData['user']['email'];
         phone = jsonData['user']['phone'];
+        _isLoading = false;
       });
     }else{
       print('Falha ao carregar os dados da API');
+      _isLoading = false;
     }
   }
 
