@@ -19,6 +19,7 @@ class _SettingsPageState extends State<SettingsPage> {
   GoToScreen goToScreen = GoToScreen();
   int userSensitivity = 0;  
   double _currentValue = 0;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -90,7 +91,20 @@ class _SettingsPageState extends State<SettingsPage> {
                     topRight: Radius.circular(30)
                   ),
                 ),
-                child: Column(
+                child: _isLoading 
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,   
+                      children: const [
+                        CircularProgressIndicator(
+                          color: AppColors.primaryColor,
+                        ),
+                        Text(
+                          'Carregando'
+                        )
+                      ],
+                    )
+                  :Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -137,15 +151,18 @@ class _SettingsPageState extends State<SettingsPage> {
     };
 
     var response = await http.get(url, headers: headers);
-
+    print("LOADIUNG: $_isLoading");
     if (response.statusCode == 200){
       var jsonData = jsonDecode(response.body);
       setState(() {
         userSensitivity = jsonData['config']['sensitivity'];
+        _isLoading = false;
+        print("LOADIUNG: $_isLoading");
       });
       print(jsonData['config']['sensitivity']);
     }else{
       print('Falha ao carregar os dados da API');
+      _isLoading = false;
     }
   }
   
