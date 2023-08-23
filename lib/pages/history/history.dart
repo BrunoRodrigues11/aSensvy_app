@@ -18,6 +18,7 @@ class _HistoryPageState extends State<HistoryPage> {
   // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
   GoToScreen goToScreen = GoToScreen();
   late Future<List<Historico>> historico;
+  bool _isLoading = true;
   
   @override
   void initState() {
@@ -88,7 +89,20 @@ class _HistoryPageState extends State<HistoryPage> {
                     topRight: Radius.circular(30)
                   ),
                 ), 
-                child: SingleChildScrollView(
+                child: _isLoading 
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,   
+                      children: const [
+                        CircularProgressIndicator(
+                          color: AppColors.primaryColor,
+                        ),
+                        Text(
+                          'Carregando'
+                        )
+                      ],
+                    )
+                  :SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,                
@@ -99,22 +113,52 @@ class _HistoryPageState extends State<HistoryPage> {
                       FutureBuilder<List<Historico>>(
                         future: historico,
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,   
-                              children: const [
-                                CircularProgressIndicator(
-                                  color: AppColors.primaryColor,
-                                ),
-                                Text(
-                                  'Carregando'
-                                )
-                              ],
-                            );
-                          } else if (snapshot.hasError) {
+                          // if (snapshot.connectionState == ConnectionState.waiting) {
+                          //   return Column(
+                          //     crossAxisAlignment: CrossAxisAlignment.center,
+                          //     mainAxisAlignment: MainAxisAlignment.center,   
+                          //     children: const [
+                          //       CircularProgressIndicator(
+                          //         color: AppColors.primaryColor,
+                          //       ),
+                          //       Text(
+                          //         'Carregando'
+                          //       )
+                          //     ],
+                          //   );
+                          // } else 
+                          if (snapshot.hasError) {
                             return Text(snapshot.error.toString());
                           } else if (snapshot.hasData) {
+                            if (snapshot.data!.length == 0){
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(15),
+                                    child: Column(
+                                      children: [
+                                        Image.asset(
+                                          "assets/no-data.png",
+                                          width: 300,
+                                          height: 300,
+                                        ),
+                                        Text(
+                                          "Desculpe, mas não há dados para mostrar aqui.",
+                                          style: TextStyle(
+                                            color: AppColors.primaryColor,
+                                            fontSize: 20,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
+                            print("AAA: ${snapshot.data!.length}");
                             return Padding(
                               padding: const EdgeInsets.only(left: 10, right: 10),
                               child: ListView.builder(
@@ -123,11 +167,12 @@ class _HistoryPageState extends State<HistoryPage> {
                                 itemCount: snapshot.data!.length,
                                 itemBuilder: (context, index) {
                                   Historico historico = snapshot.data![index];
+                                  int? score = historico.score;
                                   return Padding(
                                     padding: const EdgeInsets.all(5),
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        color: _getBackgroundColor(historico.score),
+                                        color: _getBackgroundColor(score),
                                         borderRadius: BorderRadius.circular(20),
                                         boxShadow: [ 
                                           BoxShadow(
@@ -200,6 +245,14 @@ class _HistoryPageState extends State<HistoryPage> {
                                                         color: Colors.white
                                                     ),
                                                   ),
+                                                  Text(
+                                                    historico.risco.toString(),
+                                                    style: const TextStyle(
+                                                        fontWeight:FontWeight.bold,
+                                                        fontSize: 16,
+                                                        color: Colors.white
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
                                             ],
@@ -238,11 +291,11 @@ class _HistoryPageState extends State<HistoryPage> {
 
   // COLORS DO HISTÓRICO
   Color _getBackgroundColor(int? score) {
-    if (score! >= 75) {
+    if (score! >= 75.0) {
       return const Color(0xffc40234); // muito alto -> 75% a 100%
-    } else if (score >= 50) {
+    } else if (score >= 50.0) {
       return const Color(0xffffd300); // alto -> 50% a 75%
-    } else if (score >= 25) {
+    } else if (score >= 25.0) {
       return const Color(0xff0188bf); // moderado -> 25% a 50%
     } else {
       // return Color(0xff123456);
@@ -267,6 +320,9 @@ class _HistoryPageState extends State<HistoryPage> {
       var historicoList = jsonData['history'] as List<dynamic>;
 
       List<Historico> historicos = historicoList.map((json) => Historico.fromJson(json)).toList();
+      setState(() {
+        _isLoading = false;
+      });
       return historicos;
     } else {
       throw Exception(

@@ -4,6 +4,7 @@ class Historico {
   String? name;
   int? score;
   String? user;
+  String? risco;  
   String? date;
   int? iV;
 
@@ -13,6 +14,7 @@ class Historico {
     this.name,
     this.score,
     this.user,
+    this.risco,    
     this.date,
     this.iV,
   });
@@ -23,6 +25,7 @@ class Historico {
     name = json['name'];
     score = json['score'];
     user = json['user'];
+    risco = json['risco'];    
     date = json['date'];
     iV = json['__v'];
   }
