@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:apptesteapi/config/helper_functions.dart';
 import 'package:apptesteapi/config/theme.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
+import 'package:apptesteapi/widgets/information.dart';
 import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -76,12 +77,25 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ],
                         ),
+                        const SizedBox(
+                          height: 5,
+                        ),
                         const Text(
                           "Perfil",
                           style: TextStyle(
                             fontSize: 30, 
                             fontWeight: FontWeight.bold,
                             color: Colors.white
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Revise as suas informações cadastrais",
+                          style: TextStyle(
+                            fontSize: 15, 
+                            color: Colors.grey[50],
                           ),
                         ),
                         const SizedBox(
@@ -117,126 +131,30 @@ class _ProfilePageState extends State<ProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(left: 15, top: 30),
+                              padding: const EdgeInsets.all(15),
                               child: Column(
                                 children:<Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 10),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: const [
-                                        Text(
-                                          "Nome",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                  UserInformation(
+                                    titulo: "Nome",
+                                    texto: firstName,
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        firstName,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          color: AppColors.primaryColor,
-                                          fontWeight: FontWeight.w500
-                                        ),
-                                      ),
-                                    ],
+                                  UserInformation(
+                                    titulo: "Sobrenome",
+                                    texto: lastName,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 10),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: const [
-                                        Text(
-                                          "Sobrenome",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                  UserInformation(
+                                    titulo: "Email",
+                                    texto: email,
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        lastName,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          color: AppColors.primaryColor,
-                                          fontWeight: FontWeight.w500
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 10),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: const [
-                                        Text(
-                                          "Emil",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        email,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          color: AppColors.primaryColor,
-                                          fontWeight: FontWeight.w500
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 10),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: const [
-                                        Text(
-                                          "Telefone",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        phone,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          color: AppColors.primaryColor,
-                                          fontWeight: FontWeight.w500
-                                        ),
-                                      ),
-                                    ],
+                                  UserInformation(
+                                    titulo: "Telefone",
+                                    texto: phone,
                                   ),
                                 ],
                               ),
                             ),
                             BtnDefault(
-                              "Editar",
+                              "Editar informações",
                               onPressed: () => {
 
                               },

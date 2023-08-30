@@ -1,3 +1,4 @@
+import 'package:apptesteapi/config/theme.dart';
 import 'package:flutter/material.dart';
 
 class ListInformation extends StatelessWidget {
@@ -73,7 +74,7 @@ class OptionsGrid extends StatelessWidget {
               color: Colors.grey.withOpacity(0.5),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: Offset(0, 3), // deslocamento horizontal e vertical da sombra
+              offset: const Offset(0, 3), // deslocamento horizontal e vertical da sombra
             ),
           ],
         ),
@@ -95,7 +96,7 @@ class OptionsGrid extends StatelessWidget {
             ),
             Text(
               nome,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16
               ),
             )
@@ -103,5 +104,47 @@ class OptionsGrid extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class UserInformation extends StatelessWidget {
+  String texto;
+  String titulo;
+
+  UserInformation({super.key, required this.texto, required this.titulo});
+
+  @override
+  Widget build(BuildContext context) { // Color(0xffE4E9F7),
+  return Padding(
+    padding: const EdgeInsets.only(top: 5),
+    child: Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              titulo,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Text(
+              texto,
+              style: const TextStyle(
+                fontSize: 16,
+                color: AppColors.primaryColor,
+                fontWeight: FontWeight.w500
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
   }
 }
