@@ -141,16 +141,41 @@ class _IaVerifyState extends State<IaVerify> {
   }
 
   // SELECIONAR O VÍDEO 
-  void _selectVideo() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+  // void _selectVideo() async {
+  //   FilePickerResult? result = await FilePicker.platform.pickFiles();
 
-    if (result != null) {
-      File arquivoSelecionado = File(result.files.single.path!);
-      _uploadVideo(arquivoSelecionado);
+  //   if (result != null) {
+  //     File arquivoSelecionado = File(result.files.single.path!);
+  //     _uploadVideo(arquivoSelecionado);
+  //   } else {
+  //     // Usuário cancelou a seleção do arquivo
+  //   }
+  // }
+  void _selectVideo() async {
+    var storageStatus = await Permission.storage.request();
+
+    if (storageStatus.isGranted) {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.video);
+
+      if (result != null) {
+        File arquivoSelecionado = File(result.files.single.path!);
+        _uploadVideo(arquivoSelecionado);
+      } else {
+        // Usuário cancelou a seleção do arquivo
+      }
+    } else if (storageStatus.isPermanentlyDenied) {
+      // Permissão negada permanentemente, talvez direcione o usuário para configurações
+      openAppSettings();
     } else {
-      // Usuário cancelou a seleção do arquivo
+      // Permissão negada pelo usuário
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Permissão de acesso ao armazenamento negada.'),
+        ),
+      );
     }
   }
+
 
   // UPLOAD DO VÍDEO
   Future<void> _uploadVideo(File file) async {

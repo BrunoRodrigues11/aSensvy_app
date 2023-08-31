@@ -151,13 +151,11 @@ class _SettingsPageState extends State<SettingsPage> {
     };
 
     var response = await http.get(url, headers: headers);
-    print("LOADIUNG: $_isLoading");
     if (response.statusCode == 200){
       var jsonData = jsonDecode(response.body);
       setState(() {
         userSensitivity = jsonData['config']['sensitivity'];
         _isLoading = false;
-        print("LOADIUNG: $_isLoading");
       });
       print(jsonData['config']['sensitivity']);
     }else{
@@ -188,6 +186,7 @@ class _SettingsPageState extends State<SettingsPage> {
       print("Deu tudo ERRADO");
     }
   }
+
   _showSensitivityModal() {
     showModalBottomSheet(
       context: context,

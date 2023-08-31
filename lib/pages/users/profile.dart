@@ -25,8 +25,13 @@ class _ProfilePageState extends State<ProfilePage> {
   String email = "";
   String phone = "";
   bool _isLoading = true;
+  bool _isEditing = false;
 
   final _formkey = GlobalKey<FormState>();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
 
   var maskFormatter = MaskTextInputFormatter(
     //+55 (15) 9 9708-6888
@@ -80,6 +85,15 @@ class _ProfilePageState extends State<ProfilePage> {
                         const SizedBox(
                           height: 5,
                         ),
+                        _isEditing ?
+                        const Text(
+                          "Editar Perfil",
+                          style: TextStyle(
+                            fontSize: 30, 
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white
+                          ),
+                        ):
                         const Text(
                           "Perfil",
                           style: TextStyle(
@@ -132,8 +146,115 @@ class _ProfilePageState extends State<ProfilePage> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(15),
-                              child: Column(
-                                children:<Widget>[
+                              child: _isEditing ? Form(
+                                key: _formkey,
+                                child: Column(
+                                  children:<Widget>[
+                                    Column(
+                                      children: [
+                                        InputDefault(
+                                          "Nome",
+                                          false,
+                                          TextInputType.text,
+                                          Icon(
+                                            Icons.person,
+                                            color: Colors.grey[600],
+                                          ),
+                                          "Informe o seu nome",
+                                          const [],
+                                          validator: (firstName) {
+                                            if (firstName == null || firstName.isEmpty) {
+                                              return "Por favor, informe seu nome";
+                                            }
+                                            return null;
+                                          },
+                                          controller: _firstNameController,
+                                        ),
+                                        InputDefault(
+                                          "Sobrenome",
+                                          false,
+                                          TextInputType.text,
+                                          Icon(
+                                            Icons.person,
+                                            color: Colors.grey[600],
+                                          ),
+                                          "Informe o seu sobrenome",
+                                          const [],
+                                          validator: (lastName) {
+                                            if (lastName == null || lastName.isEmpty) {
+                                              return "Por favor, informe seu sobrenome";
+                                            }
+                                            return null;
+                                          },
+                                          controller: _lastNameController,
+                                        ),
+                                        InputDefault(
+                                          "Telefone",
+                                          false,
+                                          TextInputType.text,
+                                          Icon(
+                                            Icons.phone,
+                                            color: Colors.grey[600],
+                                          ),
+                                          "Informe o seu telefone",
+                                          [maskFormatter],
+                                          validator: (tel) {
+                                            if (tel == null || tel.isEmpty) {
+                                              return "Por favor, informe seu telefone";
+                                            } else if (tel.length < 16) {
+                                              return "Por favor, informe um telefone válido.";
+                                            }
+                                            return null;
+                                          },
+                                          controller: _phoneController,
+                                        ),
+                                        InputDefault(
+                                          "Email",
+                                          false,
+                                          TextInputType.emailAddress,
+                                          Icon(
+                                            Icons.email,
+                                            color: Colors.grey[600],
+                                          ),
+                                          "Informe o seu email",
+                                          const [],
+                                          validator: (email) {
+                                            if (email == null || email.isEmpty) {
+                                              return "Por favor, informe seu email";
+                                            } else if (!RegExp(r'@')
+                                                .hasMatch(_emailController.text)) {
+                                              return 'Por favor, informe um e-mail válido!';
+                                            }
+                                            return null;
+                                          },
+                                          controller: _emailController,
+                                        ),
+                                        BtnDefault(
+                                          "Cancelar",
+                                          onPressed: () => {
+                                            setState(() {
+                                              _isEditing = false;
+                                            })
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        BtnDefault(
+                                          "Salvar",
+                                          onPressed: () => {
+                                            setState(() {
+                                              _isEditing = false;
+                                            })
+                                          },
+                                        ), 
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ):
+                              Column(
+                                children: [
                                   UserInformation(
                                     titulo: "Nome",
                                     texto: firstName,
@@ -143,21 +264,30 @@ class _ProfilePageState extends State<ProfilePage> {
                                     texto: lastName,
                                   ),
                                   UserInformation(
-                                    titulo: "Email",
-                                    texto: email,
-                                  ),
-                                  UserInformation(
                                     titulo: "Telefone",
                                     texto: phone,
                                   ),
+                                  UserInformation(
+                                    titulo: "Email",
+                                    texto: email,
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  BtnDefault(
+                                    "Editar informações",
+                                    onPressed: () => {
+                                      setState(() {
+                                        _isEditing = true;
+                                        _firstNameController.text = firstName;
+                                        _lastNameController.text = lastName;        
+                                        _phoneController.text = phone;
+                                        _emailController.text = email;                                                                         
+                                      })
+                                    },
+                                  ),
                                 ],
                               ),
-                            ),
-                            BtnDefault(
-                              "Editar informações",
-                              onPressed: () => {
-
-                              },
                             ),
                           ],
                         ),
@@ -199,5 +329,26 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  Future setConfig(double newSensitivity) async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var token = sharedPreferences.getString('token');
+    var url =
+        Uri.parse('https://asensvy-production.up.railway.app/users/config');
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': '$token',
+    };
+    var body = jsonEncode({
+      'sensitivity': newSensitivity.toInt()
+    });
 
+    var response = await http.put(url, headers: headers, body: body);
+
+    if (response.statusCode == 200){
+      getUser();
+      print("Deu tudo CERTO $newSensitivity");
+    }else{
+      print("Deu tudo ERRADO");
+    }
+  }
 }
