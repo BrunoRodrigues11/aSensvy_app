@@ -93,7 +93,7 @@ flutter:
     - assets/success.png     
     - assets/analise_ia.png 
     - assets/config.png  
-    - assets/estatisticas.png  
+    - assets/player.png  
     - assets/historico.png   
     - assets/select_video.png   
     - assets/no-data.png                

@@ -271,7 +271,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     titulo: "Email",
                                     texto: email,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10,
                                   ),
                                   BtnDefault(
@@ -329,24 +329,27 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  Future setConfig(double newSensitivity) async{
+  Future setUser() async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var token = sharedPreferences.getString('token');
     var url =
-        Uri.parse('https://asensvy-production.up.railway.app/users/config');
+        Uri.parse('https://asensvy-production.up.railway.app/users/myuser');
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': '$token',
     };
     var body = jsonEncode({
-      'sensitivity': newSensitivity.toInt()
+      'firstName': _firstNameController,
+      'lastName': _lastNameController,
+      'email': _emailController,
+      'phone': _phoneController
     });
 
     var response = await http.put(url, headers: headers, body: body);
 
     if (response.statusCode == 200){
       getUser();
-      print("Deu tudo CERTO $newSensitivity");
+      print("Deu tudo CERTO");
     }else{
       print("Deu tudo ERRADO");
     }
