@@ -43,7 +43,9 @@ dependencies:
   flutter_launcher_icons: 
   flutter_native_splash: 
   permission_handler: ^10.4.3
-  
+  video_player: 
+  flick_video_player: 
+
 flutter_native_splash:
   color: "#034694"
   image: "assets/app/splash.png"

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:apptesteapi/config/helper_functions.dart';
 import 'package:apptesteapi/config/theme.dart';
 import 'package:apptesteapi/model/history.dart';
+import 'package:apptesteapi/widgets/cards.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -113,24 +114,10 @@ class _HistoryPageState extends State<HistoryPage> {
                       FutureBuilder<List<Historico>>(
                         future: historico,
                         builder: (context, snapshot) {
-                          // if (snapshot.connectionState == ConnectionState.waiting) {
-                          //   return Column(
-                          //     crossAxisAlignment: CrossAxisAlignment.center,
-                          //     mainAxisAlignment: MainAxisAlignment.center,   
-                          //     children: const [
-                          //       CircularProgressIndicator(
-                          //         color: AppColors.primaryColor,
-                          //       ),
-                          //       Text(
-                          //         'Carregando'
-                          //       )
-                          //     ],
-                          //   );
-                          // } else 
                           if (snapshot.hasError) {
                             return Text(snapshot.error.toString());
                           } else if (snapshot.hasData) {
-                            if (snapshot.data!.length == 0){
+                            if (snapshot.data!.isEmpty){
                               return Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
@@ -143,7 +130,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                           width: 300,
                                           height: 300,
                                         ),
-                                        Text(
+                                        const Text(
                                           "Desculpe, mas não há dados para mostrar aqui.",
                                           style: TextStyle(
                                             color: AppColors.primaryColor,
@@ -158,7 +145,6 @@ class _HistoryPageState extends State<HistoryPage> {
                                 ],
                               );
                             }
-                            print("AAA: ${snapshot.data!.length}");
                             return Padding(
                               padding: const EdgeInsets.only(left: 10, right: 10),
                               child: ListView.builder(
@@ -168,98 +154,13 @@ class _HistoryPageState extends State<HistoryPage> {
                                 itemBuilder: (context, index) {
                                   Historico historico = snapshot.data![index];
                                   int? score = historico.score;
-                                  return Padding(
-                                    padding: const EdgeInsets.all(5),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: _getBackgroundColor(score),
-                                        borderRadius: BorderRadius.circular(20),
-                                        boxShadow: [ 
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            spreadRadius: 2,
-                                            blurRadius: 5,
-                                            offset: const Offset(0,3), // deslocamento horizontal e vertical da sombra
-                                          ),
-                                        ],
-                                      ),
-                                      child: ListTile(
-                                        title: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            historico.name.toString(),
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16,
-                                                color: Colors.white
-                                            ),
-                                          ),
-                                        ),
-                                        subtitle: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Column(
-                                                children: [
-                                                  Container(
-                                                    width: 45,
-                                                    height: 45,
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius: BorderRadius.circular(50),
-                                                    ),
-                                                    child: Column(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                                      children: [
-                                                        Text(
-                                                          historico.score.toString(),
-                                                          style: const TextStyle(
-                                                              fontWeight: FontWeight.bold,
-                                                              fontSize: 18,
-                                                              color:Colors.black
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  const Text(
-                                                    "Score",
-                                                    style: TextStyle(
-                                                        fontWeight:FontWeight.bold,
-                                                        fontSize: 14,
-                                                        color: Colors.white
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Column(
-                                                children: [
-                                                  Text(
-                                                    DateFormat('dd/MM/yyyy').format(DateTime.parse(historico.date!)),
-                                                    style: const TextStyle(
-                                                        fontWeight:FontWeight.bold,
-                                                        fontSize: 16,
-                                                        color: Colors.white
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    historico.risco.toString(),
-                                                    style: const TextStyle(
-                                                        fontWeight:FontWeight.bold,
-                                                        fontSize: 16,
-                                                        color: Colors.white
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                  return HistoryCard(
+                                    title: historico.name.toString(),
+                                    score: score.toString(),
+                                    date: DateFormat('dd/MM/yyyy').format(DateTime.parse(historico.date!)),
+                                    risco: historico.risco.toString(),
+                                    backgroundColor: _getBackgroundColor(score),
+                                    file: historico.file.toString(),
                                   );
                                 },
                               ),
@@ -288,8 +189,7 @@ class _HistoryPageState extends State<HistoryPage> {
       ),
     );
   }
-
-  // COLORS DO HISTÓRICO
+      // COLORS DO HISTÓRICO
   Color _getBackgroundColor(int? score) {
     if (score! >= 75.0) {
       return const Color(0xffc40234); // muito alto -> 75% a 100%
