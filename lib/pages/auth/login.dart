@@ -1,11 +1,9 @@
+import 'package:apptesteapi/config/auth_service.dart';
 import 'package:apptesteapi/config/helper_functions.dart';
 import 'package:apptesteapi/config/theme.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -17,16 +15,11 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
   GoToScreen goToScreen = GoToScreen();
+  final authService = AuthService();
+  
   final _formkey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _snackBar = const SnackBar(
-    content: Text(
-      "Email ou senha inválidos",
-      textAlign: TextAlign.center,
-    ),
-    backgroundColor: Colors.redAccent,
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -212,7 +205,7 @@ class _LoginState extends State<Login> {
   entrar() async {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (_formkey.currentState!.validate()) {
-      bool deuCerto = await doLogin();
+      bool deuCerto = await login(context); // Passe o contexto para a função login.
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
       }
@@ -220,38 +213,20 @@ class _LoginState extends State<Login> {
         goToScreen.goToHomePage(context);
       } else {
         _passwordController.clear();
-        ScaffoldMessenger.of(context).showSnackBar(_snackBar);
       }
     }
   }
 
-  Future<bool> doLogin() async {
-    try {
-      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      var url = Uri.parse('https://asensvy-production.up.railway.app/auth');
-      var objeto = {
-        'password': _passwordController.text,
-        'email': _emailController.text
-      };
-
-      var headers = {'Content-Type': 'application/json'};
-      var jsonBody = jsonEncode(objeto);
-      var response = await http.post(url, headers: headers, body: jsonBody);
-
-      if (response.statusCode == 200) {
-        await sharedPreferences.setString('token', "Token ${jsonDecode(response.body)['token']}");
-        await sharedPreferences.setString('fullName', "FullName ${jsonDecode(response.body)['user']['fullName']}");
-        var token = sharedPreferences.getString('token');
-        print("TOKEN $token");
-        // print(jsonDecode(response.body)['user']['fullName']);
-        return true;
-      } else {
-        print('Erro na requisição. Código de status: ${response.statusCode}');
-        return false;
-      }
-    } catch (e) {
-      print('Erro ao enviar objeto: $e');
+  Future<bool> login(BuildContext context) async {
+    final email = _emailController.text;
+    final password = _passwordController.text;
+    
+    final success = await authService.doLogin(context, email, password);
+    
+    if (success) {
+      return true;
+    } else {
+      return false;
     }
-    throw Exception('BarException');
   }
 }

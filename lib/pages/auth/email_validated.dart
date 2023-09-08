@@ -1,10 +1,10 @@
+import 'package:apptesteapi/config/email_utils.dart';
 import 'package:apptesteapi/config/helper_functions.dart';
 import 'package:apptesteapi/config/theme.dart';
+import 'package:apptesteapi/widgets/alerts.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class EmailValidation extends StatefulWidget {
   String email;
@@ -17,6 +17,8 @@ class EmailValidation extends StatefulWidget {
 class _EmailValidationState extends State<EmailValidation> {
   // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
   GoToScreen goToScreen = GoToScreen();
+  final emailUtils = EmailUtils();
+
   final _formkey = GlobalKey<FormState>();
   final _codController0 = TextEditingController();
   final _codController1 = TextEditingController();
@@ -26,13 +28,6 @@ class _EmailValidationState extends State<EmailValidation> {
   final _codController5 = TextEditingController();
   final _fullCode = [];
   String _code = "";
-  final _snackBar = const SnackBar(
-    content: Text(
-      "Código inválido",
-      textAlign: TextAlign.center,
-    ),
-    backgroundColor: Colors.redAccent,
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +171,7 @@ class _EmailValidationState extends State<EmailValidation> {
     _fullCode.add(_codController5.text);
     _code = _fullCode.join();
     if (_code.length <6){
-      ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+      showErrorAlert(context, 'Código inválido.');
     }else{
       enviar();      
     }
@@ -185,41 +180,31 @@ class _EmailValidationState extends State<EmailValidation> {
   enviar() async {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (_formkey.currentState!.validate()) {
-      bool deuCerto = await verifyCode();
+      bool deuCerto = await verifyCode(context);
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
       }
       if (deuCerto) {
         goToScreen.goToNewPswdPage(context, widget.email);
       } else {
+        _fullCode.clear();
         _codController0.clear();
-        ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+        _codController1.clear();
+        _codController2.clear();
+        _codController3.clear();
+        _codController4.clear();
+        _codController5.clear();
       }
     }
   }
 
-  // ARRUMAR A ROTA
-  Future<bool> verifyCode() async {
-    try {
-      var url = Uri.parse('https://asensvy-production.up.railway.app/recoverPassword/verify');
-      var objeto = {
-        'email': widget.email,
-        'code': _code
-      };
-
-      var headers = {'Content-Type': 'application/json'};
-      var jsonBody = jsonEncode(objeto);
-      var response = await http.post(url, headers: headers, body: jsonBody);
-
-      if (response.statusCode == 200) {
-        return true;
-      } else {
-        print('Erro na requisição. Código de status: ${response.statusCode}');
-        return false;
-      }
-    } catch (e) {
-      print('Erro ao enviar objeto: $e');
+  Future<bool> verifyCode(BuildContext context) async {    
+    final success = await emailUtils.doVerifyCode(context, widget.email, _code);
+    
+    if (success) {
+      return true;
+    } else {
+      return false;
     }
-    throw Exception('BarException');
   }
 }

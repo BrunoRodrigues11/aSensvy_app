@@ -1,11 +1,11 @@
+import 'package:apptesteapi/config/auth_service.dart';
 import 'package:apptesteapi/config/helper_functions.dart';
 import 'package:apptesteapi/config/theme.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:quickalert/quickalert.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -17,6 +17,7 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
   GoToScreen goToScreen = GoToScreen();
+  final authService = AuthService();
 
   final _formkey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
@@ -24,23 +25,7 @@ class _SignUpState extends State<SignUp> {
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _snackBar = const SnackBar(
-    content: Text(
-      "Preencha todos os campos",
-      textAlign: TextAlign.center,
-    ),
-    backgroundColor: Colors.redAccent,
-  );
-  final _snackBarS = const SnackBar(
-    content: Text(
-      "Cadastro realizado com sucesso!",
-      textAlign: TextAlign.center,
-    ),
-    backgroundColor: Color(0xff00a468),
-  );
-
   var maskFormatter = MaskTextInputFormatter(
-    //+55 (15) 9 9708-6888
     mask: '(##) # ####-####',
     filter: {"#": RegExp(r'[0-9]')},
     type: MaskAutoCompletionType.lazy,
@@ -283,44 +268,37 @@ class _SignUpState extends State<SignUp> {
   cadastrar() async {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (_formkey.currentState!.validate()) {
-      bool deuCerto = await doSignUp();
+      bool deuCerto = await signUp(context);
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
       }
       if (deuCerto) {
-        ScaffoldMessenger.of(context).showSnackBar(_snackBarS);
-        goToScreen.goToLoginPage(context);        
-      } else {
-        _passwordController.clear();
-        ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+        goToScreen.goToLoginPage(context);
       }
+    } else {
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.info,
+        title: "Aviso",
+        text: "Preencha todos os campos"
+      );
     }
   }
 
-  Future<bool> doSignUp() async {
-    try {
-      var url = Uri.parse('https://asensvy-production.up.railway.app/users');
-      var objeto = {
-        'firstName': _firstNameController.text,
-        'lastName': _lastNameController.text,
-        'email': _emailController.text,
-        'phone': _phoneController.text,
-        'password': _passwordController.text
-      };
+  Future<bool> signUp(BuildContext context) async {
+    final success = await authService.doSignUp(
+      context,
+      _firstNameController.text,
+      _lastNameController.text,
+      _emailController.text,
+      _phoneController.text,
+      _passwordController.text,
+    );
 
-      var headers = {'Content-Type': 'application/json'};
-      var jsonBody = jsonEncode(objeto);
-      var response = await http.post(url, headers: headers, body: jsonBody);
-
-      if (response.statusCode == 201) {
-        return true;
-      } else {
-        print('Erro na requisição. Código de status: ${response.statusCode}');
-        return false;
-      }
-    } catch (e) {
-      print('Erro ao enviar objeto: $e');
+    if (success) {
+      return true;
+    } else {
+      return false;
     }
-    throw Exception('BarException');
   }
 }

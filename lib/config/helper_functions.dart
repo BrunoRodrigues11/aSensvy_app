@@ -107,9 +107,4 @@ class GoToScreen {
       MaterialPageRoute(builder: (context) => InitHomePage(0, const IaVerify())),
     );
   }   
-  
-}
-
-class ApiFuncs{
-
 }

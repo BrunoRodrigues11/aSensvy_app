@@ -45,6 +45,7 @@ dependencies:
   permission_handler: ^10.4.3
   video_player: 
   flick_video_player: 
+  quickalert: 
 
 flutter_native_splash:
   color: "#034694"

@@ -1,10 +1,9 @@
+import 'package:apptesteapi/config/email_utils.dart';
 import 'package:apptesteapi/config/helper_functions.dart';
 import 'package:apptesteapi/config/theme.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
@@ -16,15 +15,10 @@ class ResetPassword extends StatefulWidget {
 class _ResetPasswordState extends State<ResetPassword> {
   // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
   GoToScreen goToScreen = GoToScreen();
+  final emailUtils = EmailUtils();
+
   final _formkey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
-  final _snackBar = const SnackBar(
-    content: Text(
-      "Email inválido",
-      textAlign: TextAlign.center,
-    ),
-    backgroundColor: Colors.redAccent,
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +167,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   validar() async {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (_formkey.currentState!.validate()) {
-      bool deuCerto = await sendEmail();
+      bool deuCerto = await sendEmail(context);
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
       }
@@ -181,31 +175,18 @@ class _ResetPasswordState extends State<ResetPassword> {
         goToScreen.goToEmailValidationPage(context, _emailController.text);
       } else {
         _emailController.clear();
-        ScaffoldMessenger.of(context).showSnackBar(_snackBar);
       }
     }
   }
 
-  // ARRUMAR A ROTA
-  Future<bool> sendEmail() async {
-    try {
-      var url = Uri.parse('https://asensvy-production.up.railway.app/recoverPassword/send');
-      var objeto = {'email': _emailController.text};
-
-      var headers = {'Content-Type': 'application/json'};
-      var jsonBody = jsonEncode(objeto);
-      var response = await http.post(url, headers: headers, body: jsonBody);
-
-      if (response.statusCode == 201) {
-        return true;
-      } else {
-        print('Erro na requisição. Código de status: ${response.statusCode}');
-        return false;
-      }
-    } catch (e) {
-      print('Erro ao enviar objeto: $e');
+  Future<bool> sendEmail(BuildContext context) async {   
+    final success = await emailUtils.doSendEmail(context, _emailController.text);
+    
+    if (success) {
+      return true;
+    } else {
+      return false;
     }
-    throw Exception('BarException');
   }
 }
 

@@ -1,3 +1,4 @@
+import 'package:apptesteapi/config/email_utils.dart';
 import 'package:apptesteapi/config/helper_functions.dart';
 import 'package:apptesteapi/config/theme.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
@@ -17,17 +18,11 @@ class NewPassword extends StatefulWidget {
 class _NewPasswordState extends State<NewPassword> {
   // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
   GoToScreen goToScreen = GoToScreen();
+  final emailUtils = EmailUtils();
+
   final _formkey = GlobalKey<FormState>();
   final _newPasswordController = TextEditingController();
   final _confirmNewPasswordController = TextEditingController();
-
-  final _snackBar = const SnackBar(
-    content: Text(
-      "As senhas não são iguais",
-      textAlign: TextAlign.center,
-    ),
-    backgroundColor: Colors.redAccent,
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +193,7 @@ class _NewPasswordState extends State<NewPassword> {
   enviar() async {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (_formkey.currentState!.validate()) {
-      bool deuCerto = await setNewPassword();
+      bool deuCerto = await setNewPassword(context);
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
       }
@@ -207,34 +202,17 @@ class _NewPasswordState extends State<NewPassword> {
       } else {
         _newPasswordController.clear();
         _confirmNewPasswordController.clear();        
-        ScaffoldMessenger.of(context).showSnackBar(_snackBar);
       }
     }
   }
 
-  // ARRUMAR A ROTA
-  Future<bool> setNewPassword() async {
-    try {
-      var url = Uri.parse('https://asensvy-production.up.railway.app/recoverPassword/newpassword');
-      var objeto = {
-        'email': widget.email,
-        'password': _confirmNewPasswordController.text
-      };
-
-      var headers = {'Content-Type': 'application/json'};
-      var jsonBody = jsonEncode(objeto);
-      var response = await http.post(url, headers: headers, body: jsonBody);
-
-      if (response.statusCode == 200) {
-        print("SENHA RESETADA");
-        return true;
-      } else {
-        print('Erro na requisição. Código de status: ${response.statusCode}');
-        return false;
-      }
-    } catch (e) {
-      print('Erro ao enviar objeto: $e');
+  Future<bool> setNewPassword(BuildContext context) async {    
+    final success = await emailUtils.doSetNewPassword(context, widget.email, _confirmNewPasswordController.text);
+    
+    if (success) {
+      return true;
+    } else {
+      return false;
     }
-    throw Exception('BarException');
   }
 }

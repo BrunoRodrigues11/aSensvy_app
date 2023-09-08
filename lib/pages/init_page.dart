@@ -16,7 +16,6 @@ class _FirstPageState extends State<FirstPage> {
   @override
   void initState() {
     super.initState();
-    print("Chamou função inicial");
     verificarToken().then((value) {
       if (value) {
         goToScreen.goToHomePage(context);

@@ -7,6 +7,7 @@ import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,6 +21,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
   GoToScreen goToScreen = GoToScreen();
+  
   String firstName = "";
   String lastName = "";
   String email = "";
@@ -237,15 +239,21 @@ class _ProfilePageState extends State<ProfilePage> {
                                             })
                                           },
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 10,
                                         ),
                                         BtnDefault(
                                           "Salvar",
                                           onPressed: () => {
-                                            setState(() {
-                                              _isEditing = false;
-                                            })
+                                            QuickAlert.show(
+                                              context: context,
+                                              type: QuickAlertType.error,
+                                              title: "Oops...",
+                                              text: "Deu tudo errado campeão"
+                                            ),
+                                            // setState(() {
+                                            //   _isEditing = false;
+                                            // })
                                           },
                                         ), 
                                       ],
@@ -324,7 +332,12 @@ class _ProfilePageState extends State<ProfilePage> {
         _isLoading = false;
       });
     }else{
-      print('Falha ao carregar os dados da API');
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        title: "Oops...",
+        text: "Não foi possível carregar os dados"
+      );
       _isLoading = false;
     }
   }
