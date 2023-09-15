@@ -169,7 +169,7 @@ class _IaVerifyState extends State<IaVerify> {
     } else {
       // Permissão negada pelo usuário
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Permissão de acesso ao armazenamento negada.'),
         ),
       );

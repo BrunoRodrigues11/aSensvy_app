@@ -1,8 +1,9 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:apptesteapi/config/helper_functions.dart';
 import 'package:apptesteapi/config/theme.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
+import 'package:apptesteapi/widgets/loading.dart';
+import 'package:apptesteapi/widgets/texts.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -92,45 +93,64 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
                 child: _isLoading 
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,   
-                      children: const [
-                        CircularProgressIndicator(
-                          color: AppColors.primaryColor,
-                        ),
-                        Text(
-                          'Carregando'
-                        )
-                      ],
-                    )
+                  ? const LoadingIndicator()
                   :Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 15, top: 30),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,                    
+                      padding: const EdgeInsets.all(15),
+                      child: Column(
                         children: [
-                          Text(
-                            "Sensibilidade: $userSensitivity",
-                            style: const TextStyle(
-                              fontSize: 18
-                            ),
+                          TextTitle(texto: "Sensibilidade"),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,                    
+                            children: [
+                              Text(
+                                "Sensibilidade: $userSensitivity",
+                                style: const TextStyle(
+                                  fontSize: 18
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  _showSensitivityModal();
+                                },
+                                icon: const Icon(
+                                  Icons.edit
+                                )
+                              )
+                            ],
                           ),
-                          IconButton(
-                            onPressed: () {
-                              _showSensitivityModal();
-                            },
-                            icon: Icon(
-                              Icons.edit
-                            )
-                          )
+                          TextTitle(texto: "Segurança"),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,                    
+                            children: [
+                              const Text(
+                                "Alterar senha",
+                                style: TextStyle(
+                                  fontSize: 18
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  
+                                },
+                                icon: const Icon(
+                                  Icons.edit
+                                )
+                              )
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              TextTitle(texto: "Permissões")
+                            ],
+                          ),
                         ],
                       ),
                     ),
-
                   ],
                 ),
               )
@@ -157,9 +177,7 @@ class _SettingsPageState extends State<SettingsPage> {
         userSensitivity = jsonData['config']['sensitivity'];
         _isLoading = false;
       });
-      print(jsonData['config']['sensitivity']);
     }else{
-      print('Falha ao carregar os dados da API');
       _isLoading = false;
     }
   }

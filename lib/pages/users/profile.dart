@@ -4,8 +4,8 @@ import 'package:apptesteapi/config/theme.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:apptesteapi/widgets/information.dart';
 import 'package:apptesteapi/widgets/inputs.dart';
+import 'package:apptesteapi/widgets/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -131,18 +131,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         child: _isLoading 
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,   
-                            children: const [
-                              CircularProgressIndicator(
-                                color: AppColors.primaryColor,
-                              ),
-                              Text(
-                                'Carregando'
-                              )
-                            ],
-                          )
+                        ? const LoadingIndicator()
                         :Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [

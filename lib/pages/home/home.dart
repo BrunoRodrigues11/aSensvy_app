@@ -1,6 +1,8 @@
+import 'package:apptesteapi/config/auth_service.dart';
 import 'package:apptesteapi/config/helper_functions.dart';
 import 'package:apptesteapi/config/theme.dart';
 import 'package:apptesteapi/widgets/information.dart';
+import 'package:apptesteapi/widgets/texts.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,16 +16,18 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
   GoToScreen goToScreen = GoToScreen();
+  final authService = AuthService();
+
   String _fullName = "";
   String _fullNameLogged = "";
-  
-@override
+
+  @override
   void initState() {
     super.initState();
     _getFullName();
   }
 
-  _getFullName() async{
+  _getFullName() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     _fullName = sharedPreferences.getString('fullName').toString();
     _fullNameLogged = _fullName.replaceAll('FullName ', '');
@@ -40,11 +44,11 @@ class _HomeState extends State<Home> {
     );
   }
 
-  _body() { 
+  _body() {
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
-          color: AppColors.primaryColor, 
+          color: AppColors.primaryColor,
           constraints: BoxConstraints(
             maxHeight: MediaQuery.of(context).size.height,
             maxWidth: MediaQuery.of(context).size.width,
@@ -66,13 +70,12 @@ class _HomeState extends State<Home> {
                               Text(
                                 "Olá, $_fullNameLogged",
                                 style: const TextStyle(
-                                  fontSize: 18, 
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white
-                                ),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
                               ),
                               IconButton(
-                                onPressed: () => sair(), 
+                                onPressed: () => sair(),
                                 icon: const Icon(
                                   Icons.logout,
                                   color: Colors.white,
@@ -90,81 +93,67 @@ class _HomeState extends State<Home> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30)
-                          ),
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30)),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 2,
                               blurRadius: 5,
-                              offset: const Offset(0, 3), // deslocamento horizontal e vertical da sombra
+                              offset: const Offset(0, 3),
                             ),
                           ],
                         ),
                         child: ListView(
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.only(left: 15, top: 30),
-                              child: Text(
-                                "Dicas",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500
-                                ),
-                              ),
+                            Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: TextTitle(texto: "Dicas"),
                             ),
                             SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Padding(
-                                padding: const EdgeInsets.only(left: 15, top: 15, bottom: 5),
+                                padding: const EdgeInsets.only(bottom: 5),
                                 child: Row(
                                   children: [
                                     ListInformation(
-                                      color: AppColors.primaryColor, 
-                                      tiulo: "Use óculos de sol", 
-                                      subtitulo: "Proteção contra raios UV e luz intensa"
-                                    ),
+                                        color: AppColors.primaryColor,
+                                        tiulo: "Use óculos de sol",
+                                        subtitulo:
+                                            "Proteção contra raios UV e luz intensa"),
                                     ListInformation(
-                                      color: AppColors.primaryColor, 
-                                      tiulo: "Evite luzes brilhantes", 
-                                      subtitulo: "Luz solar, fluorescentes e de flashs"
-                                    ), 
+                                        color: AppColors.primaryColor,
+                                        tiulo: "Evite luzes brilhantes",
+                                        subtitulo:
+                                            "Luz solar, fluorescentes e de flashs"),
                                     ListInformation(
-                                      color: AppColors.primaryColor, 
-                                      tiulo: "Ajuste a iluminação interna", 
-                                      subtitulo: "Use lâmpadas de menor intensidade"
-                                    ),
+                                        color: AppColors.primaryColor,
+                                        tiulo: "Ajuste a iluminação interna",
+                                        subtitulo:
+                                            "Use lâmpadas de menor intensidade"),
                                     ListInformation(
-                                      color: AppColors.primaryColor, 
-                                      tiulo: "Use filtros de tela", 
-                                      subtitulo: "Reduz o brilho e a intesidade de luz"
-                                    ),                                    
+                                        color: AppColors.primaryColor,
+                                        tiulo: "Use filtros de tela",
+                                        subtitulo:
+                                            "Reduz o brilho e a intesidade de luz"),
                                     ListInformation(
-                                      color: AppColors.primaryColor, 
-                                      tiulo: "Evite exposição prolongada", 
-                                      subtitulo: "Em ambientes muito iluminados"
-                                    ),                                                                                                      
+                                        color: AppColors.primaryColor,
+                                        tiulo: "Evite exposição prolongada",
+                                        subtitulo:
+                                            "Em ambientes muito iluminados"),
                                   ],
-                                )
+                                ),
                               ),
                             ),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 15),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    "O que vamos fazer hoje?",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500
-                                    ),
-                                  ),
+                                  TextTitle(texto: "O que vamos fazer hoje?"),
                                   Padding(
-                                    padding: const EdgeInsets.only(top: 20),
+                                    padding: const EdgeInsets.only(top: 5),
                                     child: SizedBox(
                                       height: 300,
                                       child: GridView.count(
@@ -174,24 +163,28 @@ class _HomeState extends State<Home> {
                                         childAspectRatio: 1.30,
                                         children: [
                                           OptionsGrid(
-                                            imagem: "assets/analise_ia.png", 
+                                            imagem: "assets/analise_ia.png",
                                             nome: "Analisar vídeo",
-                                            onTap: () => goToScreen.goToIAVerifyPage(context),
+                                            onTap: () => goToScreen
+                                                .goToIAVerifyPage(context),
                                           ),
                                           OptionsGrid(
-                                            imagem: "assets/historico.png", 
+                                            imagem: "assets/historico.png",
                                             nome: "Histórico",
-                                            onTap: () => goToScreen.goToHistoryPage(context),
-                                          ),   
-                                          OptionsGrid(
-                                            imagem: "assets/player.png", 
-                                            nome: "Video Player",
-                                            onTap: () => goToScreen.goToIAVerifyPage(context),
+                                            onTap: () => goToScreen
+                                                .goToHistoryPage(context),
                                           ),
                                           OptionsGrid(
-                                            imagem: "assets/config.png", 
+                                            imagem: "assets/player.png",
+                                            nome: "Video Player",
+                                            onTap: () => goToScreen
+                                                .goToIAVerifyPage(context),
+                                          ),
+                                          OptionsGrid(
+                                            imagem: "assets/config.png",
                                             nome: "Ajustes",
-                                            onTap: () => goToScreen.goToSettingsPage(context),
+                                            onTap: () => goToScreen
+                                                .goToSettingsPage(context),
                                           ),
                                         ],
                                       ),
@@ -201,7 +194,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                           ],
-                        )
+                        ),
                       ),
                     ),
                   ],
@@ -213,22 +206,21 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-    
+
   sair() async {
-    bool saiu = await doLogout();
+    bool saiu = await exit(context);
     if (saiu) {
       goToScreen.goToFirstPage(context);
     }
   }
 
-  Future<bool> doLogout() async {
-    try {
-      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      await sharedPreferences.clear();
+  Future<bool> exit(BuildContext context) async {
+    final success = await authService.doLogout(context);
+
+    if (success) {
       return true;
-    } catch (e) {
-      print('Erro ao sair: $e');
+    } else {
+      return false;
     }
-    throw Exception('BarException');
   }
 }

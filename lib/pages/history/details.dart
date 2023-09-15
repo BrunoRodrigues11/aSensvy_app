@@ -11,7 +11,7 @@ class DetailsPage extends StatefulWidget {
   final String risco;
   final String file;
 
-  DetailsPage({super.key, required this.title, required this.score, required this.date, required this.risco, required this.file});
+  const DetailsPage({super.key, required this.title, required this.score, required this.date, required this.risco, required this.file});
 
   @override
   State<DetailsPage> createState() => _DetailsPageState();

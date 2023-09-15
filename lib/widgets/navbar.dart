@@ -18,7 +18,7 @@ class _NavbarHomeState extends State<NavbarHome> {
       color: Colors.white,
       child: BottomAppBar(
           shape: const CircularNotchedRectangle(),
-          color: Color(0xff034694),
+          color: const Color(0xff034694),
           child: IconTheme(
             data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary), 
             child: Padding(
@@ -27,30 +27,30 @@ class _NavbarHomeState extends State<NavbarHome> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.home),
+                    icon: const Icon(Icons.home),
                     onPressed: (){
-                      _homePage(context, Home());
+                      _homePage(context, const Home());
                     },          
                   ), 
                   IconButton(
-                    icon: Icon(Icons.list),
+                    icon: const Icon(Icons.list),
                     onPressed: (){
-                      _historyPage(context, HistoryPage());
+                      _historyPage(context, const HistoryPage());
                     }, 
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 24,
                   ),
                   IconButton(
-                    icon: Icon(Icons.settings),
+                    icon: const Icon(Icons.settings),
                     onPressed: (){
                       // _settingsPage(context, page)
                     }, 
                   ),
                   IconButton(
-                    icon: Icon(Icons.person),
+                    icon: const Icon(Icons.person),
                     onPressed: (){
-                      _profilePage(context, ProfilePage());
+                      _profilePage(context, const ProfilePage());
                     }, 
                   ),
                 ],
@@ -89,9 +89,9 @@ class _BtnIaVerifyState extends State<BtnIaVerify> {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      backgroundColor: Color(0xff034694),
+      backgroundColor: const Color(0xff034694),
       onPressed: () {
-        _iaVerifyPage(context, IaVerify());
+        _iaVerifyPage(context, const IaVerify());
       },
       child: const Icon(Icons.add),
     );

@@ -8,7 +8,8 @@ class AuthService {
   final String baseUrl = 'https://asensvy-production.up.railway.app';
 
   // LOGIN
-  Future<bool> doLogin(BuildContext context, String email, String password) async {
+  Future<bool> doLogin(
+      BuildContext context, String email, String password) async {
     try {
       final sharedPreferences = await SharedPreferences.getInstance();
       final url = Uri.parse('$baseUrl/auth');
@@ -27,17 +28,18 @@ class AuthService {
 
         return true;
       } else {
-        showErrorAlert(context, 'Email ou senha inválida.');
+        showErrorAlert(context, 'Email ou senha incorreta.');
         return false;
       }
     } catch (e) {
       showErrorAlert(context, "Erro ao enviar objeto: $e");
-      return false; 
+      return false;
     }
   }
 
   // CADASTRO
-  Future<bool> doSignUp(BuildContext context, String firstName, String lastName, String email, String phone, String password) async {
+  Future<bool> doSignUp(BuildContext context, String firstName, String lastName,
+      String email, String phone, String password) async {
     try {
       final url = Uri.parse('$baseUrl/users');
       final headers = {'Content-Type': 'application/json'};
@@ -56,11 +58,25 @@ class AuthService {
         showSuccessAlert(context, "Cadastro realizado com sucesso!");
         return true;
       } else {
-        showErrorAlert(context, 'Algo deu errado. Código: ${response.statusCode}');
+        showErrorAlert(
+            context, 'Algo deu errado. Código: ${response.statusCode}');
         return false;
       }
     } catch (e) {
       showErrorAlert(context, "Erro ao enviar objeto: $e");
+      return false;
+    }
+  }
+
+  // SAIR
+  Future<bool> doLogout(BuildContext context) async {
+    try {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      await sharedPreferences.clear();
+      return true;
+    } catch (e) {
+      showErrorAlert(context, 'Algo deu errado.');
       return false;
     }
   }
