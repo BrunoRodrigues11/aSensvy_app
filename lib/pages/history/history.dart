@@ -5,7 +5,6 @@ import 'package:apptesteapi/config/theme.dart';
 import 'package:apptesteapi/model/history.dart';
 import 'package:apptesteapi/widgets/cards.dart';
 import 'package:apptesteapi/widgets/loading.dart';
-import 'package:apptesteapi/widgets/skelton.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -94,7 +93,7 @@ class _HistoryPageState extends State<HistoryPage> {
                       topRight: Radius.circular(30)),
                 ),
                 child: _isLoading
-                    ? Row(children: [Skelton(height: 120, width: 120)])
+                    ? const LoadingIndicator()
                     : SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,

@@ -153,7 +153,7 @@ class _HomeState extends State<Home> {
                                 children: [
                                   TextTitle(texto: "O que vamos fazer hoje?"),
                                   Padding(
-                                    padding: const EdgeInsets.only(top: 5),
+                                    padding: const EdgeInsets.only(top: 15),
                                     child: SizedBox(
                                       height: 300,
                                       child: GridView.count(

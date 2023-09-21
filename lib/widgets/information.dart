@@ -6,7 +6,11 @@ class ListInformation extends StatelessWidget {
   String tiulo;
   String subtitulo;
 
-  ListInformation({super.key, required this.color, required this.tiulo, required this.subtitulo});
+  ListInformation(
+      {super.key,
+      required this.color,
+      required this.tiulo,
+      required this.subtitulo});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +27,8 @@ class ListInformation extends StatelessWidget {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 2,
             blurRadius: 5,
-            offset: const Offset(0, 3), // deslocamento horizontal e vertical da sombra
+            offset: const Offset(
+                0, 3), // deslocamento horizontal e vertical da sombra
           ),
         ],
       ),
@@ -59,10 +64,15 @@ class OptionsGrid extends StatelessWidget {
   String nome;
   void Function() onTap;
 
-  OptionsGrid({super.key, required this.imagem, required this.nome, required this.onTap});
+  OptionsGrid(
+      {super.key,
+      required this.imagem,
+      required this.nome,
+      required this.onTap});
 
   @override
-  Widget build(BuildContext context) { // Color(0xffE4E9F7),
+  Widget build(BuildContext context) {
+    // Color(0xffE4E9F7),
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -74,7 +84,8 @@ class OptionsGrid extends StatelessWidget {
               color: Colors.grey.withOpacity(0.5),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: const Offset(0, 3), // deslocamento horizontal e vertical da sombra
+              offset: const Offset(
+                  0, 3), // deslocamento horizontal e vertical da sombra
             ),
           ],
         ),
@@ -96,9 +107,7 @@ class OptionsGrid extends StatelessWidget {
             ),
             Text(
               nome,
-              style: const TextStyle(
-                fontSize: 16
-              ),
+              style: const TextStyle(fontSize: 16),
             )
           ],
         ),
@@ -114,37 +123,35 @@ class UserInformation extends StatelessWidget {
   UserInformation({super.key, required this.texto, required this.titulo});
 
   @override
-  Widget build(BuildContext context) { // Color(0xffE4E9F7),
-  return Padding(
-    padding: const EdgeInsets.only(top: 5),
-    child: Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              titulo,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold
+  Widget build(BuildContext context) {
+    // Color(0xffE4E9F7),
+    return Padding(
+      padding: const EdgeInsets.only(top: 5),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                titulo,
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            Text(
-              texto,
-              style: const TextStyle(
-                fontSize: 16,
-                color: AppColors.primaryColor,
-                fontWeight: FontWeight.w500
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                texto,
+                style: const TextStyle(
+                    fontSize: 16,
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.w500),
               ),
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
