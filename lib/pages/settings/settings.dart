@@ -5,6 +5,7 @@ import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:apptesteapi/widgets/loading.dart';
 import 'package:apptesteapi/widgets/texts.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,11 +22,13 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _isLoading = true;
   double userSensitivity = 0;
   double newSensitivity = 0;
+  bool storageStatus = false;
 
   @override
   void initState() {
     super.initState();
     getConfig();
+    checkPermission();
   }
 
   @override
@@ -121,7 +124,12 @@ class _SettingsPageState extends State<SettingsPage> {
                                   )
                                 ],
                               ),
-                              TextTitle(texto: "Segurança"),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  TextTitle(texto: "Segurança"),
+                                ],
+                              ),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -139,9 +147,39 @@ class _SettingsPageState extends State<SettingsPage> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [TextTitle(texto: "Permissões")],
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  TextTitle(texto: "Permissões"),
+                                  IconButton(
+                                    onPressed: () {
+                                      checkPermission();
+                                    },
+                                    icon: const Icon(
+                                      Icons.refresh,
+                                    ),
+                                  )
+                                ],
                               ),
+                              storageStatus == true
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: const [
+                                        Icon(Icons.check_sharp,
+                                            color: Colors.green),
+                                        Text("Armazenamento"),
+                                      ],
+                                    )
+                                  : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: const [
+                                        Icon(Icons.cancel_sharp,
+                                            color: Colors.red),
+                                        Text("Armazenamento"),
+                                      ],
+                                    ),
                             ],
                           ),
                         ),
@@ -195,6 +233,24 @@ class _SettingsPageState extends State<SettingsPage> {
     } else {
       print("Deu tudo ERRADO");
     }
+  }
+
+  // Verifica o status da permissão de acesso ao armazenamento de mídias
+  Future<PermissionStatus> checkPermission() async {
+    // Obtém o status da permissão
+    PermissionStatus status = await Permission.storage.status;
+
+    // Retorna o status da permissão
+    if (status == PermissionStatus.granted) {
+      setState(() {
+        storageStatus = true;
+      });
+    } else {
+      setState(() {
+        storageStatus = false;
+      });
+    }
+    return status;
   }
 
   _showSensitivityModal(double newSensitivity) {
