@@ -42,3 +42,14 @@ void showAlert(
     confirmBtnColor: AppColors.primaryColor,
   );
 }
+
+void showSuccessAlertBtn(BuildContext context, String message, Function onBtnOkPress) {
+  QuickAlert.show(
+    context: context,
+    type: QuickAlertType.success,
+    title: "Sucesso!",
+    text: message,
+    confirmBtnColor: AppColors.primaryColor,
+    onConfirmBtnTap: onBtnOkPress()
+  );
+}

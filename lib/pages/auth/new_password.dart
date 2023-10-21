@@ -1,6 +1,7 @@
 import 'package:apptesteapi/config/email_utils.dart';
 import 'package:apptesteapi/config/helper_functions.dart';
 import 'package:apptesteapi/config/theme.dart';
+import 'package:apptesteapi/widgets/alerts.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class _NewPasswordState extends State<NewPassword> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
-          color: AppColors.primaryColor, 
+          color: AppColors.primaryColor,
           constraints: BoxConstraints(
             maxHeight: MediaQuery.of(context).size.height,
             maxWidth: MediaQuery.of(context).size.width,
@@ -52,7 +53,8 @@ class _NewPasswordState extends State<NewPassword> {
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () => goToScreen.goToLoginPage(context),
+                              onPressed: () =>
+                                  goToScreen.goToLoginPage(context),
                               icon: const Icon(
                                 Icons.arrow_back_ios,
                                 size: 20,
@@ -67,10 +69,9 @@ class _NewPasswordState extends State<NewPassword> {
                         const Text(
                           "Nova senha",
                           style: TextStyle(
-                            fontSize: 30, 
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white
-                          ),
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
                         const SizedBox(
                           height: 10,
@@ -78,7 +79,7 @@ class _NewPasswordState extends State<NewPassword> {
                         Text(
                           "Informe uma nova senha de acesso",
                           style: TextStyle(
-                            fontSize: 15, 
+                            fontSize: 15,
                             color: Colors.grey[50],
                           ),
                         ),
@@ -94,15 +95,15 @@ class _NewPasswordState extends State<NewPassword> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30)
-                          ),
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30)),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 2,
                               blurRadius: 5,
-                              offset: const Offset(0, 3), // deslocamento horizontal e vertical da sombra
+                              offset: const Offset(0,
+                                  3), // deslocamento horizontal e vertical da sombra
                             ),
                           ],
                         ),
@@ -133,7 +134,8 @@ class _NewPasswordState extends State<NewPassword> {
                                           "Informe a nova senha",
                                           const [],
                                           validator: (senha) {
-                                            if (senha == null || senha.isEmpty) {
+                                            if (senha == null ||
+                                                senha.isEmpty) {
                                               return "Por favor, informe sua senha";
                                             } else if (senha.length < 6) {
                                               return "Por favor, informe uma senha maior que 6 caracteres";
@@ -153,16 +155,20 @@ class _NewPasswordState extends State<NewPassword> {
                                           "Confirme a nova senha",
                                           const [],
                                           validator: (senha) {
-                                            if (senha == null || senha.isEmpty) {
+                                            if (senha == null ||
+                                                senha.isEmpty) {
                                               return "Por favor, confirme sua senha";
                                             } else if (senha.length < 6) {
                                               return "Por favor, confirme a senha";
-                                            } else if (_newPasswordController == _confirmNewPasswordController.text) {
+                                            } else if (_newPasswordController ==
+                                                _confirmNewPasswordController
+                                                    .text) {
                                               return "As senhas devem ser iguais";
-                                            }                                
+                                            }
                                             return null;
                                           },
-                                          controller: _confirmNewPasswordController,
+                                          controller:
+                                              _confirmNewPasswordController,
                                         ),
                                       ],
                                     ),
@@ -196,17 +202,24 @@ class _NewPasswordState extends State<NewPassword> {
         currentFocus.unfocus();
       }
       if (deuCerto) {
-        goToScreen.goToSuccessNewPswdPage(context);
+        showSuccessAlertBtn(
+          context,
+          "Sua senha foi atualizada!",
+          () {
+            goToScreen.goToLoginPage(context);
+          },
+        );
       } else {
         _newPasswordController.clear();
-        _confirmNewPasswordController.clear();        
+        _confirmNewPasswordController.clear();
       }
     }
   }
 
-  Future<bool> setNewPassword(BuildContext context) async {    
-    final success = await emailUtils.doSetNewPassword(context, widget.email, _confirmNewPasswordController.text);
-    
+  Future<bool> setNewPassword(BuildContext context) async {
+    final success = await emailUtils.doSetNewPassword(
+        context, widget.email, _confirmNewPasswordController.text);
+
     if (success) {
       return true;
     } else {

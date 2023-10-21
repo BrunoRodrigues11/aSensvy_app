@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:apptesteapi/config/helper_functions.dart';
 import 'package:apptesteapi/config/theme.dart';
+import 'package:apptesteapi/widgets/alerts.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:apptesteapi/widgets/loading.dart';
 import 'package:apptesteapi/widgets/texts.dart';
@@ -20,6 +21,7 @@ class _SettingsPageState extends State<SettingsPage> {
   // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
   GoToScreen goToScreen = GoToScreen();
   bool _isLoading = true;
+  bool _isLoadingStorage = false;
   double userSensitivity = 0;
   double newSensitivity = 0;
   bool storageStatus = false;
@@ -125,39 +127,26 @@ class _SettingsPageState extends State<SettingsPage> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  TextTitle(texto: "Segurança"),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    "Alterar senha",
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.arrow_back_ios,
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   TextTitle(texto: "Permissões"),
                                   IconButton(
                                     onPressed: () {
-                                      checkPermission();
+                                      setState(() {
+                                        _isLoadingStorage = true;
+                                      });
+                                      checkPermission().then((response) {
+                                        setState(() {
+                                          _isLoadingStorage = false;
+                                        });
+                                      });
                                     },
-                                    icon: const Icon(
-                                      Icons.refresh,
-                                    ),
+                                    icon: _isLoadingStorage
+                                        ? const CircularProgressIndicator()
+                                        : const Icon(
+                                            Icons.refresh,
+                                          ),
                                   )
                                 ],
                               ),
@@ -229,9 +218,9 @@ class _SettingsPageState extends State<SettingsPage> {
 
     if (response.statusCode == 200) {
       getConfig();
-      print("Deu tudo CERTO $newSensitivity");
+      showSuccessAlert(context, "Sensibilidade atualizada com sucesso!");
     } else {
-      print("Deu tudo ERRADO");
+      showErrorAlert(context, "Falha ao atualizar sensibilidade");
     }
   }
 

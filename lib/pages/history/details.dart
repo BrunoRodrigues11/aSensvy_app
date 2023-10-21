@@ -11,7 +11,13 @@ class DetailsPage extends StatefulWidget {
   final String risco;
   final String file;
 
-  const DetailsPage({super.key, required this.title, required this.score, required this.date, required this.risco, required this.file});
+  const DetailsPage(
+      {super.key,
+      required this.title,
+      required this.score,
+      required this.date,
+      required this.risco,
+      required this.file});
 
   @override
   State<DetailsPage> createState() => _DetailsPageState();
@@ -26,7 +32,7 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   void initState() {
     super.initState();
-    
+
     // Inicialize a variável fileUri usando o valor da propriedade 'file' do widget
     fileUri = Uri.parse(widget.file);
 
@@ -35,7 +41,7 @@ class _DetailsPageState extends State<DetailsPage> {
       videoPlayerController: VideoPlayerController.networkUrl(fileUri),
     );
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,11 +52,12 @@ class _DetailsPageState extends State<DetailsPage> {
     );
   }
 
-    _body() { // color background #E4E9F7
+  _body() {
+    // color background #E4E9F7
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
-          color: AppColors.primaryColor, 
+          color: AppColors.primaryColor,
           constraints: BoxConstraints(
             maxHeight: MediaQuery.of(context).size.height,
             maxWidth: MediaQuery.of(context).size.width,
@@ -68,7 +75,8 @@ class _DetailsPageState extends State<DetailsPage> {
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () => goToScreen.goToHomePage(context),
+                              onPressed: () =>
+                                  goToScreen.goToHistoryPage(context),
                               icon: const Icon(
                                 Icons.arrow_back_ios,
                                 size: 20,
@@ -83,10 +91,9 @@ class _DetailsPageState extends State<DetailsPage> {
                         const Text(
                           "Detalhes",
                           style: TextStyle(
-                            fontSize: 30, 
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white
-                          ),
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
                         const SizedBox(
                           height: 10,
@@ -100,18 +107,17 @@ class _DetailsPageState extends State<DetailsPage> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30)
-                          ),
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30)),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 2,
                               blurRadius: 5,
-                              offset: const Offset(0, 3), 
+                              offset: const Offset(0, 3),
                             ),
                           ],
-                        ),   
+                        ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -121,9 +127,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                 children: [
                                   // AQUI
                                   AspectRatio(
-                                    aspectRatio: 9/16,
+                                    aspectRatio: 9 / 16,
                                     child: FlickVideoPlayer(
-                                      flickManager: flickManager),
+                                        flickManager: flickManager),
                                   )
                                 ],
                               ),
@@ -140,5 +146,5 @@ class _DetailsPageState extends State<DetailsPage> {
         ),
       ),
     );
-  }  
+  }
 }

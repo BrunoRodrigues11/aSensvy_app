@@ -178,7 +178,7 @@ class _HomeState extends State<Home> {
                                             imagem: "assets/player.png",
                                             nome: "Video Player",
                                             onTap: () => goToScreen
-                                                .goToIAVerifyPage(context),
+                                                .goToHistoryPage(context),
                                           ),
                                           OptionsGrid(
                                             imagem: "assets/config.png",

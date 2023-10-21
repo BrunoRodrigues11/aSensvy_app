@@ -14,52 +14,53 @@ import 'package:apptesteapi/pages/users/profile.dart';
 import 'package:flutter/material.dart';
 
 class GoToScreen {
-  // ===== 
+  // =====
   void goToLoginPage(BuildContext context) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const Login()),
     );
   }
-  
+
   void goToSignUpPage(BuildContext context) {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const SignUp()),
     );
-  }        
+  }
 
   void goToFirstPage(BuildContext context) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const FirstPage()),
     );
-  }  
-  
+  }
+
   // ===== RESET PASSWORD ROUTES =====
   // 01
   void goToResetPswdPage(BuildContext context) {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const ResetPassword()),
     );
-  }  
-  
+  }
+
   // 02
   void goToEmailValidationPage(BuildContext context, emailController) {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => EmailValidation(email: emailController)),
+      MaterialPageRoute(
+          builder: (context) => EmailValidation(email: emailController)),
     );
-  } 
-    
+  }
+
   // 03
   void goToNewPswdPage(BuildContext context, widgetEmail) {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => NewPassword(email: widgetEmail)),
     );
-  } 
+  }
 
   // 04
   void goToSuccessNewPswdPage(BuildContext context) {
@@ -67,44 +68,48 @@ class GoToScreen {
       context,
       MaterialPageRoute(builder: (context) => const SuccessNewPassword()),
     );
-  } 
+  }
   // ===== THE END OF RESET PASSWORD ROUTES =====
 
   // ********************************************
 
   // ===== SCREEN ROUTES =====
   void goToHomePage(BuildContext context) {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => InitHomePage(0, const Home())),
     );
   }
 
   void goToHistoryPage(BuildContext context) {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => InitHomePage(1, const HistoryPage())),
+      MaterialPageRoute(
+          builder: (context) => InitHomePage(1, const HistoryPage())),
     );
   }
 
   void goToSettingsPage(BuildContext context) {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => InitHomePage(2, const SettingsPage())),
+      MaterialPageRoute(
+          builder: (context) => InitHomePage(2, const SettingsPage())),
     );
-  }  
+  }
 
   void goToProfilePage(BuildContext context) {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => InitHomePage(3, const ProfilePage())),
+      MaterialPageRoute(
+          builder: (context) => InitHomePage(3, const ProfilePage())),
     );
   }
 
   void goToIAVerifyPage(BuildContext context) {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => InitHomePage(0, const IaVerify())),
+      MaterialPageRoute(
+          builder: (context) => InitHomePage(0, const IaVerify())),
     );
-  }   
+  }
 }
