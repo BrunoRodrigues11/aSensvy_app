@@ -118,6 +118,19 @@ class _SettingsPageState extends State<SettingsPage> {
                                     userSensitivity.round().toString(),
                                     style: const TextStyle(fontSize: 18),
                                   ),
+                                  const SizedBox(
+                                      width:
+                                          8), // Espaço entre o ícone e a barra de progresso
+                                  Expanded(
+                                    child: LinearProgressIndicator(
+                                      value: userSensitivity / 100,
+                                      backgroundColor: Colors.grey,
+                                      valueColor:
+                                          const AlwaysStoppedAnimation<Color>(
+                                              AppColors.primaryColor),
+                                      minHeight: 10,
+                                    ),
+                                  ),
                                   IconButton(
                                     onPressed: () {
                                       _showSensitivityModal(userSensitivity);
