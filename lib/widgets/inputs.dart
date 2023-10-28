@@ -6,6 +6,7 @@ class InputDefault extends StatelessWidget {
   // label, obscureText = false, validator, controller, keyboardType, hint
   String label;
   bool obscureText = false;
+  bool enabled = true;
   String? Function(String?) validator;
   TextInputType keyboardType;
   String hint;
@@ -13,8 +14,8 @@ class InputDefault extends StatelessWidget {
   List<TextInputFormatter>? inputFormatters;
   TextEditingController controller;
 
-  InputDefault(this.label, this.obscureText, this.keyboardType, this.icon, this.hint,
-      this.inputFormatters,
+  InputDefault(this.label, this.obscureText, this.keyboardType, this.icon,
+      this.hint, this.inputFormatters, this.enabled,
       {super.key, required this.validator, required this.controller});
 
   @override
@@ -25,10 +26,7 @@ class InputDefault extends StatelessWidget {
         Text(
           label,
           style: const TextStyle(
-            fontSize: 15, 
-            fontWeight: FontWeight.w400, 
-            color: Colors.black
-          ),
+              fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black),
         ),
         const SizedBox(
           height: 5,
@@ -39,10 +37,12 @@ class InputDefault extends StatelessWidget {
           controller: controller,
           obscureText: obscureText,
           inputFormatters: inputFormatters,
+          enabled: enabled,
           decoration: InputDecoration(
             hintText: hint,
             prefixIcon: icon,
-            contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
               borderSide: const BorderSide(color: Colors.grey),
@@ -79,7 +79,7 @@ class InputCode extends StatelessWidget {
         validator: (code) {
           if (code == null || code.isEmpty) {
             return "Por favor, informe sua senha";
-          } 
+          }
           return null;
         },
         keyboardType: TextInputType.number,
@@ -90,21 +90,21 @@ class InputCode extends StatelessWidget {
           FilteringTextInputFormatter.digitsOnly,
         ],
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            borderSide: const BorderSide(color: Colors.grey),
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            borderSide: const BorderSide(color: AppColors.primaryColor),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            borderSide: const BorderSide(color: AppColors.primaryColor),
-          ),
-          focusColor: AppColors.primaryColor
-        ),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
+              borderSide: const BorderSide(color: Colors.grey),
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
+              borderSide: const BorderSide(color: AppColors.primaryColor),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
+              borderSide: const BorderSide(color: AppColors.primaryColor),
+            ),
+            focusColor: AppColors.primaryColor),
       ),
     );
   }

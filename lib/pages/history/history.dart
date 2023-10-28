@@ -1,13 +1,11 @@
-import 'dart:convert';
 import 'package:apptesteapi/config/helper_functions.dart';
 import 'package:apptesteapi/config/ia_service.dart';
 import 'package:apptesteapi/config/theme.dart';
 import 'package:apptesteapi/model/history.dart';
+import 'package:apptesteapi/widgets/alerts.dart';
 import 'package:apptesteapi/widgets/cards.dart';
 import 'package:apptesteapi/widgets/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -21,7 +19,6 @@ class _HistoryPageState extends State<HistoryPage> {
   // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
   GoToScreen goToScreen = GoToScreen();
   final iaService = IaService();
-
   late Future<List<Historico>> historico;
   bool _isLoading = true;
 
@@ -199,41 +196,14 @@ class _HistoryPageState extends State<HistoryPage> {
 
   Future<List<Historico>> pegarHistorico() async {
     try {
-      List<Historico> historicos = await iaService.doGetHistory(context);
+      List<Historico> historicos = await iaService.doGetHistory();
       setState(() {
         _isLoading = false;
       });
       return historicos;
     } catch (e) {
+      showErrorAlert(context, "Erro ao buscar histórico: $e");
       return [];
-    }
-  }
-
-  // FUTURE FUNCTION PARA DAR UM GET NO HISTÓRICO DO USUÁRIO
-  Future<List<Historico>> pegarHistoricoA() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var token = sharedPreferences.getString('token');
-    var url = Uri.parse('https://asensvy-production.up.railway.app/ia/history');
-    var headers = {
-      'Content-Type': 'application/json',
-      'Authorization': '$token',
-    };
-
-    var response = await http.get(url, headers: headers);
-
-    if (response.statusCode == 200) {
-      var jsonData = jsonDecode(response.body);
-      var historicoList = jsonData['history'] as List<dynamic>;
-
-      List<Historico> historicos =
-          historicoList.map((json) => Historico.fromJson(json)).toList();
-      setState(() {
-        _isLoading = false;
-      });
-      return historicos;
-    } else {
-      throw Exception(
-          "Não foi possível carregar o histórico ${response.statusCode}");
     }
   }
 }

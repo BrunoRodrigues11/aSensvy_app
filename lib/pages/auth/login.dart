@@ -1,6 +1,7 @@
 import 'package:apptesteapi/config/auth_service.dart';
 import 'package:apptesteapi/config/helper_functions.dart';
 import 'package:apptesteapi/config/theme.dart';
+import 'package:apptesteapi/widgets/alerts.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class _LoginState extends State<Login> {
   // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
   GoToScreen goToScreen = GoToScreen();
   final authService = AuthService();
-  
+
   final _formkey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -56,7 +57,7 @@ class _LoginState extends State<Login> {
                       "Bem-vindo de volta!",
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 30, 
+                          fontSize: 30,
                           fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(
@@ -65,7 +66,7 @@ class _LoginState extends State<Login> {
                     Text(
                       "Entre com sua conta",
                       style: TextStyle(
-                        fontSize: 15, 
+                        fontSize: 15,
                         color: Colors.grey[50],
                       ),
                     ),
@@ -74,20 +75,20 @@ class _LoginState extends State<Login> {
               ),
               Expanded(
                 flex: 5,
-                child: Container( 
+                child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30)
-                    ),
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30)),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 2,
                         blurRadius: 5,
-                        offset: const Offset(0, 3), // deslocamento horizontal e vertical da sombra
+                        offset: const Offset(0,
+                            3), // deslocamento horizontal e vertical da sombra
                       ),
                     ],
                   ),
@@ -110,6 +111,7 @@ class _LoginState extends State<Login> {
                                 ),
                                 "Informe o seu email",
                                 const [],
+                                true,
                                 validator: (email) {
                                   if (email == null || email.isEmpty) {
                                     return "Por favor, informe seu email";
@@ -131,6 +133,7 @@ class _LoginState extends State<Login> {
                                 ),
                                 "Informe a sua senha",
                                 const [],
+                                true,
                                 validator: (senha) {
                                   if (senha == null || senha.isEmpty) {
                                     return "Por favor, informe sua senha";
@@ -165,7 +168,7 @@ class _LoginState extends State<Login> {
                       ),
                       BtnDefault(
                         "Entrar",
-                        onPressed: () => entrar(),
+                        onPressed: () => entrar(context),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -173,7 +176,7 @@ class _LoginState extends State<Login> {
                           const Text(
                             "Não possui uma conta?",
                             style: TextStyle(
-                                fontSize: 16,
+                              fontSize: 16,
                             ),
                           ),
                           TextButton(
@@ -202,31 +205,26 @@ class _LoginState extends State<Login> {
     );
   }
 
-  entrar() async {
+  void entrar(BuildContext context) async {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (_formkey.currentState!.validate()) {
-      bool deuCerto = await login(context); // Passe o contexto para a função login.
+      bool deuCerto =
+          await login(context, _emailController.text, _passwordController.text);
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
       }
       if (deuCerto) {
         goToScreen.goToHomePage(context);
       } else {
+        showErrorAlert(context, 'Email ou senha incorreta.');
         _passwordController.clear();
       }
     }
   }
 
-  Future<bool> login(BuildContext context) async {
-    final email = _emailController.text;
-    final password = _passwordController.text;
-    
-    final success = await authService.doLogin(context, email, password);
-    
-    if (success) {
-      return true;
-    } else {
-      return false;
-    }
+  Future<bool> login(
+      BuildContext context, String email, String password) async {
+    final success = await authService.doLogin(email, password);
+    return success;
   }
 }

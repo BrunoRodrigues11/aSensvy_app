@@ -1,15 +1,12 @@
 import 'dart:convert';
-import 'package:apptesteapi/widgets/alerts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/material.dart';
 
 class AuthService {
   final String baseUrl = 'https://asensvy-production.up.railway.app';
 
   // LOGIN
-  Future<bool> doLogin(
-      BuildContext context, String email, String password) async {
+  Future<bool> doLogin(String email, String password) async {
     try {
       final sharedPreferences = await SharedPreferences.getInstance();
       final url = Uri.parse('$baseUrl/auth');
@@ -28,22 +25,20 @@ class AuthService {
 
         return true;
       } else {
-        showErrorAlert(context, 'Email ou senha incorreta.');
         return false;
       }
     } catch (e) {
-      showErrorAlert(context, "Erro ao enviar objeto: $e");
       return false;
     }
   }
 
   // CADASTRO
-  Future<bool> doSignUp(BuildContext context, String firstName, String lastName,
-      String email, String phone, String password) async {
+  Future<bool> doSignUp(String firstName, String lastName, String email,
+      String phone, String password) async {
     try {
       final url = Uri.parse('$baseUrl/users');
       final headers = {'Content-Type': 'application/json'};
-      final objeto = {
+      final body = {
         'firstName': firstName,
         'lastName': lastName,
         'email': email,
@@ -51,32 +46,27 @@ class AuthService {
         'password': password
       };
 
-      final jsonBody = jsonEncode(objeto);
+      final jsonBody = jsonEncode(body);
       final response = await http.post(url, headers: headers, body: jsonBody);
 
       if (response.statusCode == 201) {
-        showSuccessAlert(context, "Cadastro realizado com sucesso!");
         return true;
       } else {
-        showErrorAlert(
-            context, 'Algo deu errado. Código: ${response.statusCode}');
         return false;
       }
     } catch (e) {
-      showErrorAlert(context, "Erro ao enviar objeto: $e");
       return false;
     }
   }
 
   // SAIR
-  Future<bool> doLogout(BuildContext context) async {
+  Future<bool> doLogout() async {
     try {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       await sharedPreferences.clear();
       return true;
     } catch (e) {
-      showErrorAlert(context, 'Algo deu errado.');
       return false;
     }
   }

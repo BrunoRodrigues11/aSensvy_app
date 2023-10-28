@@ -27,6 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String lastName = "";
   String email = "";
   String phone = "";
+  String oldPassword = "";
   bool _isLoading = true;
   bool _isEditing = false;
 
@@ -35,6 +36,8 @@ class _ProfilePageState extends State<ProfilePage> {
   final _lastNameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
+  final _passwordCurrentController = TextEditingController();
+  final _passwordNewController = TextEditingController();
 
   var maskFormatter = MaskTextInputFormatter(
     //+55 (15) 9 9708-6888
@@ -86,8 +89,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           ],
                         ),
                         const SizedBox(
-
-                          
                           height: 5,
                         ),
                         _isEditing
@@ -136,172 +137,210 @@ class _ProfilePageState extends State<ProfilePage> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.all(15),
-                                    child: _isEditing
-                                        ? Form(
-                                            key: _formkey,
-                                            child: Column(
-                                              children: <Widget>[
-                                                Column(
-                                                  children: [
-                                                    InputDefault(
-                                                      "Nome",
-                                                      false,
-                                                      TextInputType.text,
-                                                      Icon(
-                                                        Icons.person,
-                                                        color: Colors.grey[600],
-                                                      ),
-                                                      "Informe o seu nome",
-                                                      const [],
-                                                      validator: (firstName) {
-                                                        if (firstName == null ||
-                                                            firstName.isEmpty) {
-                                                          return "Por favor, informe seu nome";
-                                                        }
-                                                        return null;
-                                                      },
-                                                      controller:
-                                                          _firstNameController,
-                                                    ),
-                                                    InputDefault(
-                                                      "Sobrenome",
-                                                      false,
-                                                      TextInputType.text,
-                                                      Icon(
-                                                        Icons.person,
-                                                        color: Colors.grey[600],
-                                                      ),
-                                                      "Informe o seu sobrenome",
-                                                      const [],
-                                                      validator: (lastName) {
-                                                        if (lastName == null ||
-                                                            lastName.isEmpty) {
-                                                          return "Por favor, informe seu sobrenome";
-                                                        }
-                                                        return null;
-                                                      },
-                                                      controller:
-                                                          _lastNameController,
-                                                    ),
-                                                    InputDefault(
-                                                      "Telefone",
-                                                      false,
-                                                      TextInputType.text,
-                                                      Icon(
-                                                        Icons.phone,
-                                                        color: Colors.grey[600],
-                                                      ),
-                                                      "Informe o seu telefone",
-                                                      [maskFormatter],
-                                                      validator: (tel) {
-                                                        if (tel == null ||
-                                                            tel.isEmpty) {
-                                                          return "Por favor, informe seu telefone";
-                                                        } else if (tel.length <
-                                                            16) {
-                                                          return "Por favor, informe um telefone válido.";
-                                                        }
-                                                        return null;
-                                                      },
-                                                      controller:
-                                                          _phoneController,
-                                                    ),
-                                                    InputDefault(
-                                                      "Email",
-                                                      false,
-                                                      TextInputType
-                                                          .emailAddress,
-                                                      Icon(
-                                                        Icons.email,
-                                                        color: Colors.grey[600],
-                                                      ),
-                                                      "Informe o seu email",
-                                                      const [],
-                                                      validator: (email) {
-                                                        if (email == null ||
-                                                            email.isEmpty) {
-                                                          return "Por favor, informe seu email";
-                                                        } else if (!RegExp(r'@')
-                                                            .hasMatch(
-                                                                _emailController
-                                                                    .text)) {
-                                                          return 'Por favor, informe um e-mail válido!';
-                                                        }
-                                                        return null;
-                                                      },
-                                                      controller:
-                                                          _emailController,
-                                                    ),
-                                                    BtnDefault(
-                                                      "Cancelar",
-                                                      onPressed: () => {
-                                                        setState(() {
-                                                          _isEditing = false;
-                                                        })
-                                                      },
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    BtnDefault(
-                                                      "Salvar",
-                                                      onPressed: () => {
-                                                        showSuccessAlert(
-                                                            context,
-                                                            'Informações atualizadas com sucesso!'),
-                                                        // setState(() {
-                                                        //   _isEditing = false;
-                                                        // })
-                                                      },
-                                                    ),
-                                                  ],
+                                      padding: const EdgeInsets.all(15),
+                                      child: Form(
+                                        key: _formkey,
+                                        child: Column(
+                                          children: <Widget>[
+                                            Column(
+                                              children: [
+                                                InputDefault(
+                                                  "Nome",
+                                                  false,
+                                                  TextInputType.text,
+                                                  Icon(
+                                                    Icons.person,
+                                                    color: Colors.grey[600],
+                                                  ),
+                                                  "Informe o seu nome",
+                                                  const [],
+                                                  _isEditing ? true : false,
+                                                  validator: (firstName) {
+                                                    if (firstName == null ||
+                                                        firstName.isEmpty) {
+                                                      return "Por favor, informe seu nome";
+                                                    }
+                                                    return null;
+                                                  },
+                                                  controller:
+                                                      _firstNameController,
                                                 ),
+                                                InputDefault(
+                                                  "Sobrenome",
+                                                  false,
+                                                  TextInputType.text,
+                                                  Icon(
+                                                    Icons.person,
+                                                    color: Colors.grey[600],
+                                                  ),
+                                                  "Informe o seu sobrenome",
+                                                  const [],
+                                                  _isEditing ? true : false,
+                                                  validator: (lastName) {
+                                                    if (lastName == null ||
+                                                        lastName.isEmpty) {
+                                                      return "Por favor, informe seu sobrenome";
+                                                    }
+                                                    return null;
+                                                  },
+                                                  controller:
+                                                      _lastNameController,
+                                                ),
+                                                InputDefault(
+                                                  "Telefone",
+                                                  false,
+                                                  TextInputType.text,
+                                                  Icon(
+                                                    Icons.phone,
+                                                    color: Colors.grey[600],
+                                                  ),
+                                                  "Informe o seu telefone",
+                                                  [maskFormatter],
+                                                  _isEditing ? true : false,
+                                                  validator: (tel) {
+                                                    if (tel == null ||
+                                                        tel.isEmpty) {
+                                                      return "Por favor, informe seu telefone";
+                                                    } else if (tel.length <
+                                                        16) {
+                                                      return "Por favor, informe um telefone válido.";
+                                                    }
+                                                    return null;
+                                                  },
+                                                  controller: _phoneController,
+                                                ),
+                                                InputDefault(
+                                                  "Email",
+                                                  false,
+                                                  TextInputType.emailAddress,
+                                                  Icon(
+                                                    Icons.email,
+                                                    color: Colors.grey[600],
+                                                  ),
+                                                  "Informe o seu email",
+                                                  const [],
+                                                  _isEditing ? true : false,
+                                                  validator: (email) {
+                                                    if (email == null ||
+                                                        email.isEmpty) {
+                                                      return "Por favor, informe seu email";
+                                                    } else if (!RegExp(r'@')
+                                                        .hasMatch(
+                                                            _emailController
+                                                                .text)) {
+                                                      return 'Por favor, informe um e-mail válido!';
+                                                    }
+                                                    return null;
+                                                  },
+                                                  controller: _emailController,
+                                                ),
+                                                _isEditing
+                                                    ? InputDefault(
+                                                        "Senha Atual",
+                                                        true,
+                                                        TextInputType.text,
+                                                        Icon(
+                                                          Icons.lock,
+                                                          color:
+                                                              Colors.grey[600],
+                                                        ),
+                                                        "Informe a sua senha atual",
+                                                        const [],
+                                                        true,
+                                                        validator: (senha) {
+                                                          if (senha == null ||
+                                                              senha.isEmpty) {
+                                                            return "Por favor, informe sua senha atual";
+                                                          } else if (senha
+                                                                  .length <
+                                                              6) {
+                                                            return "Por favor, informe uma senha maior que 6 caracteres.";
+                                                          }
+                                                          return null;
+                                                        },
+                                                        controller:
+                                                            _passwordCurrentController,
+                                                      )
+                                                    : Container(),
+                                                _isEditing
+                                                    ? InputDefault(
+                                                        "Nova Senha",
+                                                        true,
+                                                        TextInputType.text,
+                                                        Icon(
+                                                          Icons.lock,
+                                                          color:
+                                                              Colors.grey[600],
+                                                        ),
+                                                        "Informe a sua nova senha",
+                                                        const [],
+                                                        true,
+                                                        validator: (novaSenha) {
+                                                          return null;
+                                                        },
+                                                        controller:
+                                                            _passwordNewController,
+                                                      )
+                                                    : Container(),
+                                                _isEditing
+                                                    ? Column(
+                                                        children: [
+                                                          BtnDefault(
+                                                            "Cancelar",
+                                                            onPressed: () => {
+                                                              setState(() {
+                                                                _isEditing =
+                                                                    false;
+                                                              })
+                                                            },
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          BtnDefault(
+                                                            "Salvar",
+                                                            onPressed: () => {
+                                                              setUser(),
+                                                              print("clicou")
+                                                            },
+                                                          ),
+                                                        ],
+                                                      )
+                                                    : Column(
+                                                        children: [
+                                                          const SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          BtnDefault(
+                                                            "Editar informações",
+                                                            onPressed: () => {
+                                                              setState(
+                                                                () {
+                                                                  _isEditing =
+                                                                      true;
+                                                                  _firstNameController
+                                                                          .text =
+                                                                      firstName;
+                                                                  _lastNameController
+                                                                          .text =
+                                                                      lastName;
+                                                                  _phoneController
+                                                                          .text =
+                                                                      phone;
+                                                                  _emailController
+                                                                          .text =
+                                                                      email;
+                                                                },
+                                                              ),
+                                                            },
+                                                          ),
+                                                        ],
+                                                      )
                                               ],
                                             ),
-                                          )
-                                        : Column(
-                                            children: [
-                                              UserInformation(
-                                                titulo: "Nome",
-                                                texto: firstName,
-                                              ),
-                                              UserInformation(
-                                                titulo: "Sobrenome",
-                                                texto: lastName,
-                                              ),
-                                              UserInformation(
-                                                titulo: "Telefone",
-                                                texto: phone,
-                                              ),
-                                              UserInformation(
-                                                titulo: "Email",
-                                                texto: email,
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              BtnDefault(
-                                                "Editar informações",
-                                                onPressed: () => {
-                                                  setState(
-                                                    () {
-                                                      _isEditing = true;
-                                                      _firstNameController
-                                                          .text = firstName;
-                                                      _lastNameController.text =
-                                                          lastName;
-                                                      _phoneController.text =
-                                                          phone;
-                                                      _emailController.text =
-                                                          email;
-                                                    },
-                                                  ),
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                  ),
+                                          ],
+                                        ),
+                                      )),
                                 ],
                               ),
                       ),
@@ -334,14 +373,15 @@ class _ProfilePageState extends State<ProfilePage> {
         lastName = jsonData['user']['lastName'];
         email = jsonData['user']['email'];
         phone = jsonData['user']['phone'];
+        oldPassword = jsonData['user']['password'];
+        _firstNameController.text = firstName;
+        _lastNameController.text = lastName;
+        _emailController.text = email;
+        _phoneController.text = phone;
         _isLoading = false;
       });
     } else {
-      QuickAlert.show(
-          context: context,
-          type: QuickAlertType.error,
-          title: "Oops...",
-          text: "Não foi possível carregar os dados");
+      showErrorAlert(context, "Não foi possível carregar os dados");
       _isLoading = false;
     }
   }
@@ -349,26 +389,29 @@ class _ProfilePageState extends State<ProfilePage> {
   Future setUser() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var token = sharedPreferences.getString('token');
-    var url =
-        Uri.parse('https://asensvy-production.up.railway.app/users/myuser');
+    var url = Uri.parse('https://asensvy-production.up.railway.app/myuser');
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': '$token',
     };
     var body = jsonEncode({
-      'firstName': _firstNameController,
-      'lastName': _lastNameController,
-      'email': _emailController,
-      'phone': _phoneController
+      'firstName': _firstNameController.text,
+      'lastName': _lastNameController.text,
+      'email': _emailController.text,
+      'phone': _phoneController.text,
+      'password': _passwordNewController.text,
+      "oldPassword": _passwordCurrentController.text,
     });
 
     var response = await http.put(url, headers: headers, body: body);
-
     if (response.statusCode == 200) {
       getUser();
-      print("Deu tudo CERTO");
+      setState(() {
+        _isEditing = false;
+      });
+      showSuccessAlert(context, "Informações atualizadas com sucesso!");
     } else {
-      print("Deu tudo ERRADO");
+      showErrorAlert(context, "Houve um erro ao atualizar as informações");
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:apptesteapi/config/email_utils.dart';
 import 'package:apptesteapi/config/helper_functions.dart';
 import 'package:apptesteapi/config/theme.dart';
+import 'package:apptesteapi/widgets/alerts.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class _ResetPasswordState extends State<ResetPassword> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
-          color: AppColors.primaryColor, 
+          color: AppColors.primaryColor,
           constraints: BoxConstraints(
             maxHeight: MediaQuery.of(context).size.height,
             maxWidth: MediaQuery.of(context).size.width,
@@ -50,7 +51,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () => goToScreen.goToLoginPage(context),
+                              onPressed: () =>
+                                  goToScreen.goToLoginPage(context),
                               icon: const Icon(
                                 Icons.arrow_back_ios,
                                 size: 20,
@@ -65,10 +67,9 @@ class _ResetPasswordState extends State<ResetPassword> {
                         const Text(
                           "Redefinir Senha",
                           style: TextStyle(
-                            fontSize: 30, 
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white
-                          ),
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
                         const SizedBox(
                           height: 10,
@@ -76,7 +77,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                         Text(
                           "Primeiramente, informe o seu email",
                           style: TextStyle(
-                            fontSize: 15, 
+                            fontSize: 15,
                             color: Colors.grey[50],
                           ),
                         ),
@@ -92,15 +93,15 @@ class _ResetPasswordState extends State<ResetPassword> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30)
-                          ),
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30)),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 2,
                               blurRadius: 5,
-                              offset: const Offset(0, 3), // deslocamento horizontal e vertical da sombra
+                              offset: const Offset(0,
+                                  3), // deslocamento horizontal e vertical da sombra
                             ),
                           ],
                         ),
@@ -121,25 +122,24 @@ class _ResetPasswordState extends State<ResetPassword> {
                                     child: Column(
                                       children: <Widget>[
                                         InputDefault(
-                                          "", 
-                                          false,
-                                          TextInputType.emailAddress,
-                                          Icon(
-                                            Icons.email,
-                                            color: Colors.grey[600],
-                                          ),
-                                          "Informe o seu email", 
-                                          const [], 
-                                          validator: (email) {
-                                            if (email == null || email.isEmpty) {
-                                              return "Por favor, informe seu email";
-                                            } else if (!RegExp(r'@').hasMatch(_emailController.text)) {
-                                              return 'Por favor, informe um e-mail válido!';
-                                            }
-                                            return null;
-                                          }, 
-                                          controller: _emailController
-                                        ),
+                                            "",
+                                            false,
+                                            TextInputType.emailAddress,
+                                            Icon(
+                                              Icons.email,
+                                              color: Colors.grey[600],
+                                            ),
+                                            "Informe o seu email",
+                                            const [],
+                                            true, validator: (email) {
+                                          if (email == null || email.isEmpty) {
+                                            return "Por favor, informe seu email";
+                                          } else if (!RegExp(r'@').hasMatch(
+                                              _emailController.text)) {
+                                            return 'Por favor, informe um e-mail válido!';
+                                          }
+                                          return null;
+                                        }, controller: _emailController),
                                       ],
                                     ),
                                   ),
@@ -148,7 +148,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                             ),
                             BtnDefault(
                               "Receber código",
-                              onPressed: () => validar(),
+                              onPressed: () => validar(context),
                             ),
                           ],
                         ),
@@ -164,29 +164,24 @@ class _ResetPasswordState extends State<ResetPassword> {
     );
   }
 
-  validar() async {
+  void validar(BuildContext context) async {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (_formkey.currentState!.validate()) {
-      bool deuCerto = await sendEmail(context);
+      bool deuCerto = await sendEmail(context, _emailController.text);
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
       }
       if (deuCerto) {
         goToScreen.goToEmailValidationPage(context, _emailController.text);
       } else {
+        showErrorAlert(context, 'Erro ao enviar e-mail');
         _emailController.clear();
       }
     }
   }
 
-  Future<bool> sendEmail(BuildContext context) async {   
-    final success = await emailUtils.doSendEmail(context, _emailController.text);
-    
-    if (success) {
-      return true;
-    } else {
-      return false;
-    }
+  Future<bool> sendEmail(BuildContext context, String email) async {
+    final success = await emailUtils.doSendEmail(email);
+    return success;
   }
 }
-

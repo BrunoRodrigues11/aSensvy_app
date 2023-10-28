@@ -1,11 +1,11 @@
 import 'package:apptesteapi/config/auth_service.dart';
 import 'package:apptesteapi/config/helper_functions.dart';
 import 'package:apptesteapi/config/theme.dart';
+import 'package:apptesteapi/widgets/alerts.dart';
 import 'package:apptesteapi/widgets/buttons.dart';
 import 'package:apptesteapi/widgets/inputs.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:quickalert/quickalert.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -43,7 +43,7 @@ class _SignUpState extends State<SignUp> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
-          color: AppColors.primaryColor, 
+          color: AppColors.primaryColor,
           constraints: BoxConstraints(
             maxHeight: MediaQuery.of(context).size.height,
             maxWidth: MediaQuery.of(context).size.width,
@@ -59,7 +59,8 @@ class _SignUpState extends State<SignUp> {
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () => goToScreen.goToLoginPage(context),
+                              onPressed: () =>
+                                  goToScreen.goToLoginPage(context),
                               icon: const Icon(
                                 Icons.arrow_back_ios,
                                 size: 20,
@@ -74,10 +75,9 @@ class _SignUpState extends State<SignUp> {
                         const Text(
                           "Cadastrar-se",
                           style: TextStyle(
-                            fontSize: 30, 
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white
-                          ),
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
                         const SizedBox(
                           height: 10,
@@ -85,7 +85,7 @@ class _SignUpState extends State<SignUp> {
                         Text(
                           "Crie a sua conta",
                           style: TextStyle(
-                            fontSize: 15, 
+                            fontSize: 15,
                             color: Colors.grey[50],
                           ),
                         ),
@@ -101,15 +101,15 @@ class _SignUpState extends State<SignUp> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30)
-                          ),
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30)),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 2,
                               blurRadius: 5,
-                              offset: const Offset(0, 3), // deslocamento horizontal e vertical da sombra
+                              offset: const Offset(0,
+                                  3), // deslocamento horizontal e vertical da sombra
                             ),
                           ],
                         ),
@@ -132,8 +132,10 @@ class _SignUpState extends State<SignUp> {
                                       ),
                                       "Informe o seu nome",
                                       const [],
+                                      true,
                                       validator: (firstName) {
-                                        if (firstName == null || firstName.isEmpty) {
+                                        if (firstName == null ||
+                                            firstName.isEmpty) {
                                           return "Por favor, informe seu nome";
                                         }
                                         return null;
@@ -150,8 +152,10 @@ class _SignUpState extends State<SignUp> {
                                       ),
                                       "Informe o seu sobrenome",
                                       const [],
+                                      true,
                                       validator: (lastName) {
-                                        if (lastName == null || lastName.isEmpty) {
+                                        if (lastName == null ||
+                                            lastName.isEmpty) {
                                           return "Por favor, informe seu sobrenome";
                                         }
                                         return null;
@@ -168,6 +172,7 @@ class _SignUpState extends State<SignUp> {
                                       ),
                                       "Informe o seu telefone",
                                       [maskFormatter],
+                                      true,
                                       validator: (tel) {
                                         if (tel == null || tel.isEmpty) {
                                           return "Por favor, informe seu telefone";
@@ -188,6 +193,7 @@ class _SignUpState extends State<SignUp> {
                                       ),
                                       "Informe o seu email",
                                       const [],
+                                      true,
                                       validator: (email) {
                                         if (email == null || email.isEmpty) {
                                           return "Por favor, informe seu email";
@@ -209,6 +215,7 @@ class _SignUpState extends State<SignUp> {
                                       ),
                                       "Informe a sua senha",
                                       const [],
+                                      true,
                                       validator: (senha) {
                                         if (senha == null || senha.isEmpty) {
                                           return "Por favor, informe sua senha";
@@ -225,16 +232,14 @@ class _SignUpState extends State<SignUp> {
                             ),
                             BtnDefault(
                               "Cadastrar",
-                              onPressed: () => cadastrar(),
+                              onPressed: () => cadastrar(context),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 const Text(
                                   "Já possui uma conta?",
-                                  style: TextStyle(
-                                    fontSize: 16
-                                  ),
+                                  style: TextStyle(fontSize: 16),
                                 ),
                                 TextButton(
                                   onPressed: () {
@@ -265,10 +270,17 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  cadastrar() async {
+  void cadastrar(BuildContext context) async {
     FocusScopeNode currentFocus = FocusScope.of(context);
+    final firstName = _firstNameController.text;
+    final lastName = _lastNameController.text;
+    final email = _emailController.text;
+    final phone = _phoneController.text;
+    final password = _passwordController.text;
+
     if (_formkey.currentState!.validate()) {
-      bool deuCerto = await signUp(context);
+      bool deuCerto =
+          await signUp(context, firstName, lastName, email, phone, password);
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
       }
@@ -276,28 +288,20 @@ class _SignUpState extends State<SignUp> {
         goToScreen.goToLoginPage(context);
       }
     } else {
-      QuickAlert.show(
-        context: context,
-        type: QuickAlertType.info,
-        title: "Aviso",
-        text: "Preencha todos os campos"
-      );
+      showInfoAlert(context, "Preencha todos os campos");
     }
   }
 
-  Future<bool> signUp(BuildContext context) async {
-    final success = await authService.doSignUp(
-      context,
-      _firstNameController.text,
-      _lastNameController.text,
-      _emailController.text,
-      _phoneController.text,
-      _passwordController.text,
-    );
+  Future<bool> signUp(BuildContext context, String firstName, String lastName,
+      String email, String phone, String password) async {
+    final success =
+        await authService.doSignUp(firstName, lastName, email, phone, password);
 
     if (success) {
+      showSuccessAlert(context, "Cadastro realizado com sucesso!");
       return true;
     } else {
+      showErrorAlert(context, "Algo deu errado durante o cadastro.");
       return false;
     }
   }

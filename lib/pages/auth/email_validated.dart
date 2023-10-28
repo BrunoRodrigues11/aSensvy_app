@@ -33,7 +33,7 @@ class _EmailValidationState extends State<EmailValidation> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: AppColors.primaryColor, 
+      backgroundColor: AppColors.primaryColor,
       body: _body(),
     );
   }
@@ -42,7 +42,7 @@ class _EmailValidationState extends State<EmailValidation> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
-          color: AppColors.primaryColor, 
+          color: AppColors.primaryColor,
           constraints: BoxConstraints(
             maxHeight: MediaQuery.of(context).size.height,
             maxWidth: MediaQuery.of(context).size.width,
@@ -60,7 +60,8 @@ class _EmailValidationState extends State<EmailValidation> {
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () => goToScreen.goToLoginPage(context),
+                              onPressed: () =>
+                                  goToScreen.goToLoginPage(context),
                               icon: const Icon(
                                 Icons.arrow_back_ios,
                                 size: 20,
@@ -75,10 +76,9 @@ class _EmailValidationState extends State<EmailValidation> {
                         const Text(
                           "Código de verificação",
                           style: TextStyle(
-                            fontSize: 30, 
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white
-                          ),
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
                         const SizedBox(
                           height: 10,
@@ -86,13 +86,13 @@ class _EmailValidationState extends State<EmailValidation> {
                         Text(
                           "Informe o código que foi enviado em seu email",
                           style: TextStyle(
-                            fontSize: 15, 
+                            fontSize: 15,
                             color: Colors.grey[50],
                           ),
                         ),
                         const SizedBox(
                           height: 10,
-                        ), 
+                        ),
                       ],
                     ),
                     Expanded(
@@ -102,15 +102,15 @@ class _EmailValidationState extends State<EmailValidation> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30)
-                          ),
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30)),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 2,
                               blurRadius: 5,
-                              offset: const Offset(0, 3), // deslocamento horizontal e vertical da sombra
+                              offset: const Offset(0,
+                                  3), // deslocamento horizontal e vertical da sombra
                             ),
                           ],
                         ),
@@ -129,7 +129,8 @@ class _EmailValidationState extends State<EmailValidation> {
                                   Form(
                                     key: _formkey,
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         InputCode(controller: _codController0),
                                         InputCode(controller: _codController1),
@@ -161,7 +162,7 @@ class _EmailValidationState extends State<EmailValidation> {
     );
   }
 
-  _getCode() {
+  void _getCode() {
     _fullCode.clear();
     _fullCode.add(_codController0.text);
     _fullCode.add(_codController1.text);
@@ -170,17 +171,18 @@ class _EmailValidationState extends State<EmailValidation> {
     _fullCode.add(_codController4.text);
     _fullCode.add(_codController5.text);
     _code = _fullCode.join();
-    if (_code.length <6){
+
+    if (_code.length < 6) {
       showErrorAlert(context, 'Código inválido.');
-    }else{
-      enviar();      
+    } else {
+      validar(context);
     }
   }
 
-  enviar() async {
+  void validar(BuildContext context) async {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (_formkey.currentState!.validate()) {
-      bool deuCerto = await verifyCode(context);
+      bool deuCerto = await verifyCode(context, widget.email, _code);
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
       }
@@ -198,13 +200,9 @@ class _EmailValidationState extends State<EmailValidation> {
     }
   }
 
-  Future<bool> verifyCode(BuildContext context) async {    
-    final success = await emailUtils.doVerifyCode(context, widget.email, _code);
-    
-    if (success) {
-      return true;
-    } else {
-      return false;
-    }
+  Future<bool> verifyCode(
+      BuildContext context, String email, String code) async {
+    final success = await emailUtils.doVerifyCode(email, code);
+    return success;
   }
 }

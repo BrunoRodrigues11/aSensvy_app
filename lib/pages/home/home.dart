@@ -75,7 +75,7 @@ class _HomeState extends State<Home> {
                                     color: Colors.white),
                               ),
                               IconButton(
-                                onPressed: () => sair(),
+                                onPressed: () => sair(context),
                                 icon: const Icon(
                                   Icons.logout,
                                   color: Colors.white,
@@ -207,20 +207,15 @@ class _HomeState extends State<Home> {
     );
   }
 
-  sair() async {
-    bool saiu = await exit(context);
+  Future<void> sair(BuildContext context) async {
+    bool saiu = await exit();
     if (saiu) {
       goToScreen.goToFirstPage(context);
     }
   }
 
-  Future<bool> exit(BuildContext context) async {
-    final success = await authService.doLogout(context);
-
-    if (success) {
-      return true;
-    } else {
-      return false;
-    }
+  Future<bool> exit() async {
+    final success = await authService.doLogout();
+    return success;
   }
 }

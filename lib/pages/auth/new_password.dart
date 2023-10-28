@@ -133,6 +133,7 @@ class _NewPasswordState extends State<NewPassword> {
                                           ),
                                           "Informe a nova senha",
                                           const [],
+                                          true,
                                           validator: (senha) {
                                             if (senha == null ||
                                                 senha.isEmpty) {
@@ -154,6 +155,7 @@ class _NewPasswordState extends State<NewPassword> {
                                           ),
                                           "Confirme a nova senha",
                                           const [],
+                                          true,
                                           validator: (senha) {
                                             if (senha == null ||
                                                 senha.isEmpty) {
@@ -178,7 +180,7 @@ class _NewPasswordState extends State<NewPassword> {
                             ),
                             BtnDefault(
                               "Salvar nova senha",
-                              onPressed: () => enviar(),
+                              onPressed: () => validar(context),
                             ),
                           ],
                         ),
@@ -194,10 +196,11 @@ class _NewPasswordState extends State<NewPassword> {
     );
   }
 
-  enviar() async {
+  void validar(BuildContext context) async {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (_formkey.currentState!.validate()) {
-      bool deuCerto = await setNewPassword(context);
+      bool deuCerto = await setNewPassword(
+          context, widget.email, _confirmNewPasswordController.text);
       if (!currentFocus.hasPrimaryFocus) {
         currentFocus.unfocus();
       }
@@ -216,14 +219,9 @@ class _NewPasswordState extends State<NewPassword> {
     }
   }
 
-  Future<bool> setNewPassword(BuildContext context) async {
-    final success = await emailUtils.doSetNewPassword(
-        context, widget.email, _confirmNewPasswordController.text);
-
-    if (success) {
-      return true;
-    } else {
-      return false;
-    }
+  Future<bool> setNewPassword(
+      BuildContext context, String email, String password) async {
+    final success = await emailUtils.doSetNewPassword(email, password);
+    return success;
   }
 }

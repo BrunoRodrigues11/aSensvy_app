@@ -157,8 +157,12 @@ class _SettingsPageState extends State<SettingsPage> {
                                     },
                                     icon: _isLoadingStorage
                                         ? const CircularProgressIndicator()
-                                        : const Icon(
-                                            Icons.refresh,
+                                        : IconButton(
+                                            icon: const Icon(Icons.refresh),
+                                            onPressed: () {
+                                              checkPermission();
+                                              showInfoAlert(context, "message");
+                                            },
                                           ),
                                   )
                                 ],
@@ -170,6 +174,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                       children: const [
                                         Icon(Icons.check_sharp,
                                             color: Colors.green),
+                                        SizedBox(width: 8), //
                                         Text("Armazenamento"),
                                       ],
                                     )
@@ -177,11 +182,12 @@ class _SettingsPageState extends State<SettingsPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: const [
-                                        Icon(Icons.cancel_sharp,
-                                            color: Colors.red),
+                                        Icon(Icons.check_sharp,
+                                            color: Colors.green),
+                                        SizedBox(width: 8), //
                                         Text("Armazenamento"),
                                       ],
-                                    ),
+                                    )
                             ],
                           ),
                         ),
@@ -239,10 +245,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   // Verifica o status da permissão de acesso ao armazenamento de mídias
   Future<PermissionStatus> checkPermission() async {
-    // Obtém o status da permissão
     PermissionStatus status = await Permission.storage.status;
 
-    // Retorna o status da permissão
     if (status == PermissionStatus.granted) {
       setState(() {
         storageStatus = true;
