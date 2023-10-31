@@ -39,6 +39,7 @@ class _DetailsPageState extends State<DetailsPage> {
     // Inicialize o FlickManager com a URI do arquivo
     flickManager = FlickManager(
       videoPlayerController: VideoPlayerController.networkUrl(fileUri),
+      autoPlay: false,
     );
   }
 
@@ -75,8 +76,11 @@ class _DetailsPageState extends State<DetailsPage> {
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () =>
-                                  goToScreen.goToHistoryPage(context),
+                              onPressed: () {
+                                goToScreen.goToHistoryPage(context);
+                                flickManager.dispose();
+                                super.dispose();
+                              },
                               icon: const Icon(
                                 Icons.arrow_back_ios,
                                 size: 20,

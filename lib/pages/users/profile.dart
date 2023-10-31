@@ -282,6 +282,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           "Cancelar",
                                                           onPressed: () => {
                                                             setState(() {
+                                                              getUser();
                                                               _isEditing =
                                                                   false;
                                                             })
