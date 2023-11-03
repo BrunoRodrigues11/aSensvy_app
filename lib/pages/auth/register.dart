@@ -124,7 +124,6 @@ class _SignUpState extends State<SignUp> {
                                   children: <Widget>[
                                     InputDefault(
                                       "",
-                                      false,
                                       TextInputType.text,
                                       Icon(
                                         Icons.person,
@@ -144,7 +143,6 @@ class _SignUpState extends State<SignUp> {
                                     ),
                                     InputDefault(
                                       "",
-                                      false,
                                       TextInputType.text,
                                       Icon(
                                         Icons.person,
@@ -164,7 +162,6 @@ class _SignUpState extends State<SignUp> {
                                     ),
                                     InputDefault(
                                       "",
-                                      false,
                                       TextInputType.text,
                                       Icon(
                                         Icons.phone,
@@ -185,7 +182,6 @@ class _SignUpState extends State<SignUp> {
                                     ),
                                     InputDefault(
                                       "",
-                                      false,
                                       TextInputType.emailAddress,
                                       Icon(
                                         Icons.email,
@@ -205,16 +201,14 @@ class _SignUpState extends State<SignUp> {
                                       },
                                       controller: _emailController,
                                     ),
-                                    InputDefault(
+                                    InputPassword(
                                       "",
-                                      true,
                                       TextInputType.text,
                                       Icon(
                                         Icons.lock,
                                         color: Colors.grey[600],
                                       ),
                                       "Informe a sua senha",
-                                      const [],
                                       true,
                                       validator: (senha) {
                                         if (senha == null || senha.isEmpty) {

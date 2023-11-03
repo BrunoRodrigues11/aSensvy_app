@@ -45,7 +45,7 @@ dependencies:
   video_player:
   flick_video_player:
   quickalert:
-  fl_chart:
+  percent_indicator:
 
 flutter_native_splash:
   color: "#034694"
@@ -98,6 +98,7 @@ flutter:
     - assets/historico.png
     - assets/select_video.png
     - assets/no-data.png
+    - assets/play.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -123,16 +123,14 @@ class _NewPasswordState extends State<NewPassword> {
                                     key: _formkey,
                                     child: Column(
                                       children: <Widget>[
-                                        InputDefault(
+                                        InputPassword(
                                           "",
-                                          true,
                                           TextInputType.text,
                                           Icon(
                                             Icons.lock,
                                             color: Colors.grey[600],
                                           ),
                                           "Informe a nova senha",
-                                          const [],
                                           true,
                                           validator: (senha) {
                                             if (senha == null ||
@@ -145,16 +143,14 @@ class _NewPasswordState extends State<NewPassword> {
                                           },
                                           controller: _newPasswordController,
                                         ),
-                                        InputDefault(
+                                        InputPassword(
                                           "",
-                                          true,
                                           TextInputType.text,
                                           Icon(
                                             Icons.lock,
                                             color: Colors.grey[600],
                                           ),
                                           "Confirme a nova senha",
-                                          const [],
                                           true,
                                           validator: (senha) {
                                             if (senha == null ||

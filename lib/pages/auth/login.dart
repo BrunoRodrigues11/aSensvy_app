@@ -103,7 +103,6 @@ class _LoginState extends State<Login> {
                             children: <Widget>[
                               InputDefault(
                                 "",
-                                false,
                                 TextInputType.emailAddress,
                                 Icon(
                                   Icons.email,
@@ -123,16 +122,14 @@ class _LoginState extends State<Login> {
                                 },
                                 controller: _emailController,
                               ),
-                              InputDefault(
+                              InputPassword(
                                 "",
-                                true,
                                 TextInputType.text,
                                 Icon(
                                   Icons.lock,
                                   color: Colors.grey[600],
                                 ),
                                 "Informe a sua senha",
-                                const [],
                                 true,
                                 validator: (senha) {
                                   if (senha == null || senha.isEmpty) {

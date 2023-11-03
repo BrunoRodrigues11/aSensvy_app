@@ -1,4 +1,3 @@
-import 'package:apptesteapi/config/routes.dart';
 import 'package:apptesteapi/config/theme.dart';
 import 'package:apptesteapi/pages/init_page.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +25,6 @@ class _MyAppState extends State<MyApp> {
         primaryColor: AppColors.primaryColor,
         primarySwatch: Colors.blue,
       ),
-      // initialRoute: '/',
-      // routes: routes,
       home: const FirstPage(),
     );
   }

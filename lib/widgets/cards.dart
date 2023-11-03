@@ -8,8 +8,15 @@ class HistoryCard extends StatelessWidget {
   final String risco;
   final String file;
   final Color backgroundColor;
-  
-  HistoryCard({super.key, required this.title, required this.score, required this.date, required this.risco,required this.file, required this.backgroundColor});
+
+  HistoryCard(
+      {super.key,
+      required this.title,
+      required this.score,
+      required this.date,
+      required this.risco,
+      required this.file,
+      required this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
@@ -19,27 +26,31 @@ class HistoryCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: [ 
+          boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: const Offset(0,3), // deslocamento horizontal e vertical da sombra
+              offset: const Offset(
+                0,
+                3,
+              ), // deslocamento horizontal e vertical da sombra
             ),
           ],
         ),
         child: ListTile(
           onTap: () {
             Navigator.push(
-              context, 
-              MaterialPageRoute(builder: (context) => DetailsPage(
-                  title: title, 
-                  score: score, 
-                  date: date, 
+              context,
+              MaterialPageRoute(
+                builder: (context) => DetailsPage(
+                  title: title,
+                  score: score,
+                  date: date,
                   risco: risco,
                   file: file,
-                )
-              )
+                ),
+              ),
             );
           },
           title: Padding(
@@ -47,9 +58,9 @@ class HistoryCard extends StatelessWidget {
             child: Text(
               title,
               style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: Colors.white
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Colors.white,
               ),
             ),
           ),
@@ -75,9 +86,9 @@ class HistoryCard extends StatelessWidget {
                           Text(
                             score,
                             style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                                color:Colors.black
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color: Colors.black,
                             ),
                           ),
                         ],
@@ -86,9 +97,9 @@ class HistoryCard extends StatelessWidget {
                     const Text(
                       "Score",
                       style: TextStyle(
-                          fontWeight:FontWeight.bold,
-                          fontSize: 14,
-                          color: Colors.white
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: Colors.white,
                       ),
                     ),
                   ],
@@ -98,17 +109,17 @@ class HistoryCard extends StatelessWidget {
                     Text(
                       date,
                       style: const TextStyle(
-                          fontWeight:FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.white
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.white,
                       ),
                     ),
                     Text(
                       risco,
                       style: const TextStyle(
-                          fontWeight:FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.white
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.white,
                       ),
                     ),
                   ],
@@ -120,4 +131,6 @@ class HistoryCard extends StatelessWidget {
       ),
     );
   }
+
+  
 }

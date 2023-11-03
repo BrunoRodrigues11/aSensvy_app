@@ -144,7 +144,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                             children: [
                                               InputDefault(
                                                 "Nome",
-                                                false,
                                                 TextInputType.text,
                                                 Icon(
                                                   Icons.person,
@@ -165,7 +164,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                               ),
                                               InputDefault(
                                                 "Sobrenome",
-                                                false,
                                                 TextInputType.text,
                                                 Icon(
                                                   Icons.person,
@@ -185,7 +183,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                               ),
                                               InputDefault(
                                                 "Telefone",
-                                                false,
                                                 TextInputType.text,
                                                 Icon(
                                                   Icons.phone,
@@ -207,7 +204,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                               ),
                                               InputDefault(
                                                 "Email",
-                                                false,
                                                 TextInputType.emailAddress,
                                                 Icon(
                                                   Icons.email,
@@ -230,16 +226,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 controller: _emailController,
                                               ),
                                               _isEditing
-                                                  ? InputDefault(
+                                                  ? InputPassword(
                                                       "Senha Atual",
-                                                      true,
                                                       TextInputType.text,
                                                       Icon(
                                                         Icons.lock,
                                                         color: Colors.grey[600],
                                                       ),
                                                       "Informe a sua senha atual",
-                                                      const [],
                                                       true,
                                                       validator: (senha) {
                                                         if (senha == null ||
@@ -257,16 +251,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     )
                                                   : Container(),
                                               _isEditing
-                                                  ? InputDefault(
+                                                  ? InputPassword(
                                                       "Nova Senha",
-                                                      true,
                                                       TextInputType.text,
                                                       Icon(
                                                         Icons.lock,
                                                         color: Colors.grey[600],
                                                       ),
                                                       "Informe a sua nova senha",
-                                                      const [],
                                                       true,
                                                       validator: (novaSenha) {
                                                         return null;
@@ -282,7 +274,20 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           "Cancelar",
                                                           onPressed: () => {
                                                             setState(() {
-                                                              getUser();
+                                                              _firstNameController
+                                                                      .text =
+                                                                  firstName;
+                                                              _lastNameController
+                                                                      .text =
+                                                                  lastName;
+                                                              _emailController
+                                                                  .text = email;
+                                                              _phoneController
+                                                                  .text = phone;
+                                                              _passwordCurrentController
+                                                                  .clear();
+                                                              _passwordNewController
+                                                                  .clear();
                                                               _isEditing =
                                                                   false;
                                                             })
