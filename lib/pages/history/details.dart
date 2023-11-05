@@ -1,10 +1,9 @@
-import 'package:apptesteapi/config/helper_functions.dart';
-import 'package:apptesteapi/config/theme.dart';
-import 'package:apptesteapi/widgets/graph.dart';
-import 'package:apptesteapi/widgets/texts.dart';
+import 'package:aSensvy/config/helper_functions.dart';
+import 'package:aSensvy/config/theme.dart';
+import 'package:aSensvy/widgets/graph.dart';
+import 'package:aSensvy/widgets/texts.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:video_player/video_player.dart';
 
 class DetailsPage extends StatefulWidget {

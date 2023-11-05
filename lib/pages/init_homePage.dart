@@ -1,9 +1,9 @@
-import 'package:apptesteapi/config/theme.dart';
-import 'package:apptesteapi/pages/history/history.dart';
-import 'package:apptesteapi/pages/home/home.dart';
-import 'package:apptesteapi/pages/ia_verify/ia_verify.dart';
-import 'package:apptesteapi/pages/settings/settings.dart';
-import 'package:apptesteapi/pages/users/profile.dart';
+import 'package:aSensvy/config/theme.dart';
+import 'package:aSensvy/pages/history/history.dart';
+import 'package:aSensvy/pages/home/home.dart';
+import 'package:aSensvy/pages/ia_verify/ia_verify.dart';
+import 'package:aSensvy/pages/settings/settings.dart';
+import 'package:aSensvy/pages/users/profile.dart';
 import 'package:flutter/material.dart';
 
 class InitHomePage extends StatefulWidget {

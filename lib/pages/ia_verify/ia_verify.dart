@@ -1,13 +1,13 @@
 import 'dart:io';
-import 'package:apptesteapi/config/helper_functions.dart';
-import 'package:apptesteapi/config/theme.dart';
-import 'package:apptesteapi/widgets/buttons.dart';
+import 'package:aSensvy/config/helper_functions.dart';
+import 'package:aSensvy/config/theme.dart';
+import 'package:aSensvy/widgets/buttons.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:apptesteapi/widgets/alerts.dart';
+import 'package:aSensvy/widgets/alerts.dart';
 
 class IaVerify extends StatefulWidget {
   const IaVerify({super.key});

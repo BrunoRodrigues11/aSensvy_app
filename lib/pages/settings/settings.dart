@@ -1,12 +1,11 @@
 import 'dart:convert';
-import 'package:apptesteapi/config/helper_functions.dart';
-import 'package:apptesteapi/config/theme.dart';
-import 'package:apptesteapi/widgets/alerts.dart';
-import 'package:apptesteapi/widgets/buttons.dart';
-import 'package:apptesteapi/widgets/loading.dart';
-import 'package:apptesteapi/widgets/texts.dart';
+import 'package:aSensvy/config/helper_functions.dart';
+import 'package:aSensvy/config/theme.dart';
+import 'package:aSensvy/widgets/alerts.dart';
+import 'package:aSensvy/widgets/buttons.dart';
+import 'package:aSensvy/widgets/loading.dart';
+import 'package:aSensvy/widgets/texts.dart';
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -107,6 +106,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             children: [
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   TextTitle(texto: "Sensibilidade"),
                                 ],
@@ -114,6 +114,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
                                     userSensitivity.round().toString(),
@@ -140,9 +141,15 @@ class _SettingsPageState extends State<SettingsPage> {
                                   )
                                 ],
                               ),
+                              const Divider(
+                                height: 20, // Define a altura do Divider
+                                thickness: 1, // Define a espessura da linha
+                                color: Colors.grey, // Define a cor do Divider
+                              ),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   TextTitle(texto: "Permissões"),
                                   IconButton(
@@ -162,33 +169,64 @@ class _SettingsPageState extends State<SettingsPage> {
                                             icon: const Icon(Icons.refresh),
                                             onPressed: () {
                                               checkPermission();
-                                              showInfoAlert(context, "message");
+                                              showSuccessAlert(
+                                                context,
+                                                "Status do armaenamento atualizado!",
+                                              );
                                             },
                                           ),
-                                  )
+                                  ),
                                 ],
                               ),
                               storageStatus == true
                                   ? Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: const [
-                                        Icon(Icons.check_sharp,
-                                            color: Colors.green),
-                                        SizedBox(width: 8), //
-                                        Text("Armazenamento"),
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: const [
+                                            Icon(Icons.check_circle_outline,
+                                                color: AppColors.low),
+                                            SizedBox(width: 8), //
+                                            Text("Armazenamento"),
+                                          ],
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            openAppSettings();
+                                          },
+                                          icon: const Icon(Icons.settings),
+                                        ),
                                       ],
                                     )
                                   : Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: const [
-                                        Icon(Icons.check_sharp,
-                                            color: Colors.green),
-                                        SizedBox(width: 8), //
-                                        Text("Armazenamento"),
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: const [
+                                            Icon(Icons.cancel_outlined,
+                                                color: AppColors.veryHigh),
+                                            SizedBox(width: 8), //
+                                            Text("Armazenamento"),
+                                          ],
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            openAppSettings();
+                                          },
+                                          icon: const Icon(Icons.settings),
+                                        ),
                                       ],
-                                    )
+                                    ),
                             ],
                           ),
                         ),

@@ -1,8 +1,8 @@
-import 'package:apptesteapi/config/auth_service.dart';
-import 'package:apptesteapi/config/helper_functions.dart';
-import 'package:apptesteapi/config/theme.dart';
-import 'package:apptesteapi/widgets/information.dart';
-import 'package:apptesteapi/widgets/texts.dart';
+import 'package:aSensvy/config/auth_service.dart';
+import 'package:aSensvy/config/helper_functions.dart';
+import 'package:aSensvy/config/theme.dart';
+import 'package:aSensvy/widgets/information.dart';
+import 'package:aSensvy/widgets/texts.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

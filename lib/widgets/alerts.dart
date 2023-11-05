@@ -1,4 +1,4 @@
-import 'package:apptesteapi/config/theme.dart';
+import 'package:aSensvy/config/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
 
@@ -43,13 +43,13 @@ void showAlert(
   );
 }
 
-void showSuccessAlertBtn(BuildContext context, String message, Function onBtnOkPress) {
+void showSuccessAlertBtn(
+    BuildContext context, String message, Function onBtnOkPress) {
   QuickAlert.show(
-    context: context,
-    type: QuickAlertType.success,
-    title: "Sucesso!",
-    text: message,
-    confirmBtnColor: AppColors.primaryColor,
-    onConfirmBtnTap: onBtnOkPress()
-  );
+      context: context,
+      type: QuickAlertType.success,
+      title: "Sucesso!",
+      text: message,
+      confirmBtnColor: AppColors.primaryColor,
+      onConfirmBtnTap: onBtnOkPress());
 }

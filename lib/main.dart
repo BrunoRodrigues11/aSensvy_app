@@ -1,5 +1,5 @@
-import 'package:apptesteapi/config/theme.dart';
-import 'package:apptesteapi/pages/init_page.dart';
+import 'package:aSensvy/config/theme.dart';
+import 'package:aSensvy/pages/init_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {

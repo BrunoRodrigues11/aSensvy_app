@@ -1,4 +1,4 @@
-import 'package:apptesteapi/config/theme.dart';
+import 'package:aSensvy/config/theme.dart';
 import 'package:flutter/material.dart';
 
 class BtnDefault extends StatelessWidget {
@@ -12,14 +12,13 @@ class BtnDefault extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(top: 3, left: 3),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(50),
-        border: const Border(
-          bottom: BorderSide(color: Colors.black),
-          top: BorderSide(color: Colors.black),
-          left: BorderSide(color: Colors.black),
-          right: BorderSide(color: Colors.black),
-        )
-      ),
+          borderRadius: BorderRadius.circular(50),
+          border: const Border(
+            bottom: BorderSide(color: Colors.black),
+            top: BorderSide(color: Colors.black),
+            left: BorderSide(color: Colors.black),
+            right: BorderSide(color: Colors.black),
+          )),
       child: MaterialButton(
         minWidth: 300,
         height: 50,

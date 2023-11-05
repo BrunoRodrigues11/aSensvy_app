@@ -1,8 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:apptesteapi/widgets/alerts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/material.dart';
 
 class UserService {
   final String baseUrl = 'https://asensvy-production.up.railway.app/myuser';

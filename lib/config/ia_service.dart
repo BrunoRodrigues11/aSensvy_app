@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:apptesteapi/model/history.dart';
+import 'package:aSensvy/model/history.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 

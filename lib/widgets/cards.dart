@@ -1,4 +1,4 @@
-import 'package:apptesteapi/pages/history/details.dart';
+import 'package:aSensvy/pages/history/details.dart';
 import 'package:flutter/material.dart';
 
 class HistoryCard extends StatelessWidget {

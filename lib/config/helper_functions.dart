@@ -1,16 +1,16 @@
-import 'package:apptesteapi/pages/auth/email_validated.dart';
-import 'package:apptesteapi/pages/auth/login.dart';
-import 'package:apptesteapi/pages/auth/new_password.dart';
-import 'package:apptesteapi/pages/auth/register.dart';
-import 'package:apptesteapi/pages/auth/reset_password.dart';
-import 'package:apptesteapi/pages/auth/success.dart';
-import 'package:apptesteapi/pages/history/history.dart';
-import 'package:apptesteapi/pages/home/home.dart';
-import 'package:apptesteapi/pages/ia_verify/ia_verify.dart';
-import 'package:apptesteapi/pages/init_homePage.dart';
-import 'package:apptesteapi/pages/init_page.dart';
-import 'package:apptesteapi/pages/settings/settings.dart';
-import 'package:apptesteapi/pages/users/profile.dart';
+import 'package:aSensvy/pages/auth/email_validated.dart';
+import 'package:aSensvy/pages/auth/login.dart';
+import 'package:aSensvy/pages/auth/new_password.dart';
+import 'package:aSensvy/pages/auth/register.dart';
+import 'package:aSensvy/pages/auth/reset_password.dart';
+import 'package:aSensvy/pages/auth/success.dart';
+import 'package:aSensvy/pages/history/history.dart';
+import 'package:aSensvy/pages/home/home.dart';
+import 'package:aSensvy/pages/ia_verify/ia_verify.dart';
+import 'package:aSensvy/pages/init_homePage.dart';
+import 'package:aSensvy/pages/init_page.dart';
+import 'package:aSensvy/pages/settings/settings.dart';
+import 'package:aSensvy/pages/users/profile.dart';
 import 'package:flutter/material.dart';
 
 class GoToScreen {

@@ -1,4 +1,4 @@
-import 'package:apptesteapi/config/theme.dart';
+import 'package:aSensvy/config/theme.dart';
 import 'package:flutter/material.dart';
 
 class ListInformation extends StatelessWidget {

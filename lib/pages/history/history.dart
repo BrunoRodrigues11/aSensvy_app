@@ -1,10 +1,10 @@
-import 'package:apptesteapi/config/helper_functions.dart';
-import 'package:apptesteapi/config/ia_service.dart';
-import 'package:apptesteapi/config/theme.dart';
-import 'package:apptesteapi/model/history.dart';
-import 'package:apptesteapi/widgets/alerts.dart';
-import 'package:apptesteapi/widgets/cards.dart';
-import 'package:apptesteapi/widgets/loading.dart';
+import 'package:aSensvy/config/helper_functions.dart';
+import 'package:aSensvy/config/ia_service.dart';
+import 'package:aSensvy/config/theme.dart';
+import 'package:aSensvy/model/history.dart';
+import 'package:aSensvy/widgets/alerts.dart';
+import 'package:aSensvy/widgets/cards.dart';
+import 'package:aSensvy/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

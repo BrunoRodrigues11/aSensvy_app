@@ -1,6 +1,6 @@
-import 'package:apptesteapi/config/helper_functions.dart';
-import 'package:apptesteapi/config/theme.dart';
-import 'package:apptesteapi/widgets/buttons.dart';
+import 'package:aSensvy/config/helper_functions.dart';
+import 'package:aSensvy/config/theme.dart';
+import 'package:aSensvy/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 
 class SuccessNewPassword extends StatefulWidget {
@@ -11,9 +11,9 @@ class SuccessNewPassword extends StatefulWidget {
 }
 
 class _SuccessNewPasswordState extends State<SuccessNewPassword> {
-    // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
+  // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
   GoToScreen goToScreen = GoToScreen();
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +26,7 @@ class _SuccessNewPasswordState extends State<SuccessNewPassword> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
-          color: AppColors.primaryColor, 
+          color: AppColors.primaryColor,
           constraints: BoxConstraints(
             maxHeight: MediaQuery.of(context).size.height,
             maxWidth: MediaQuery.of(context).size.width,
@@ -47,10 +47,9 @@ class _SuccessNewPasswordState extends State<SuccessNewPassword> {
                         const Text(
                           "Sucesso!",
                           style: TextStyle(
-                            fontSize: 30, 
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white
-                          ),
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
                         const SizedBox(
                           height: 10,
@@ -58,7 +57,7 @@ class _SuccessNewPasswordState extends State<SuccessNewPassword> {
                         Text(
                           "Redefinição de senha realizada com sucesso.",
                           style: TextStyle(
-                            fontSize: 15, 
+                            fontSize: 15,
                             color: Colors.grey[50],
                           ),
                         ),
@@ -74,18 +73,18 @@ class _SuccessNewPasswordState extends State<SuccessNewPassword> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30)
-                          ),
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30)),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 2,
                               blurRadius: 5,
-                              offset: const Offset(0, 3), // deslocamento horizontal e vertical da sombra
+                              offset: const Offset(0,
+                                  3), // deslocamento horizontal e vertical da sombra
                             ),
                           ],
-                        ),                      
+                        ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -101,10 +100,9 @@ class _SuccessNewPasswordState extends State<SuccessNewPassword> {
                                 ],
                               ),
                             ),
-                            BtnDefault(
-                              "Ir para o login",
-                              onPressed: () => goToScreen.goToLoginPage(context)
-                            ),
+                            BtnDefault("Ir para o login",
+                                onPressed: () =>
+                                    goToScreen.goToLoginPage(context)),
                           ],
                         ),
                       ),
