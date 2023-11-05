@@ -131,6 +131,13 @@ class HistoryCard extends StatelessWidget {
       ),
     );
   }
+}
 
-  
+class DetailsCard extends StatelessWidget {
+  const DetailsCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
 }

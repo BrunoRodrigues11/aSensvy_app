@@ -77,7 +77,7 @@ class OptionsGrid extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xfff8f8ff),
+          color: AppColors.primaryBgCard,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
@@ -107,7 +107,10 @@ class OptionsGrid extends StatelessWidget {
             ),
             Text(
               nome,
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(
+                  fontSize: 16,
+                  color: AppColors.primaryColor,
+                  fontWeight: FontWeight.bold),
             )
           ],
         ),

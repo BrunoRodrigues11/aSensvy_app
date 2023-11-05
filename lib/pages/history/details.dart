@@ -1,5 +1,6 @@
 import 'package:apptesteapi/config/helper_functions.dart';
 import 'package:apptesteapi/config/theme.dart';
+import 'package:apptesteapi/widgets/graph.dart';
 import 'package:apptesteapi/widgets/texts.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
@@ -79,6 +80,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           children: [
                             IconButton(
                               onPressed: () {
+                                Navigator.pop(context);
                                 goToScreen.goToHistoryPage(context);
                                 flickManager.dispose();
                                 super.dispose();
@@ -146,8 +148,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                                   AssetImage("assets/play.png"),
                                               fit: BoxFit.cover,
                                               colorFilter: ColorFilter.mode(
-                                                  Colors.black45,
-                                                  BlendMode.darken),
+                                                Colors.black45,
+                                                BlendMode.darken,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -166,39 +169,60 @@ class _DetailsPageState extends State<DetailsPage> {
                                   const SizedBox(
                                     height: 10,
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      TextTitle(texto: "Informações"),
-                                    ],
-                                  ),
-                                  Text("Título: ${widget.title}"),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  TextTitle(texto: "Estatísticas"),
-                                  CircularPercentIndicator(
-                                    radius: 60,
-                                    lineWidth: 13,
-                                    animation: true,
-                                    percent: double.parse(widget.score) / 100,
-                                    center: Text(
-                                      "${widget.score}%",
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
+                                  Container(
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.secundaryBgCard,
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(15),
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 2,
+                                          blurRadius: 5,
+                                          offset: const Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(15),
+                                      child: Column(
+                                        children: [
+                                          TextTitle(texto: "Informações"),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              TextSubtitle(texto: "Título: "),
+                                              TextBody(texto: widget.title)
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              TextSubtitle(
+                                                  texto: "Data de análise: "),
+                                              TextBody(texto: widget.date)
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              TextSubtitle(texto: "Risco: "),
+                                              TextBody(texto: widget.risco)
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          TextTitle(texto: "Estatísticas"),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          ScoreGraph(score: widget.score),
+                                        ],
                                       ),
                                     ),
-                                    footer: const Text(
-                                      "Score",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    circularStrokeCap: CircularStrokeCap.round,
-                                    progressColor: _getBackgroundColor(
-                                        int.parse(widget.score)),
                                   ),
                                 ],
                               ),
@@ -215,20 +239,6 @@ class _DetailsPageState extends State<DetailsPage> {
         ),
       ),
     );
-  }
-
-  // COLORS DO HISTÓRICO
-  Color _getBackgroundColor(int? score) {
-    if (score! >= 75.0) {
-      return AppColors.veryHigh; // muito alto -> 75% a 100%
-    } else if (score >= 50.0) {
-      return AppColors.high; // alto -> 50% a 75%
-    } else if (score >= 25.0) {
-      return AppColors.moderate; // moderado -> 25% a 50%
-    } else {
-      // return Color(0xff123456);
-      return AppColors.low; // baixo -> 25% ou menos
-    }
   }
 
   void exibirVideo() {
