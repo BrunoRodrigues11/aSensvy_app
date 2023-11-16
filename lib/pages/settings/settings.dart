@@ -21,16 +21,17 @@ class _SettingsPageState extends State<SettingsPage> {
   // INSTÂNCIA DA CLASSE DE ROTAS DE TELAS
   GoToScreen goToScreen = GoToScreen();
   bool _isLoading = true;
-  bool _isLoadingStorage = false;
   double userSensitivity = 0;
   double newSensitivity = 0;
   bool storageStatus = false;
+  bool notificationStatus = false;
 
   @override
   void initState() {
     super.initState();
     getConfig();
-    checkPermission();
+    checkStoragePermission();
+    checkNotificationePermission();
   }
 
   @override
@@ -121,8 +122,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                     style: const TextStyle(fontSize: 18),
                                   ),
                                   const SizedBox(
-                                      width:
-                                          8), // Espaço entre o ícone e a barra de progresso
+                                    width: 8,
+                                  ), // Espaço entre o ícone e a barra de progresso
                                   Expanded(
                                     child: LinearProgressIndicator(
                                       value: userSensitivity / 100,
@@ -153,80 +154,76 @@ class _SettingsPageState extends State<SettingsPage> {
                                 children: [
                                   TextTitle(texto: "Permissões"),
                                   IconButton(
+                                    icon: const Icon(Icons.refresh),
                                     onPressed: () {
-                                      setState(() {
-                                        _isLoadingStorage = true;
-                                      });
-                                      checkPermission().then((response) {
-                                        setState(() {
-                                          _isLoadingStorage = false;
-                                        });
-                                      });
+                                      checkStoragePermission();
+                                      checkNotificationePermission();
+                                      showSuccessAlert(
+                                        context,
+                                        "Status das permissões atualizadas!",
+                                      );
                                     },
-                                    icon: _isLoadingStorage
-                                        ? const CircularProgressIndicator()
-                                        : IconButton(
-                                            icon: const Icon(Icons.refresh),
-                                            onPressed: () {
-                                              checkPermission();
-                                              showSuccessAlert(
-                                                context,
-                                                "Status do armaenamento atualizado!",
-                                              );
-                                            },
-                                          ),
                                   ),
                                 ],
                               ),
-                              storageStatus == true
-                                  ? Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: const [
-                                            Icon(Icons.check_circle_outline,
-                                                color: AppColors.low),
-                                            SizedBox(width: 8), //
-                                            Text("Armazenamento"),
-                                          ],
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            openAppSettings();
-                                          },
-                                          icon: const Icon(Icons.settings),
-                                        ),
-                                      ],
-                                    )
-                                  : Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: const [
-                                            Icon(Icons.cancel_outlined,
-                                                color: AppColors.veryHigh),
-                                            SizedBox(width: 8), //
-                                            Text("Armazenamento"),
-                                          ],
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            openAppSettings();
-                                          },
-                                          icon: const Icon(Icons.settings),
-                                        ),
-                                      ],
-                                    ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        storageStatus
+                                            ? Icons.check_circle_outline
+                                            : Icons.cancel_outlined,
+                                        color: storageStatus
+                                            ? AppColors.low
+                                            : AppColors.veryHigh,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      const Text("Armazenamento"),
+                                    ],
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      openAppSettings();
+                                    },
+                                    icon: const Icon(Icons.settings),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        notificationStatus
+                                            ? Icons.check_circle_outline
+                                            : Icons.cancel_outlined,
+                                        color: notificationStatus
+                                            ? AppColors.low
+                                            : AppColors.veryHigh,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      const Text("Notificações"),
+                                    ],
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      openAppSettings();
+                                    },
+                                    icon: const Icon(Icons.settings),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -283,7 +280,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   // Verifica o status da permissão de acesso ao armazenamento de mídias
-  Future<PermissionStatus> checkPermission() async {
+  Future<PermissionStatus> checkStoragePermission() async {
     PermissionStatus status = await Permission.storage.status;
 
     if (status == PermissionStatus.granted) {
@@ -293,6 +290,22 @@ class _SettingsPageState extends State<SettingsPage> {
     } else {
       setState(() {
         storageStatus = false;
+      });
+    }
+    return status;
+  }
+
+  // Verifica o status da permissão de acesso ao armazenamento de mídias
+  Future<PermissionStatus> checkNotificationePermission() async {
+    PermissionStatus status = await Permission.notification.status;
+
+    if (status == PermissionStatus.granted) {
+      setState(() {
+        notificationStatus = true;
+      });
+    } else {
+      setState(() {
+        notificationStatus = false;
       });
     }
     return status;
