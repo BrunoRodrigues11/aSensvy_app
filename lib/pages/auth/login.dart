@@ -22,6 +22,9 @@ class _LoginState extends State<Login> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  bool _isLoading = false;
+  bool _isEnabled = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,10 +49,10 @@ class _LoginState extends State<Login> {
                 child: Column(
                   children: <Widget>[
                     const SizedBox(
-                      height: 45,
+                      height: 38,
                     ),
                     Image.asset(
-                      "assets/eye2.png",
+                      "assets/logo-asensvy1.png",
                       width: 100,
                       height: 100,
                     ),
@@ -163,8 +166,10 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       ),
-                      BtnDefault(
+                      BtnDefaultLoading(
                         "Entrar",
+                        _isEnabled,
+                        _isLoading,
                         onPressed: () => entrar(context),
                       ),
                       Row(
@@ -178,6 +183,7 @@ class _LoginState extends State<Login> {
                           ),
                           TextButton(
                             onPressed: () {
+                              Navigator.pop(context);
                               goToScreen.goToSignUpPage(context);
                             },
                             child: const Text(
@@ -203,6 +209,12 @@ class _LoginState extends State<Login> {
   }
 
   void entrar(BuildContext context) async {
+    setState(
+      () {
+        _isLoading = true;
+        _isEnabled = false;
+      },
+    );
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (_formkey.currentState!.validate()) {
       bool deuCerto =
@@ -214,14 +226,33 @@ class _LoginState extends State<Login> {
         goToScreen.goToHomePage(context);
       } else {
         showErrorAlert(context, 'Email ou senha incorreta.');
+        setState(
+          () {
+            _isLoading = false;
+            _isEnabled = true;
+          },
+        );
         _passwordController.clear();
       }
+    } else {
+      setState(
+        () {
+          _isLoading = false;
+          _isEnabled = true;
+        },
+      );
     }
   }
 
   Future<bool> login(
       BuildContext context, String email, String password) async {
     final success = await authService.doLogin(email, password);
+    setState(
+      () {
+        _isLoading = false;
+        _isEnabled = true;
+      },
+    );
     return success;
   }
 }

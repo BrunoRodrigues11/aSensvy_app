@@ -1,6 +1,7 @@
 import 'package:aSensvy/config/auth_service.dart';
 import 'package:aSensvy/config/helper_functions.dart';
 import 'package:aSensvy/config/theme.dart';
+import 'package:aSensvy/widgets/alerts.dart';
 import 'package:aSensvy/widgets/information.dart';
 import 'package:aSensvy/widgets/texts.dart';
 import 'package:flutter/material.dart';
@@ -199,7 +200,7 @@ class _HomeState extends State<Home> {
                                           ],
                                         ),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),

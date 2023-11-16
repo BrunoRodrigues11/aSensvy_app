@@ -23,6 +23,9 @@ class _NewPasswordState extends State<NewPassword> {
   final _newPasswordController = TextEditingController();
   final _confirmNewPasswordController = TextEditingController();
 
+  bool _isLoading = false;
+  bool _isEnabled = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,21 +53,21 @@ class _NewPasswordState extends State<NewPassword> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () =>
-                                  goToScreen.goToLoginPage(context),
-                              icon: const Icon(
-                                Icons.arrow_back_ios,
-                                size: 20,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
+                        // Row(
+                        //   children: [
+                        //     IconButton(
+                        //       onPressed: () =>
+                        //           goToScreen.goToLoginPage(context),
+                        //       icon: const Icon(
+                        //         Icons.arrow_back_ios,
+                        //         size: 20,
+                        //         color: Colors.white,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                         const SizedBox(
-                          height: 5,
+                          height: 35,
                         ),
                         const Text(
                           "Nova senha",
@@ -174,9 +177,15 @@ class _NewPasswordState extends State<NewPassword> {
                                 ],
                               ),
                             ),
-                            BtnDefault(
+                            BtnDefaultLoading(
                               "Salvar nova senha",
-                              onPressed: () => validar(context),
+                              _isEnabled,
+                              _isLoading,
+                              onPressed: () {
+                                // Navigator.of(context).pop();
+                                // goToScreen.goToLoginPage(context);
+                                validar(context);
+                              },
                             ),
                           ],
                         ),
@@ -193,6 +202,13 @@ class _NewPasswordState extends State<NewPassword> {
   }
 
   void validar(BuildContext context) async {
+    setState(
+      () {
+        _isLoading = true;
+        _isEnabled = false;
+      },
+    );
+
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (_formkey.currentState!.validate()) {
       bool deuCerto = await setNewPassword(
@@ -201,23 +217,39 @@ class _NewPasswordState extends State<NewPassword> {
         currentFocus.unfocus();
       }
       if (deuCerto) {
-        showSuccessAlertBtn(
-          context,
-          "Sua senha foi atualizada!",
+        showSuccessAlert(context, "Sua senha foi atualizada!");
+        // Aguarde um pouco antes de redirecionar para a próxima tela.
+        Future.delayed(
+          const Duration(seconds: 2),
           () {
-            goToScreen.goToLoginPage(context);
+            // Navigator.of(context).pop();
+            // goToScreen.goToLoginPage(context);
           },
         );
       } else {
+        showErrorAlert(context, 'Erro ao atualizar sua senha');
         _newPasswordController.clear();
         _confirmNewPasswordController.clear();
       }
+    } else {
+      setState(
+        () {
+          _isLoading = false;
+          _isEnabled = true;
+        },
+      );
     }
   }
 
   Future<bool> setNewPassword(
       BuildContext context, String email, String password) async {
     final success = await emailUtils.doSetNewPassword(email, password);
+    setState(
+      () {
+        _isLoading = false;
+        _isEnabled = true;
+      },
+    );
     return success;
   }
 }

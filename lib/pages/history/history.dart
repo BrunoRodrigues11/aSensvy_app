@@ -118,7 +118,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                             child: Column(
                                               children: [
                                                 Image.asset(
-                                                  "assets/no-data.png",
+                                                  "assets/no-results.png",
                                                   width: 300,
                                                   height: 300,
                                                 ),

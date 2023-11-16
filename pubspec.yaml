@@ -85,19 +85,19 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/background.png
-    - assets/eye.png
-    - assets/eye2.png
-    - assets/eye_logo.png
-    - assets/reset_password.png
-    - assets/email_send.png
-    - assets/new-password.png
+    - assets/logo-asensvy1.png # pagina de login (login)
+    - assets/logo-asensvy2.png
+    - assets/logo-asensvy3.png
+    - assets/reset_password.png # pagina de reset de senha (reset_password)
+    - assets/email_send.png # pagina de codigo de verificação (email_valdaited)
+    - assets/new-password.png 
     - assets/success.png
     - assets/analise_ia.png
     - assets/config.png
     - assets/player.png
     - assets/historico.png
     - assets/select_video.png
-    - assets/no-data.png
+    - assets/no-results.png
     - assets/play.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

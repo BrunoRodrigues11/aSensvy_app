@@ -145,20 +145,37 @@ class _InputPasswordState extends State<InputPassword> {
 }
 
 class InputCode extends StatelessWidget {
+  FocusNode focusMode;
+  FocusNode nextFocus;
   TextEditingController controller;
+  BuildContext context;
+  Function(String) onChanged;
+  bool validated;
 
-  InputCode({super.key, required this.controller});
+  InputCode(
+      {super.key,
+      required this.context,
+      required this.focusMode,
+      required this.nextFocus,
+      required this.controller,
+      required this.onChanged,
+      required this.validated});
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 68,
       width: 50,
       child: TextFormField(
-        validator: (code) {
-          if (code == null || code.isEmpty) {
-            return "Por favor, informe sua senha";
+        focusNode: focusMode,
+        textInputAction:
+            nextFocus != null ? TextInputAction.next : TextInputAction.done,
+        onChanged: (value) {
+          _handleFieldChange(value);
+        },
+        onFieldSubmitted: (term) {
+          if (nextFocus != null) {
+            FocusScope.of(context).requestFocus(nextFocus);
           }
-          return null;
         },
         keyboardType: TextInputType.number,
         controller: controller,
@@ -172,11 +189,12 @@ class InputCode extends StatelessWidget {
                 const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
-              borderSide: const BorderSide(color: Colors.grey),
+              borderSide:
+                  BorderSide(color: validated ? AppColors.low : Colors.grey),
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
-              borderSide: const BorderSide(color: AppColors.primaryColor),
+              borderSide: const BorderSide(color: Colors.grey),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
@@ -185,5 +203,13 @@ class InputCode extends StatelessWidget {
             focusColor: AppColors.primaryColor),
       ),
     );
+  }
+
+  void _handleFieldChange(String value) {
+    if (nextFocus != null) {
+      if (value.isNotEmpty) {
+        FocusScope.of(context).requestFocus(nextFocus);
+      }
+    }
   }
 }

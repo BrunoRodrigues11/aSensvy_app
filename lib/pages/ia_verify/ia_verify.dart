@@ -21,6 +21,7 @@ class _IaVerifyState extends State<IaVerify> {
   GoToScreen goToScreen = GoToScreen();
   File? file;
   bool _isLoading = false;
+  bool _isEnabled = true;
 
   @override
   Widget build(BuildContext context) {
@@ -121,9 +122,15 @@ class _IaVerifyState extends State<IaVerify> {
                                 ],
                               ),
                             ),
-                            BtnDefault(
+                            BtnDefaultLoading(
                               "Selecionar video",
-                              onPressed: _selectVideo,
+                              _isEnabled,
+                              _isLoading,
+                              onPressed: () {
+                                // _testeLOading();
+                                _selectVideo();
+                              },
+                              // onPressed: _selectVideo,
                             ),
                           ],
                         ),
@@ -168,12 +175,12 @@ class _IaVerifyState extends State<IaVerify> {
   // UPLOAD DO VÍDEO
   Future<void> _uploadVideo(File file) async {
     try {
-      setState(() {
-        _isLoading = true;
-      });
-      if (_isLoading == true) {
-        showInfoAlert(context, "Enviando vídeo...");
-      }
+      setState(
+        () {
+          _isLoading = true;
+          _isEnabled = false;
+        },
+      );
 
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
@@ -190,10 +197,11 @@ class _IaVerifyState extends State<IaVerify> {
       if (response.statusCode == 201) {
         setState(() {
           _isLoading = false;
+          _isEnabled = true;
         });
         showSuccessAlert(context,
             "Seu vídeo foi enviado. Verifique o resultado na aba 'Histórico'");
-        goToScreen.goToHistoryPage(context);
+        // goToScreen.goToHistoryPage(context);
       } else {}
     } catch (e) {
       showErrorAlert(context, "Erro ao enviar objeto: $e");

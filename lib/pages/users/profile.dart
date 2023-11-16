@@ -29,6 +29,9 @@ class _ProfilePageState extends State<ProfilePage> {
   bool _isLoading = true;
   bool _isEditing = false;
 
+  bool _isLoadingBtn = false;
+  bool _isEnabledBtn = true;
+
   final _formkey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
@@ -296,8 +299,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         const SizedBox(
                                                           height: 10,
                                                         ),
-                                                        BtnDefault(
+                                                        BtnDefaultLoading(
                                                           "Salvar",
+                                                          _isEnabledBtn,
+                                                          _isLoadingBtn,
                                                           onPressed: () => {
                                                             validar(),
                                                           },
@@ -378,6 +383,8 @@ class _ProfilePageState extends State<ProfilePage> {
         _emailController.text = email;
         _phoneController.text = phone;
         _isLoading = false;
+        _isLoadingBtn = false;
+        _isEnabledBtn = true;
       });
     } else {
       showErrorAlert(context, "Não foi possível carregar os dados");
@@ -386,6 +393,13 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void validar() async {
+    setState(
+      () {
+        _isLoadingBtn = true;
+        _isEnabledBtn = false;
+      },
+    );
+
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (_formkey.currentState!.validate()) {
       bool deuCerto = await setUser();
@@ -395,8 +409,14 @@ class _ProfilePageState extends State<ProfilePage> {
       if (deuCerto) {
         showSuccessAlert(context, "Informações atualizadas com sucesso!");
       } else {
-        showErrorAlert(context, 'Senha atual incorreta.');
+        showErrorAlert(context, "Houve um erro ao atualizar as informações");
         _passwordCurrentController.clear();
+        setState(
+          () {
+            _isLoadingBtn = false;
+            _isEnabledBtn = true;
+          },
+        );
       }
     }
   }
@@ -421,13 +441,15 @@ class _ProfilePageState extends State<ProfilePage> {
     var response = await http.put(url, headers: headers, body: body);
     if (response.statusCode == 201) {
       getUser();
-      setState(() {
-        _isEditing = false;
-      });
-
+      setState(
+        () {
+          _isEditing = false;
+          _isLoadingBtn = false;
+          _isEnabledBtn = true;
+        },
+      );
       return true;
     } else {
-      showErrorAlert(context, "Houve um erro ao atualizar as informações");
       return false;
     }
   }

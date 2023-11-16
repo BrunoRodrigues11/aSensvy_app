@@ -53,3 +53,17 @@ void showSuccessAlertBtn(
       confirmBtnColor: AppColors.primaryColor,
       onConfirmBtnTap: onBtnOkPress());
 }
+
+void showConfirmAlertBtn(BuildContext context, String message,
+    Function onBtnOkPress, Function onBtnCancelPress) {
+  QuickAlert.show(
+    context: context,
+    type: QuickAlertType.confirm,
+    text: message,
+    confirmBtnText: 'Sim',
+    onConfirmBtnTap: onBtnOkPress(),
+    cancelBtnText: 'Não',
+    onCancelBtnTap: onBtnCancelPress(),
+    confirmBtnColor: Colors.green,
+  );
+}
