@@ -418,6 +418,13 @@ class _ProfilePageState extends State<ProfilePage> {
           },
         );
       }
+    } else {
+      setState(
+        () {
+          _isLoadingBtn = false;
+          _isEnabledBtn = true;
+        },
+      );
     }
   }
 
