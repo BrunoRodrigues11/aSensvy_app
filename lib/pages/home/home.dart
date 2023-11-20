@@ -1,6 +1,7 @@
 import 'package:aSensvy/config/auth_service.dart';
 import 'package:aSensvy/config/helper_functions.dart';
 import 'package:aSensvy/config/theme.dart';
+import 'package:aSensvy/pages/home/testPage.dart';
 import 'package:aSensvy/widgets/alerts.dart';
 import 'package:aSensvy/widgets/buttons.dart';
 import 'package:aSensvy/widgets/information.dart';
@@ -199,6 +200,19 @@ class _HomeState extends State<Home> {
                                               nome: "Ajustes",
                                               onTap: () => goToScreen
                                                   .goToSettingsPage(context),
+                                            ),
+                                            OptionsGrid(
+                                              imagem: "assets/config.png",
+                                              nome: "Tela teste",
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        TestPage(),
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           ],
                                         ),

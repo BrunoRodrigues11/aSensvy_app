@@ -55,6 +55,7 @@ class _InitHomePageState extends State<InitHomePage> {
           child: const Icon(Icons.add),
         ),
         bottomNavigationBar: BottomAppBar(
+          color: AppColors.primaryBgCard,
           shape: const CircularNotchedRectangle(),
           notchMargin: 10,
           child: SizedBox(
@@ -82,14 +83,14 @@ class _InitHomePageState extends State<InitHomePage> {
                                 : Icons.home_outlined,
                             color: widget.currentTab == 0
                                 ? AppColors.primaryColor
-                                : Colors.grey,
+                                : Colors.black,
                           ),
                           Text(
                             'Home',
                             style: TextStyle(
                               color: widget.currentTab == 0
                                   ? AppColors.primaryColor
-                                  : Colors.grey,
+                                  : Colors.black,
                             ),
                           )
                         ],
@@ -112,14 +113,14 @@ class _InitHomePageState extends State<InitHomePage> {
                                 : Icons.access_time,
                             color: widget.currentTab == 1
                                 ? AppColors.primaryColor
-                                : Colors.grey,
+                                : Colors.black,
                           ),
                           Text(
                             'Histórico',
                             style: TextStyle(
                               color: widget.currentTab == 1
                                   ? AppColors.primaryColor
-                                  : Colors.grey,
+                                  : Colors.black,
                             ),
                           )
                         ],
@@ -147,14 +148,14 @@ class _InitHomePageState extends State<InitHomePage> {
                                 : Icons.settings_outlined,
                             color: widget.currentTab == 2
                                 ? AppColors.primaryColor
-                                : Colors.grey,
+                                : Colors.black,
                           ),
                           Text(
                             'Ajustes',
                             style: TextStyle(
                               color: widget.currentTab == 2
                                   ? AppColors.primaryColor
-                                  : Colors.grey,
+                                  : Colors.black,
                             ),
                           )
                         ],
@@ -177,14 +178,14 @@ class _InitHomePageState extends State<InitHomePage> {
                                 : Icons.person_outlined,
                             color: widget.currentTab == 3
                                 ? AppColors.primaryColor
-                                : Colors.grey,
+                                : Colors.black,
                           ),
                           Text(
                             'Perfil',
                             style: TextStyle(
                               color: widget.currentTab == 3
                                   ? AppColors.primaryColor
-                                  : Colors.grey,
+                                  : Colors.black,
                             ),
                           )
                         ],
