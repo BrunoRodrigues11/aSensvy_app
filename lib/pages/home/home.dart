@@ -1,11 +1,11 @@
 import 'package:aSensvy/config/auth_service.dart';
 import 'package:aSensvy/config/helper_functions.dart';
 import 'package:aSensvy/config/theme.dart';
-import 'package:aSensvy/widgets/alerts.dart';
 import 'package:aSensvy/widgets/information.dart';
 import 'package:aSensvy/widgets/texts.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:aSensvy/widgets/buttons.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -78,7 +78,9 @@ class _HomeState extends State<Home> {
                                       color: Colors.white),
                                 ),
                                 IconButton(
-                                  onPressed: () => sair(context),
+                                  onPressed: () {
+                                    _showLogoutModal(context);
+                                  },
                                   icon: const Icon(
                                     Icons.logout,
                                     color: Colors.white,
@@ -230,5 +232,79 @@ class _HomeState extends State<Home> {
   Future<bool> exit() async {
     final success = await authService.doLogout();
     return success;
+  }
+
+  _showLogoutModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.5),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 50,
+                      height: 5,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              const Text(
+                "Sair do App",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryColor,
+                ),
+              ),
+              const SizedBox(height: 5),
+              const Text(
+                "Você deseja realmente sair?",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  BtnLogout(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    "Não",
+                  ),
+                  BtnLogout(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      sair(context);
+                    },
+                    "Sim",
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
