@@ -2,7 +2,6 @@ import 'package:aSensvy/config/auth_service.dart';
 import 'package:aSensvy/config/helper_functions.dart';
 import 'package:aSensvy/config/theme.dart';
 import 'package:aSensvy/pages/home/testPage.dart';
-import 'package:aSensvy/widgets/alerts.dart';
 import 'package:aSensvy/widgets/buttons.dart';
 import 'package:aSensvy/widgets/information.dart';
 import 'package:aSensvy/widgets/texts.dart';
@@ -168,7 +167,7 @@ class _HomeState extends State<Home> {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 15),
                                       child: SizedBox(
-                                        height: 300,
+                                        height: 500,
                                         child: GridView.count(
                                           physics:
                                               const NeverScrollableScrollPhysics(),
@@ -209,7 +208,7 @@ class _HomeState extends State<Home> {
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        TestPage(),
+                                                        const TestPage(),
                                                   ),
                                                 );
                                               },

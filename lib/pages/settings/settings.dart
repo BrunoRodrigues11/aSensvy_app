@@ -224,6 +224,80 @@ class _SettingsPageState extends State<SettingsPage> {
                                   ),
                                 ],
                               ),
+                              const SizedBox(width: 15),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: const [
+                                      Icon(
+                                        Icons.brightness_4,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      TextTitle(texto: "Tema"),
+                                      Text("Claro"),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const Divider(
+                                height: 20, // Define a altura do Divider
+                                thickness: 1, // Define a espessura da linha
+                                color: Colors.grey, // Define a cor do Divider
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  TextTitle(texto: "Segurança"),
+                                ],
+                              ),
+                              const Divider(
+                                height: 20, // Define a altura do Divider
+                                thickness: 1, // Define a espessura da linha
+                                color: Colors.grey, // Define a cor do Divider
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: const [
+                                      Icon(
+                                        Icons.help_outline,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      TextTitle(texto: "Ajuda"),
+                                      Text("Central de ajudae"),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const Divider(
+                                height: 20, // Define a altura do Divider
+                                thickness: 1, // Define a espessura da linha
+                                color: Colors.grey, // Define a cor do Divider
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  TextTitle(texto: "Sobre o App"),
+                                ],
+                              ),
                             ],
                           ),
                         ),
