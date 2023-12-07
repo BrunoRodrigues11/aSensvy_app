@@ -31,6 +31,9 @@ class _SignUpState extends State<SignUp> {
     type: MaskAutoCompletionType.lazy,
   );
 
+  bool _isLoading = false;
+  bool _isEnabled = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -224,8 +227,10 @@ class _SignUpState extends State<SignUp> {
                                 ),
                               ),
                             ),
-                            BtnDefault(
+                            BtnDefaultLoading(
                               "Cadastrar",
+                              _isEnabled,
+                              _isLoading,
                               onPressed: () => cadastrar(context),
                             ),
                             Row(
@@ -265,6 +270,12 @@ class _SignUpState extends State<SignUp> {
   }
 
   void cadastrar(BuildContext context) async {
+    setState(
+      () {
+        _isLoading = true;
+        _isEnabled = false;
+      },
+    );
     FocusScopeNode currentFocus = FocusScope.of(context);
     final firstName = _firstNameController.text;
     final lastName = _lastNameController.text;
@@ -279,10 +290,30 @@ class _SignUpState extends State<SignUp> {
         currentFocus.unfocus();
       }
       if (deuCerto) {
-        goToScreen.goToLoginPage(context);
+        showSuccessAlert(context, "Cadastro realizado com sucesso!");
+        Future.delayed(
+          const Duration(seconds: 1),
+          () {
+            Navigator.pop(context);
+            goToScreen.goToLoginPage(context);
+          },
+        );
+      } else {
+        showErrorAlert(context, "Não foi possível realizar o cadastro");
+        setState(
+          () {
+            _isLoading = false;
+            _isEnabled = true;
+          },
+        );
       }
     } else {
-      showInfoAlert(context, "Preencha todos os campos");
+      setState(
+        () {
+          _isLoading = false;
+          _isEnabled = true;
+        },
+      );
     }
   }
 
@@ -290,13 +321,12 @@ class _SignUpState extends State<SignUp> {
       String email, String phone, String password) async {
     final success =
         await authService.doSignUp(firstName, lastName, email, phone, password);
-
-    if (success) {
-      showSuccessAlert(context, "Cadastro realizado com sucesso!");
-      return true;
-    } else {
-      showErrorAlert(context, "Algo deu errado durante o cadastro.");
-      return false;
-    }
+    setState(
+      () {
+        _isLoading = false;
+        _isEnabled = true;
+      },
+    );
+    return success;
   }
 }
