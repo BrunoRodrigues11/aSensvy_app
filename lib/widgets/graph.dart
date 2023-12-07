@@ -12,7 +12,7 @@ class ScoreGraph extends StatelessWidget {
       radius: 60,
       lineWidth: 13,
       animation: true,
-      percent: double.parse(score) / 100,
+      percent: double.parse(score) > 100 ? 1 : double.parse(score) / 100,
       center: Text(
         "${score}%",
         style: const TextStyle(
