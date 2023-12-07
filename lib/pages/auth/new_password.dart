@@ -182,8 +182,6 @@ class _NewPasswordState extends State<NewPassword> {
                               _isEnabled,
                               _isLoading,
                               onPressed: () {
-                                // Navigator.of(context).pop();
-                                // goToScreen.goToLoginPage(context);
                                 validar(context);
                               },
                             ),
@@ -222,8 +220,8 @@ class _NewPasswordState extends State<NewPassword> {
         Future.delayed(
           const Duration(seconds: 2),
           () {
-            // Navigator.of(context).pop();
-            // goToScreen.goToLoginPage(context);
+            Navigator.of(context).pop();
+            goToScreen.goToLoginPage(context);
           },
         );
       } else {

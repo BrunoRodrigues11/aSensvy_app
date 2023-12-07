@@ -448,6 +448,7 @@ class _ProfilePageState extends State<ProfilePage> {
     var response = await http.put(url, headers: headers, body: body);
     if (response.statusCode == 201) {
       getUser();
+      sharedPreferences.setString('fullName', "${_firstNameController.text} ${_lastNameController.text}");
       setState(
         () {
           _isEditing = false;

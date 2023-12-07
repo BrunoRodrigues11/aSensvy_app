@@ -154,9 +154,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                               _isEnabled,
                               _isLoading,
                               onPressed: () {
-                                goToScreen.goToEmailValidationPage(
-                                    context, _emailController.text);
-                                // validar(context);
+                                validar(context);
                               },
                             ),
                           ],

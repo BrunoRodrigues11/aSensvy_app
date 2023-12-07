@@ -216,10 +216,7 @@ class _EmailValidationState extends State<EmailValidation> {
                               _isEnabled,
                               _isLoading,
                               onPressed: () {
-                                Navigator.of(context).pop();
-                                goToScreen.goToNewPswdPage(
-                                    context, widget.email);
-                                // _getCode();
+                                _getCode();
                               },
                             ),
                           ],
